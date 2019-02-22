@@ -6,6 +6,7 @@ import org.json.JSONObject;
 
 import com.twister.DataBases.SESSION_DB;
 import com.twister.tools.JSONResponse;
+import com.twister.tools.SessionTools;
 
 public class Logout {
 
@@ -15,7 +16,7 @@ public class Logout {
 			return JSONResponse.serviceRefused("Argument fault ", 1);
 		
 		try {
-			if(!SESSION_DB.estDejaConnecte(key))
+			if(!SessionTools.estDejaConnecte(key))
 				return JSONResponse.serviceRefused("vous n'etes pas connecte", 100);
 			
 			if(SESSION_DB.removeSession(key))

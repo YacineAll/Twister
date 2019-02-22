@@ -1,9 +1,6 @@
 package com.twister.services;
 
 import java.sql.SQLException;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -12,6 +9,7 @@ import com.twister.DataBases.USER_DB;
 import com.twister.tools.AuthentificationTools;
 import com.twister.tools.JSONResponse;
 import com.twister.tools.SessionTools;
+import com.twister.tools.Tools;
 
 public class Login {
 
@@ -28,11 +26,7 @@ public class Login {
 			if (SessionTools.estDejaConnecte(idUser)) {
 				return JSONResponse.serviceRefused("vous etes deja connecte", 3);
 			}
-			DateFormat dateF = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
-			Date date = new Date();
-			String dateConnexion = dateF.format(date);
-
-			String key = SessionTools.insertSession(idUser, login, true, dateConnexion);
+			String key = SessionTools.insertSession(idUser, login, Tools.getFormatedDateAfterNHour(0));
 
 			JSONObject jse = new JSONObject();
 			

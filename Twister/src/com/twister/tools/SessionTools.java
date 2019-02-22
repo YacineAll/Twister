@@ -10,14 +10,18 @@ import com.twister.DataBases.SESSION_DB;
 
 public class SessionTools {
 
-	public static String insertSession(int idUser, String login, boolean is_Disconnect,String dateConnexion) throws SQLException {
+	public static String insertSession(int idUser, String login, String dateConnexion) throws SQLException {
 
 		String key = generateKey(idUser, login);
-		SESSION_DB.insert(key, idUser, is_Disconnect,dateConnexion);
+		SESSION_DB.insert(key, idUser,dateConnexion);
 		return key;
 
 	}
 	
+	
+	public static boolean removeSession(String key) throws SQLException {
+		return SESSION_DB.removeSession(key);
+	}
 	public static boolean estDejaConnecte(int idUser) throws SQLException {
 		return SESSION_DB.estDejaConnecte(idUser);
 	}

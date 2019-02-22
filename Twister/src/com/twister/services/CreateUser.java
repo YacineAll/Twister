@@ -1,8 +1,6 @@
 package com.twister.services;
 
 import java.sql.SQLException;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import org.json.JSONObject;
@@ -10,6 +8,7 @@ import org.json.JSONObject;
 import com.twister.DataBases.USER_DB;
 import com.twister.tools.AuthentificationTools;
 import com.twister.tools.JSONResponse;
+import com.twister.tools.Tools;
 
 public class CreateUser {
 
@@ -27,11 +26,7 @@ public class CreateUser {
 			Date birthDay = java.sql.Date
 					.valueOf(birth_day.split("/")[2] + "-" + birth_day.split("/")[1] + "-" + birth_day.split("/")[0]);
 
-			DateFormat dateF = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
-			Date date = new Date();
-			String dateInscription = dateF.format(date);
-
-			USER_DB.addUSer(nom, prenom, login, password, sex, birthDay, dateInscription);
+			USER_DB.addUSer(nom, prenom, login, password, sex, birthDay, Tools.getFormatedDateAfterNHour(0));
 			return JSONResponse.serviceAccepted();
 
 		} catch (SQLException e) {
