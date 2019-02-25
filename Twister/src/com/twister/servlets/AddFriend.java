@@ -25,7 +25,7 @@ public class AddFriend extends HttpServlet {
 		String key = request.getParameter("key");
 		String idFriend = request.getParameter("id_friend");
 		
-		JSONObject res = com.twister.services.AddFriend.addFriend(key, idFriend);
+		JSONObject res = com.twister.services.Friend.addFriend(key, idFriend);
 		response.setContentType("text/JSON");
 		response.getWriter().println(res);
 		

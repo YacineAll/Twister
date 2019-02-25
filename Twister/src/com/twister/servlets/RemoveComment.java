@@ -10,25 +10,26 @@ import javax.servlet.http.HttpServletResponse;
 import org.json.JSONObject;
 
 /**
- * Servlet implementation class RemoveFriend
+ * Servlet implementation class Removecomment
  */
-@WebServlet("/RemoveFriend")
-public class RemoveFriend extends HttpServlet {
-	
-	
+@WebServlet(name = "RemoveComment", urlPatterns = { "/RemoveComment" })
+public class RemoveComment extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-    
+       
+    /**
+     * @see HttpServlet#HttpServlet()
+     */
+
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		
 		String key = request.getParameter("key");
-		String idFriend = request.getParameter("id_friend");
-		
-		JSONObject res = com.twister.services.Friend.removeFriend(key, idFriend);
+		String id = request.getParameter("id");
+
+		JSONObject res = com.twister.services.Comment.addComment(key, id);
 		response.setContentType("text/JSON");
 		response.getWriter().println(res);
-		
 	}
+
 }

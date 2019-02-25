@@ -3,12 +3,8 @@ package com.twister.tests;
 import java.sql.SQLException;
 
 import org.json.JSONException;
-import org.json.JSONObject;
 
-import com.twister.DataBases.COMMMENT_DB;
 import com.twister.DataBases.FRIEND_DB;
-import com.twister.services.Login;
-import com.twister.services.Logout;
 
 public class Test {
 

@@ -26,6 +26,8 @@ public class COMMMENT_DB {
 			Document document = (Document) mCursur.next();
 			System.out.println(document);
 		}
+
+		MongoDB.closeConnection();
 	}
 
 	public static boolean addComment(int idUser, String nom, String prenom, String comment) {
@@ -48,14 +50,23 @@ public class COMMMENT_DB {
 		return true;
 	}
 
-	public static boolean removeComment(int idComment) {
+	public static boolean removeComment(int id_user, int idComment) {
 		MongoDatabase db = MongoDB.getConnectionToMongoDataBase();
 		MongoCollection<org.bson.Document> col = db.getCollection("comments");
 
 		org.bson.Document d = new Document();
 		d.append("id", idComment);
-		col.deleteMany(d);
-		return true;
+		try {
+			if (col.find(d).first().getInteger("author_id") == id_user) {
+				col.deleteMany(d);
+				return true;
+			}
+
+		} finally {
+			MongoDB.closeConnection();
+		}
+
+		return false;
 	}
 
 	public static List<JSONObject> getUserCommentsId_Author(int id_author) throws JSONException {
@@ -67,15 +78,16 @@ public class COMMMENT_DB {
 		doc.append("author_id", id_author);
 		List<JSONObject> listJson = new ArrayList<JSONObject>();
 		MongoCursor<Document> mngc = col.find(doc).iterator();
+
 		while (mngc.hasNext()) {
 			Document document = (Document) mngc.next();
 			listJson.add(new JSONObject(document.toJson()));
 		}
 
+		MongoDB.closeConnection();
 		return listJson;
 	}
 
-	
 	public static List<JSONObject> getUserComments_NOM(String name) throws JSONException {
 		MongoDatabase db = MongoDB.getConnectionToMongoDataBase();
 		MongoCollection<org.bson.Document> col = db.getCollection("comments");
@@ -90,19 +102,19 @@ public class COMMMENT_DB {
 			listJson.add(new JSONObject(document.toJson()));
 		}
 
+		MongoDB.closeConnection();
 		return listJson;
 	}
 
-	
-	public static List<JSONObject> getCommentForLastNHour(int n){
+	public static List<JSONObject> getCommentForLastNHour(int n) {
 		MongoDatabase db = MongoDB.getConnectionToMongoDataBase();
 		MongoCollection<org.bson.Document> col = db.getCollection("comments");
 
-		Document doc = new Document("date",Tools.getFormatedDateAfterNHour(-n));
-	
+		Document doc = new Document("date", Tools.getFormatedDateAfterNHour(-n));
+
 		return null;
 	}
-	
+
 	private static int getLastId() {
 		MongoDatabase db = MongoDB.getConnectionToMongoDataBase();
 		MongoCollection<org.bson.Document> col = db.getCollection("comments");
@@ -113,6 +125,7 @@ public class COMMMENT_DB {
 
 		int max_id = d == null ? 0 : d.getInteger("id");
 
+		MongoDB.closeConnection();
 		return max_id;
 	}
 

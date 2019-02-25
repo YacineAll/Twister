@@ -25,7 +25,7 @@ public class Login extends HttpServlet {
 
 		String password = request.getParameter("password");
 		String login = request.getParameter("login");
-		JSONObject result = com.twister.services.Login.login(login, password);
+		JSONObject result = com.twister.services.User.login(login, password);
 		response.setContentType("text/JSON");
 		PrintWriter out = response.getWriter();
 		out.print(result);

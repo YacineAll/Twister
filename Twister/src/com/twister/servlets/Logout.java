@@ -27,7 +27,7 @@ public class Logout extends HttpServlet {
 			throws ServletException, IOException {
 
 		String key = request.getParameter("key");
-		JSONObject result = com.twister.services.Logout.logout(key);
+		JSONObject result = com.twister.services.User.logout(key);
 		response.setContentType("text/JSON");
 		PrintWriter out = response.getWriter();
 		out.print(result);

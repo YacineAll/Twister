@@ -38,4 +38,27 @@ public class Comment {
 			return JSONResponse.serviceRefused("JSON PROBLEM IN {ADD COMMENT}", 100000);
 		}
 	}
+
+	public static JSONObject removeComment(String key, String id) {
+
+		if (id == null | key == null) {
+			return JSONResponse.serviceRefused("Erreur de saisie", 1);
+		}
+
+		try {
+			if (!SessionTools.estDejaConnecte(key)) {
+				return JSONResponse.serviceRefused("Vous n'etes pas connectee", 2);
+			}
+
+			int id_user = SessionTools.idUser(key);
+			int id_comment = Integer.parseInt(id);
+
+			return COMMMENT_DB.removeComment(id_user, id_comment) ? JSONResponse.serviceAccepted()
+					: JSONResponse.serviceRefused("erreur inatendue", 3);
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return JSONResponse.serviceRefused("Erreur sql {addComment}", 2000);
+		}
+	}
 }
