@@ -15,32 +15,35 @@ public class Login {
 
 	public static JSONObject login(String login, String password) {
 		if (login == null | password == null)
-			return JSONResponse.serviceRefused("Arguments fault", 2);
+			return JSONResponse.serviceRefused("Erreur de saisie", 1);
 		if (!AuthentificationTools.userExists(login))
-			return JSONResponse.serviceRefused("Unknown user", 0);
+			return JSONResponse.serviceRefused("login non reconnu ", 2);
 		if (!AuthentificationTools.checkPassword(login, password))
-			return JSONResponse.serviceRefused("BAd PASSWORD", 3);
+			return JSONResponse.serviceRefused("mot de passe incorrect", 3);
 
 		try {
+
 			int idUser = USER_DB.getId(login);
+
 			if (SessionTools.estDejaConnecte(idUser)) {
-				return JSONResponse.serviceRefused("vous etes deja connecte", 3);
+				return JSONResponse.serviceRefused("vous etes deja connecte", 4);
 			}
+
 			String key = SessionTools.insertSession(idUser, login, Tools.getFormatedDateAfterNHour(0));
 
-			JSONObject jse = new JSONObject();
-			
+			JSONResponse jse = JSONResponse.serviceAccepted();
+
 			jse.put("ID", idUser);
 			jse.put("Login", login);
 			jse.put("Key", key);
-			
+
 			return jse;
 		} catch (SQLException e) {
 			e.printStackTrace();
-			return JSONResponse.serviceRefused("SQL ERREUR", 1000);
+			return JSONResponse.serviceRefused("SQL PROBLEME {login}", 1000);
 		} catch (JSONException e) {
 			e.printStackTrace();
-			return JSONResponse.serviceRefused("ERREUR JSON LOGIN SERVICE", 10000);
+			return JSONResponse.serviceRefused("JSON PROBLEM IN {login}", 100000);
 		}
 
 	}

@@ -1,9 +1,12 @@
 package com.twister.tests;
 
+import java.sql.SQLException;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import com.twister.DataBases.COMMMENT_DB;
+import com.twister.DataBases.FRIEND_DB;
 import com.twister.services.Login;
 import com.twister.services.Logout;
 
@@ -34,22 +37,24 @@ public class Test {
 //		System.out.println(document);
 //	}
 
-	public static void main(String[] args) throws JSONException {
+	public static void main(String[] args) throws JSONException, SQLException {
 
-		JSONObject loginJSO = Login.login("y0658394042@gmail.com", "25139+Yacine");
+		//JSONObject loginJSO = Login.login("y0658394042@gmail.com", "25139+Yacine");
 		
-		System.out.println(loginJSO);
+		//System.out.println(loginJSO);
 		
 		//System.out.println(COMMMENT_DB.getUserComments(23));
 		
-		COMMMENT_DB.printMongoDB();
+		//COMMMENT_DB.printMongoDB();
 		
-		COMMMENT_DB.addComment(loginJSO.getInt("ID"), "Yacine", "allouache","Saha a riad");
+		//COMMMENT_DB.addComment(loginJSO.getInt("ID"), "Yacine", "allouache","Saha a riad");
 		
 		
-		JSONObject logoutJSO = Logout.logout(loginJSO.getString("Key"));
+		System.out.println(FRIEND_DB.isFriend(24, 20));
+		
+		//JSONObject logoutJSO = Logout.logout(loginJSO.getString("Key"));
 
-		System.out.println(logoutJSO);
+		//System.out.println(logoutJSO);
 	}
 
 }

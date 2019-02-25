@@ -12,31 +12,30 @@ import com.twister.tools.SessionTools;
 
 public class Comment {
 
-	
-	public static  JSONObject addComment(String key, String text) {
-		
-		
+	public static JSONObject addComment(String key, String text) {
+
 		if (text == null | key == null) {
-			return JSONResponse.serviceRefused("ARGUMENT FAULT", -1);
+			return JSONResponse.serviceRefused("Erreur de saisie", 1);
 		}
 
 		try {
 			if (!SessionTools.estDejaConnecte(key)) {
-				return JSONResponse.serviceRefused("CONNECTION DENIED !!", 255);
+				return JSONResponse.serviceRefused("Vous n'etes pas connectee", 2);
 			}
+
 			int idUser = SessionTools.idUser(key);
 			JSONObject nameUser = USER_DB.getNameUser(idUser);
-			if(COMMMENT_DB.addComment(idUser, nameUser.getString("nom"), nameUser.getString("prenom"), text)) {
-				return JSONResponse.serviceAccepted();
-			};
+
+			return COMMMENT_DB.addComment(idUser, nameUser.getString("nom"), nameUser.getString("prenom"), text)
+					? JSONResponse.serviceAccepted()
+					: JSONResponse.serviceRefused("erreur inatendue", 3);
+
 		} catch (SQLException e) {
 			e.printStackTrace();
-			return JSONResponse.serviceRefused("VERIFICATION OF {IF IS CONNECTED WITH KEY} ERROR", 2000);
+			return JSONResponse.serviceRefused("Erreur sql {addComment}", 2000);
 		} catch (JSONException e) {
 			e.printStackTrace();
-			return JSONResponse.serviceRefused("JSON PROBLEM IN ADD COMMENT", 2526);
+			return JSONResponse.serviceRefused("JSON PROBLEM IN {ADD COMMENT}", 100000);
 		}
-		return null;
-
 	}
 }

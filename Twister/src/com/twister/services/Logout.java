@@ -13,18 +13,20 @@ public class Logout {
 	
 	public static JSONObject logout(String key) {
 		if(key == null) 
-			return JSONResponse.serviceRefused("Argument fault ", 1);
+			return JSONResponse.serviceRefused("Erreur de saisie", 1);
 		
 		try {
 			if(!SessionTools.estDejaConnecte(key))
-				return JSONResponse.serviceRefused("vous n'etes pas connecte", 100);
+				return JSONResponse.serviceRefused("vous n'etes pas connecte", 2);
 			
 			if(SESSION_DB.removeSession(key))
 				return JSONResponse.serviceAccepted();
-			return JSONResponse.serviceRefused("SQL PROBLEME IN LOGOUT", 10000);
+			
+			return JSONResponse.serviceRefused("SQL PROBLEME {logout}", 1000);
+		
 		} catch (SQLException e) {
 			e.printStackTrace();
-			return JSONResponse.serviceRefused("SQL PROBLEME IN LOGOUT", 10000);
+			return JSONResponse.serviceRefused("SQL PROBLEME {logout}", 1000);
 		}
 		
 	}

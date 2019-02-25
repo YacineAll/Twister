@@ -17,11 +17,11 @@ public class CreateUser {
 		System.out.println(nom+" "+prenom+" "+login+" "+password+" "+sex+" "+birth_day);
 		
 		if (nom == null || prenom == null || login == null || password == null || sex == null || birth_day == null) {
-			return JSONResponse.serviceRefused("Argument fault " + login, 1);
+			return JSONResponse.serviceRefused("Erreur de saisie ", 1);
 		}
 
 		if (AuthentificationTools.userExists(login)) {
-			return JSONResponse.serviceRefused("utilisateur existe deja" + login, 2);
+			return JSONResponse.serviceRefused("utilisateur existe deja", 2);
 		}
 
 		try {
@@ -29,11 +29,12 @@ public class CreateUser {
 					.valueOf(birth_day.split("/")[2] + "-" + birth_day.split("/")[1] + "-" + birth_day.split("/")[0]);
 
 			USER_DB.addUSer(nom, prenom, login, password, sex, birthDay, Tools.getFormatedDateAfterNHour(0));
+			
 			return JSONResponse.serviceAccepted();
 
 		} catch (SQLException e) {
 			e.printStackTrace();
-			return JSONResponse.serviceRefused("ADD IN USER_DB ERROR", 1000);
+			return JSONResponse.serviceRefused("SQL PROBLEME {creatUser}", 1000);
 		}
 	}
 }
