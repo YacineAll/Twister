@@ -3,11 +3,9 @@ package com.twister.tests;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import com.twister.services.AddComment;
-import com.twister.services.CreateUser;
+import com.twister.DataBases.COMMMENT_DB;
 import com.twister.services.Login;
 import com.twister.services.Logout;
-import com.twister.tools.Tools;
 
 public class Test {
 
@@ -42,9 +40,11 @@ public class Test {
 		
 		System.out.println(loginJSO);
 		
-		JSONObject jsComment = AddComment.addComment(loginJSO.getString("Key"), "salut ");
+		//System.out.println(COMMMENT_DB.getUserComments(23));
 		
-		System.out.println(jsComment);
+		COMMMENT_DB.printMongoDB();
+		
+		COMMMENT_DB.addComment(loginJSO.getInt("ID"), "Yacine", "allouache","Saha a riad");
 		
 		
 		JSONObject logoutJSO = Logout.logout(loginJSO.getString("Key"));

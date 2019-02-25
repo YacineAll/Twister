@@ -10,9 +10,12 @@ import com.twister.DataBases.USER_DB;
 import com.twister.tools.JSONResponse;
 import com.twister.tools.SessionTools;
 
-public class AddComment {
+public class Comment {
 
+	
 	public static  JSONObject addComment(String key, String text) {
+		
+		
 		if (text == null | key == null) {
 			return JSONResponse.serviceRefused("ARGUMENT FAULT", -1);
 		}

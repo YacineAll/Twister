@@ -40,6 +40,7 @@ public class SessionTools {
 						i -> (IntStream.rangeClosed('A', 'Z').mapToObj(c -> "" + (char) c).collect(Collectors.joining())
 								+ "1234567890" + idUser + login).toCharArray()[i])
 				.collect(Collectors.toList());
+		
 		Collections.shuffle(list);
 		String str = "";
 		for (Character character : list) {

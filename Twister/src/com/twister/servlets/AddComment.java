@@ -26,7 +26,7 @@ public class AddComment extends HttpServlet {
 		String key = request.getParameter("key");
 		String text = request.getParameter("text");
 
-		JSONObject res = com.twister.services.AddComment.addComment(key, text);
+		JSONObject res = com.twister.services.Comment.addComment(key, text);
 		response.setContentType("text/JSON");
 		response.getWriter().println(res);
 
