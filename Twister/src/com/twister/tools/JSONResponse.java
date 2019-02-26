@@ -1,5 +1,6 @@
 package com.twister.tools;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 public class JSONResponse extends JSONObject {
@@ -15,11 +16,23 @@ public class JSONResponse extends JSONObject {
 	}
 
 	public static JSONResponse serviceRefused(String msg, int code) {
-		return new JSONResponse(false, msg, code);
+		JSONResponse jsr = new JSONResponse(false, msg, code);
+		try {
+			jsr.put(msg, code);
+		} catch (JSONException e) {
+			e.printStackTrace();
+		}
+		return jsr;
 	}
 
 	public static JSONResponse serviceAccepted() {
-		return new JSONResponse(false, "", -1);
+		JSONResponse jsr = new JSONResponse(true, "operation reussie", -1);
+		try {
+			jsr.put("operation reussie", -1);
+		} catch (JSONException e) {
+			e.printStackTrace();
+		}
+		return jsr;
 	}
 
 	public boolean isAccepted() {

@@ -6,9 +6,9 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import com.twister.DataBases.COMMMENT_DB;
+import com.twister.DataBases.SESSION_DB;
 import com.twister.DataBases.USER_DB;
 import com.twister.tools.JSONResponse;
-import com.twister.tools.SessionTools;
 
 public class Comment {
 
@@ -19,11 +19,11 @@ public class Comment {
 		}
 
 		try {
-			if (!SessionTools.estDejaConnecte(key)) {
+			if (!SESSION_DB.estDejaConnecte(key)) {
 				return JSONResponse.serviceRefused("Vous n'etes pas connectee", 2);
 			}
 
-			int idUser = SessionTools.idUser(key);
+			int idUser = SESSION_DB.getIdUserOfKey(key);
 			JSONObject nameUser = USER_DB.getNameUser(idUser);
 
 			return COMMMENT_DB.addComment(idUser, nameUser.getString("nom"), nameUser.getString("prenom"), text)
@@ -46,11 +46,11 @@ public class Comment {
 		}
 
 		try {
-			if (!SessionTools.estDejaConnecte(key)) {
+			if (!SESSION_DB.estDejaConnecte(key)) {
 				return JSONResponse.serviceRefused("Vous n'etes pas connectee", 2);
 			}
 
-			int id_user = SessionTools.idUser(key);
+			int id_user = SESSION_DB.getIdUserOfKey(key);
 			int id_comment = Integer.parseInt(id);
 
 			return COMMMENT_DB.removeComment(id_user, id_comment) ? JSONResponse.serviceAccepted()

@@ -6,7 +6,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 
-import com.twister.tools.Tools;
+import com.twister.tools.DateTools;
 
 public class SESSION_DB {
 
@@ -22,7 +22,7 @@ public class SESSION_DB {
 
 		Connection connexion = DataBase.getMySQLConnection();
 
-		String DateFin = Tools.getFormatedDateAfterNHour(+1);
+		String DateFin = DateTools.getFormatedDateAfterNHour(+1);
 
 		PreparedStatement ps = connexion.prepareStatement(INSERT_SESSION_QUERY);
 
@@ -53,7 +53,7 @@ public class SESSION_DB {
 
 		if (isConnect) {
 			pst = connexion.prepareStatement(UPDATE_DATE_FIN_ID);
-			pst.setString(1, Tools.getFormatedDateAfterNHour(+1));
+			pst.setString(1, DateTools.getFormatedDateAfterNHour(+1));
 			pst.setInt(2, idUser);
 			pst.executeUpdate();
 			pst.close();
@@ -79,7 +79,7 @@ public class SESSION_DB {
 
 		if (isConnect) {
 			pst = connexion.prepareStatement(UPDATE_DATE_FIN_KEY);
-			pst.setString(1, Tools.getFormatedDateAfterNHour(+1));
+			pst.setString(1,DateTools.getFormatedDateAfterNHour(+1));
 			pst.setString(2, key);
 			pst.executeUpdate();
 			pst.close();

@@ -1,4 +1,4 @@
-package com.twister.servlets;
+package com.twister.servlets.user;
 
 import java.io.IOException;
 import java.io.PrintWriter;

@@ -1,4 +1,4 @@
-package com.twister.servlets;
+package com.twister.servlets.friend;
 
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -9,26 +9,31 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.json.JSONObject;
+import com.twister.services.Friend;
 
-@WebServlet("/AddServlet")
-public class Login extends HttpServlet {
+/**
+ * Servlet implementation class ListerFriends
+ */
+@WebServlet("/ListerFriends")
+public class ListerFriends extends HttpServlet {
+	private static final long serialVersionUID = 1L;
 
 	/**
-	 * 
+	 * @see HttpServlet#HttpServlet()
 	 */
-	private static final long serialVersionUID = 4244136333826093063L;
-
-	@Override
+	/**
+	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse
+	 *      response)
+	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 
-		String password = request.getParameter("password");
-		String login = request.getParameter("login");
-		JSONObject result = com.twister.services.User.login(login, password);
+		String key = request.getParameter("key");
+
 		response.setContentType("text/JSON");
 		PrintWriter out = response.getWriter();
-		out.print(result);
+		out.println(Friend.listeFriend(key));
+
 	}
 
 }

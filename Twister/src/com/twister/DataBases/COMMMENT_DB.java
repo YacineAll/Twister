@@ -10,7 +10,7 @@ import org.json.JSONObject;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoCursor;
 import com.mongodb.client.MongoDatabase;
-import com.twister.tools.Tools;
+import com.twister.tools.DateTools;
 
 public class COMMMENT_DB {
 
@@ -40,7 +40,7 @@ public class COMMMENT_DB {
 		doc.append("author_id", idUser);
 		doc.append("nom", nom);
 		doc.append("prenom", prenom);
-		doc.append("date", Tools.getDateAfterNHour(0));
+		doc.append("date", DateTools.getDateAfterNHour(0));
 		doc.append("comment", comment);
 
 		col.insertOne(doc);
@@ -110,7 +110,7 @@ public class COMMMENT_DB {
 		MongoDatabase db = MongoDB.getConnectionToMongoDataBase();
 		MongoCollection<org.bson.Document> col = db.getCollection("comments");
 
-		Document doc = new Document("date", Tools.getFormatedDateAfterNHour(-n));
+		Document doc = new Document("date", DateTools.getFormatedDateAfterNHour(-n));
 
 		return null;
 	}

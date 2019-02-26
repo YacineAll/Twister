@@ -11,14 +11,10 @@ import com.twister.DataBases.USER_DB;
 import com.twister.tools.AuthentificationTools;
 import com.twister.tools.JSONResponse;
 import com.twister.tools.SessionTools;
-import com.twister.tools.Tools;
+import com.twister.tools.DateTools;
 
 public class User {
 
-	
-	
-	
-	
 
 	public static JSONObject createUser(String nom, String prenom, String login, String password, String sex,
 			String birth_day) {
@@ -36,7 +32,7 @@ public class User {
 			Date birthDay = java.sql.Date
 					.valueOf(birth_day.split("/")[2] + "-" + birth_day.split("/")[1] + "-" + birth_day.split("/")[0]);
 
-			USER_DB.addUSer(nom, prenom, login, password, sex, birthDay, Tools.getFormatedDateAfterNHour(0));
+			USER_DB.addUSer(nom, prenom, login, password, sex, birthDay, DateTools.getFormatedDateAfterNHour(0));
 			
 			return JSONResponse.serviceAccepted();
 
@@ -60,11 +56,13 @@ public class User {
 
 			int idUser = USER_DB.getId(login);
 
-			if (SessionTools.estDejaConnecte(idUser)) {
+			if (SESSION_DB.estDejaConnecte(idUser)) {
 				return JSONResponse.serviceRefused("vous etes deja connecte", 4);
 			}
 
-			String key = SessionTools.insertSession(idUser, login, Tools.getFormatedDateAfterNHour(0));
+			String key = SessionTools.generateKey(idUser, login);
+			
+			SESSION_DB.insert(key,idUser,DateTools.getFormatedDateAfterNHour(0));
 
 			JSONResponse jse = JSONResponse.serviceAccepted();
 
@@ -90,7 +88,7 @@ public class User {
 			return JSONResponse.serviceRefused("Erreur de saisie", 1);
 		
 		try {
-			if(!SessionTools.estDejaConnecte(key))
+			if(!SESSION_DB.estDejaConnecte(key))
 				return JSONResponse.serviceRefused("vous n'etes pas connecte", 2);
 			
 			if(SESSION_DB.removeSession(key))

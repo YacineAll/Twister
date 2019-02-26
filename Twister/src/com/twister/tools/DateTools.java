@@ -5,7 +5,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 
-public class Tools {
+public class DateTools {
 	
 	
 	private static  final GregorianCalendar gc = new java.util.GregorianCalendar();

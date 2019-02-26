@@ -1,29 +1,36 @@
-package com.twister.servlets;
+package com.twister.servlets.friend;
 
 import java.io.IOException;
+
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.json.JSONObject;
+
 /**
- * Servlet implementation class ListerFriends
+ * Servlet implementation class AddFriend
  */
-@WebServlet("/ListerFriends")
-public class ListerFriends extends HttpServlet {
+@WebServlet("/AddFriend")
+public class AddFriend extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
-    /**
-     * @see HttpServlet#HttpServlet()
-     */
-    	/**
+	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
-		response.getWriter().append("Served at: ").append(request.getContextPath());
+		String key = request.getParameter("key");
+		String idFriend = request.getParameter("id_friend");
+		
+		JSONObject res = com.twister.services.Friend.addFriend(key, idFriend);
+		response.setContentType("text/JSON");
+		response.getWriter().println(res);
+		
 	}
 
+	
 
 }

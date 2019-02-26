@@ -1,4 +1,4 @@
-package com.twister.servlets;
+package com.twister.servlets.friend;
 
 import java.io.IOException;
 import javax.servlet.ServletException;

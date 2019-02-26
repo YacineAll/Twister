@@ -1,4 +1,4 @@
-package com.twister.servlets;
+package com.twister.servlets.comment;
 
 import java.io.IOException;
 import javax.servlet.ServletException;

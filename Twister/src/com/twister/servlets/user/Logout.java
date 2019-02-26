@@ -1,6 +1,8 @@
-package com.twister.servlets;
+package com.twister.servlets.user;
 
 import java.io.IOException;
+import java.io.PrintWriter;
+
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -10,26 +12,26 @@ import javax.servlet.http.HttpServletResponse;
 import org.json.JSONObject;
 
 /**
- * Servlet implementation class AddComment
+ * Servlet implementation class Logout
  */
-@WebServlet("/AddComment")
-public class AddComment extends HttpServlet {
-	private static final long serialVersionUID = 1L;
+@WebServlet("/Logout")
+public class Logout extends HttpServlet {
 
 	/**
-	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse
-	 *      response)
+	 * 
 	 */
+	private static final long serialVersionUID = 4244136333826293063L;
+
+	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 
 		String key = request.getParameter("key");
-		String text = request.getParameter("text");
-
-		JSONObject res = com.twister.services.Comment.addComment(key, text);
+		JSONObject result = com.twister.services.User.logout(key);
 		response.setContentType("text/JSON");
-		response.getWriter().println(res);
-
+		PrintWriter out = response.getWriter();
+		out.print(result);
 	}
+
 
 }
