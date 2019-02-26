@@ -13,8 +13,9 @@ public class DataBase {
 
 	public DataBase(String jndiname) throws SQLException {
 		try {
-			dataSource = (DataSource) new InitialContext().lookup("java:com/env/" + jndiname);
+			dataSource = (DataSource) new InitialContext().lookup("java:comp/env/" + jndiname);
 		} catch (NamingException e) {
+			e.printStackTrace();
 			throw new SQLException(jndiname + " is missing in JNDI! : " + e.getMessage());
 		}
 	}
@@ -28,7 +29,7 @@ public class DataBase {
 			//DriverManager.registerDriver(new com.mysql.jdbc.Driver ());
 			return (DriverManager.getConnection("jdbc:mysql://" + DBStatic.HOST + "/" + DBStatic.DB_NAME+"?autoReconnect=true&useSSL=false",DBStatic.USERNAME, DBStatic.PASSWORD));
 		} else {
-			return new DataBase("jdbc/bd").getConnection();
+			return new DataBase("jdbc/firstDataBase").getConnection();
 		}
 
 	}

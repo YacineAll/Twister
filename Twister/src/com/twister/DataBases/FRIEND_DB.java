@@ -92,9 +92,9 @@ public class FRIEND_DB {
 
 	/**
 	 * Retourne la liste des amis de l'utilisateur qui a comme identifiant id_user
-	 * 
+	 * List of JSON {"id":id,"nom":nom,"prenom":prenom}
 	 * @param id_user Integer l'identifiant de l'utilisateur
-	 * @return List<JSONObject> liste des amis de l'utilisateur id_user
+	 * @return List of JSONObject liste des amis de l'utilisateur id_user
 	 * @throws SQLException
 	 */
 	public static List<JSONObject> listeOfFriend(int id_user) throws SQLException {

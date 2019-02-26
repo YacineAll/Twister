@@ -15,11 +15,23 @@ import com.twister.tools.DateTools;
 
 public class User {
 
-
+	/**
+	 * verifie les paramtere, le non existance de login dans la base de donnee et
+	 * ajoute une ligne dans la table USER qui a ses attributs
+	 * 
+	 * @param nom       String nom de nouveau utilisateur
+	 * @param prenom    String prenom de nouveau utilisateur
+	 * @param login     String le login de nouveau utilisateur
+	 * @param password  String le password de nouveau utilisateur
+	 * @param sex       String le sex de l'utilisateur
+	 * @param birth_day String la date de naissance de l'utilisateur sous forme
+	 *                  YYYY/MM/DD
+	 * @return JSONResponse {} si l'ajout est reussi si non {"motif";code} d'erreur
+	 */
 	public static JSONObject createUser(String nom, String prenom, String login, String password, String sex,
 			String birth_day) {
-		System.out.println(nom+" "+prenom+" "+login+" "+password+" "+sex+" "+birth_day);
-		
+		System.out.println(nom + " " + prenom + " " + login + " " + password + " " + sex + " " + birth_day);
+
 		if (nom == null || prenom == null || login == null || password == null || sex == null || birth_day == null) {
 			return JSONResponse.serviceRefused("Erreur de saisie ", 1);
 		}
@@ -33,7 +45,7 @@ public class User {
 					.valueOf(birth_day.split("/")[2] + "-" + birth_day.split("/")[1] + "-" + birth_day.split("/")[0]);
 
 			USER_DB.addUSer(nom, prenom, login, password, sex, birthDay, DateTools.getFormatedDateAfterNHour(0));
-			
+
 			return JSONResponse.serviceAccepted();
 
 		} catch (SQLException e) {
@@ -41,9 +53,15 @@ public class User {
 			return JSONResponse.serviceRefused("SQL PROBLEME {creatUser}", 1000);
 		}
 	}
-	
-	
-	
+
+	/**
+	 * Verifie ses parametre et ajout une ligne dans la table session avec une cle
+	 * qui sera generer automatiquement
+	 * 
+	 * @param login    String le login de l'utilisateur
+	 * @param password String le password de l'utilisateur
+	 * @return JSONResponse {} si l'ajout est reussi si non {"motif";code} d'erreur
+	 */
 	public static JSONObject login(String login, String password) {
 		if (login == null | password == null)
 			return JSONResponse.serviceRefused("Erreur de saisie", 1);
@@ -61,8 +79,8 @@ public class User {
 			}
 
 			String key = SessionTools.generateKey(idUser, login);
-			
-			SESSION_DB.insert(key,idUser,DateTools.getFormatedDateAfterNHour(0));
+
+			SESSION_DB.insert(key, idUser, DateTools.getFormatedDateAfterNHour(0));
 
 			JSONResponse jse = JSONResponse.serviceAccepted();
 
@@ -80,27 +98,32 @@ public class User {
 		}
 
 	}
-	
-	
-	
+
+	/**
+	 * 
+	 * Supprime une ligne dans la table Session apre la verification de ses
+	 * parametre
+	 * 
+	 * @param key String la cle de la connexion de l'utilisateur
+	 * @return JSONResponse {} si l'ajout est reussi si non {"motif";code} d'erreur
+	 */
 	public static JSONObject logout(String key) {
-		if(key == null) 
+		if (key == null)
 			return JSONResponse.serviceRefused("Erreur de saisie", 1);
-		
+
 		try {
-			if(!SESSION_DB.estDejaConnecte(key))
+			if (!SESSION_DB.estDejaConnecte(key))
 				return JSONResponse.serviceRefused("vous n'etes pas connecte", 2);
-			
-			if(SESSION_DB.removeSession(key))
+
+			if (SESSION_DB.removeSession(key))
 				return JSONResponse.serviceAccepted();
-			
+
 			return JSONResponse.serviceRefused("SQL PROBLEME {logout}", 1000);
-		
+
 		} catch (SQLException e) {
 			e.printStackTrace();
 			return JSONResponse.serviceRefused("SQL PROBLEME {logout}", 1000);
 		}
-		
+
 	}
 }
-

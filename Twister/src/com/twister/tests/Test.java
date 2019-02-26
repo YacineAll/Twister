@@ -5,7 +5,9 @@ import java.sql.SQLException;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import com.twister.services.Friend;
+import com.twister.DataBases.COMMMENT_DB;
+import com.twister.services.Comment;
+import com.twister.services.Search;
 import com.twister.services.User;
 
 public class Test {
@@ -37,21 +39,40 @@ public class Test {
 
 	public static void main(String[] args) throws JSONException, SQLException {
 
+//		try {
+//			Class.forName("com.mysql.cj.jdbc.Driver");
+//		} catch (ClassNotFoundException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
+//		
+//		try {
+//			DataSource dataSource = (DataSource) new InitialContext().lookup("java:comp/env/jdbc/firstDataBase");
+//			
+//		} catch (NamingException e) {
+//			e.printStackTrace();
+//		}
+		
 		JSONObject loginJSO = User.login("yacine1996@outlok.com", "25139");
 		
 		System.out.println(loginJSO);
+//		
+//		Friend.addFriend(loginJSO.getString("Key"), "22");
+//		Friend.addFriend(loginJSO.getString("Key"), "23");
+//		
+//		JSONObject listeFriend = Friend.listeFriend(loginJSO.getString("Key"));
+//		System.out.println(listeFriend);
+//		
+//		Friend.removeFriend(loginJSO.getString("Key"), "23");
+//		
+//		Comment.addComment(loginJSO.getString("Key"), "a taqchicht roh ad tefked");
 		
-		Friend.addFriend(loginJSO.getString("Key"), "22");
-		Friend.addFriend(loginJSO.getString("Key"), "23");
+		COMMMENT_DB.printMongoDB();
 		
-		JSONObject listeFriend = Friend.listeFriend(loginJSO.getString("Key"));
-		System.out.println(listeFriend);
-		
-		Friend.removeFriend(loginJSO.getString("Key"), "23");
-		
+		System.out.println(Search.searchCommentLastNHour(loginJSO.getString("Key"), 1));
 		
 		JSONObject logoutJSO = User.logout(loginJSO.getString("Key"));
-
+//
 		System.out.println(logoutJSO);
 	}
 
