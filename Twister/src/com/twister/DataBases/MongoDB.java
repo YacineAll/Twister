@@ -8,6 +8,11 @@ public class MongoDB {
 
 	private static MongoClient mc;
 
+	/**
+	 * une nouvelle connexion pour mongo 
+	 * 
+	 * @return {@link MongoDatabase} une nouvelle connexin pour la base mongo 
+	 */
 	public static MongoDatabase getConnectionToMongoDataBase() {
 		mc = MongoClients.create(DBStatic.MONGO_HOST);
 		MongoDatabase db = mc.getDatabase(DBStatic.MONGO_DB);
