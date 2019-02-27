@@ -4,11 +4,12 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.TimeZone;
 
 public class DateTools {
 	
 	
-	private static  final GregorianCalendar gc = new java.util.GregorianCalendar();
+	private static final GregorianCalendar gc = new java.util.GregorianCalendar(TimeZone.getTimeZone("UCT+5 "));
 	
 	
 	public static String getFormatedDateAfterNHour(int n) {
@@ -18,6 +19,10 @@ public class DateTools {
 	}
 	
 	
+	/**
+	 * @param n
+	 * @return Date after n hour
+	 */
 	public static Date getDateAfterNHour(int n) {
 		gc.add(Calendar.HOUR, +n);
 		return gc.getTime();

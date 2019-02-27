@@ -163,7 +163,7 @@ public class USER_DB {
 	 * @throws SQLException  erreur de connexion a la base de donnee
 	 * @throws JSONException erreur de JSON
 	 */
-	public static JSONObject getUser(String name) throws SQLException, JSONException {
+	public static List<JSONObject> getUser(String name) throws SQLException, JSONException {
 
 		Connection connexion = DataBase.getMySQLConnection();
 		PreparedStatement st = connexion.prepareStatement(getUser1);
@@ -182,10 +182,9 @@ public class USER_DB {
 			js.put("prenom", rs.getString("PRENOM"));
 			liste.add(js);
 		}
-		result.put("Users", liste);
 		rs.close();
 		st.close();
 		connexion.close();
-		return result;
+		return liste;
 	}
 }

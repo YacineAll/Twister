@@ -33,9 +33,21 @@ public class COMMMENT_DB {
 
 		MongoCursor<Document> mCursur = col.find().iterator();
 
-		while (mCursur.hasNext()) {
-			Document document = (Document) mCursur.next();
-			System.out.println(document);
+		try {
+			while (mCursur.hasNext()) {
+				Document document = (Document) mCursur.next();
+				JSONObject jse = new JSONObject();
+				jse.put("id", document.getInteger("id"));
+				jse.put("author_id", document.getInteger("author_id"));
+				jse.put("nom", document.getString("nom"));
+				jse.put("prenom", document.getString("prenom"));
+				jse.put("date", document.getDate("date"));
+				jse.put("comment", document.getString("comment"));
+				System.out.println(jse);
+
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
 
 		MongoDB.closeConnection();
@@ -111,7 +123,15 @@ public class COMMMENT_DB {
 
 		while (mngc.hasNext()) {
 			Document document = (Document) mngc.next();
-			listJson.add(new JSONObject(document.toJson()));
+			JSONObject jse = new JSONObject();
+			jse.put("id", document.getInteger("id"));
+			jse.put("author_id", document.getInteger("author_id"));
+			jse.put("nom", document.getString("nom"));
+			jse.put("prenom", document.getString("prenom"));
+			jse.put("date", document.getDate("date"));
+			jse.put("comment", document.getString("comment"));
+
+			listJson.add(jse);
 		}
 
 		MongoDB.closeConnection();
@@ -142,7 +162,15 @@ public class COMMMENT_DB {
 		MongoCursor<Document> mng = col.find(docprenom).iterator();
 		while (mng.hasNext()) {
 			Document document = (Document) mng.next();
-			listJson.add(new JSONObject(document.toJson()));
+			JSONObject jse = new JSONObject();
+			jse.put("id", document.getInteger("id"));
+			jse.put("author_id", document.getInteger("author_id"));
+			jse.put("nom", document.getString("nom"));
+			jse.put("prenom", document.getString("prenom"));
+			jse.put("date", document.getDate("date"));
+			jse.put("comment", document.getString("comment"));
+
+			listJson.add(jse);
 		}
 
 		MongoDB.closeConnection();
@@ -161,11 +189,20 @@ public class COMMMENT_DB {
 		MongoCursor<Document> cursor = col.find(doc).iterator();
 		try {
 			while (cursor.hasNext()) {
-				Document d = cursor.next();
-				listJson.add(new JSONObject(d.toJson()));
+				Document document = cursor.next();
+				JSONObject jse = new JSONObject();
+				jse.put("id", document.getInteger("id"));
+				jse.put("author_id", document.getInteger("author_id"));
+				jse.put("nom", document.getString("nom"));
+				jse.put("prenom", document.getString("prenom"));
+				jse.put("date", document.getDate("date"));
+				jse.put("comment", document.getString("comment"));
+				listJson.add(jse);
 			}
 		} catch (JSONException e) {
 			e.printStackTrace();
+		} finally {
+			MongoDB.closeConnection();
 		}
 
 		return listJson;
@@ -189,4 +226,9 @@ public class COMMMENT_DB {
 		return max_id;
 	}
 
+	public static void clearAllComment() {
+		MongoCollection<org.bson.Document> col = MongoDB.getConnectionToMongoDataBase();
+		col.drop();
+		MongoDB.closeConnection();
+	}
 }

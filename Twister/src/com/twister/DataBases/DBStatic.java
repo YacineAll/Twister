@@ -11,5 +11,5 @@ public class DBStatic {
 	protected static final String MONGO_HOST= "mongodb://localhost:27017";
 	
 	
-	public static boolean MYSQL_POOLING = true;
+	public static boolean MYSQL_POOLING = false;
 }

@@ -24,7 +24,12 @@ public class Search {
 	public static JSONObject searchUser(String key, String name) {
 		try {
 			if (SESSION_DB.estDejaConnecte(key)) {
-				return USER_DB.getUser(name);
+				List<JSONObject> liste = USER_DB.getUser(name);
+				if(liste.isEmpty())
+					return JSONResponse.serviceRefused("recherche vide ", 2);
+				JSONResponse rep = JSONResponse.serviceAccepted();
+				rep.put("resultat", liste);
+				return rep;
 			} else {
 				return JSONResponse.serviceRefused("n'existe pas {searchUser}", 3);
 			}
@@ -59,7 +64,7 @@ public class Search {
 					return jsonObject;
 				}
 			}
-			return JSONResponse.serviceRefused("il ne y'est pas dans votre liste d'amis ", 5);
+			return JSONResponse.serviceRefused("pas d'amis trouvés ", 5);
 		} catch (SQLException e) {
 			e.printStackTrace();
 			return JSONResponse.serviceRefused("SQL PROBLEMS {serachFriendInListFriend}", 1000);
@@ -70,7 +75,33 @@ public class Search {
 	}
 
 	/**
-	 * @param key String 
+	 *  lister les messages de l'utilisateur
+	 * @param key
+	 * @return JSONObject {resultat:JSONArray}
+	 */
+	public static JSONObject searchMyComment(String key) {
+		try {
+			if (!SESSION_DB.estDejaConnecte(key)) {
+				return JSONResponse.serviceRefused("connexion denied", 1);
+			}
+			int id_user = SESSION_DB.getIdUserOfKey(key);
+			List<JSONObject> list = COMMMENT_DB.getUserCommentsId_Author(id_user);
+
+			JSONObject js = JSONResponse.serviceAccepted();
+			js.put("resultat", list);
+			return js;
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return JSONResponse.serviceRefused("SQL PROBLEM {searchMyComments}", 1000);
+		} catch (JSONException e) {
+			e.printStackTrace();
+			return JSONResponse.serviceRefused("JSON PROBLEM {searchMyComments}", 10000);
+		}
+	}
+
+	/**
+	 * @param key  String
 	 * @param name
 	 * @return
 	 */
@@ -105,10 +136,10 @@ public class Search {
 		} catch (JSONException e) {
 			e.printStackTrace();
 			return JSONResponse.serviceRefused("JSONObject erreur {searchCommentLastNHour}", 100000);
-			
+
 		}
 	}
-	
+
 	public static JSONObject searchCommentsFriend(String key) {
 		try {
 			if (!SESSION_DB.estDejaConnecte(key)) {
@@ -120,24 +151,20 @@ public class Search {
 			for (JSONObject jsonObject : listFriends) {
 				commentList.addAll(COMMMENT_DB.getUserCommentsId_Author(jsonObject.getInt("id")));
 			}
-			
+
 			JSONObject js = JSONResponse.serviceAccepted();
 			js.put("idUser", id_user);
 			js.put("commentsFriends", commentList);
 			return js;
-		
-			
+
 		} catch (SQLException e) {
 			e.printStackTrace();
 			return JSONResponse.serviceRefused("SQL PROBLEMS {searchCommentsFriend}", 1000);
-			
+
 		} catch (JSONException e) {
 			e.printStackTrace();
 			return JSONResponse.serviceRefused("JSONObject erreur {searchCommentsFriend}", 100000);
 		}
 	}
-	
-	
-	
-	
+
 }

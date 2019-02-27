@@ -30,8 +30,7 @@ public class User {
 	 */
 	public static JSONObject createUser(String nom, String prenom, String login, String password, String sex,
 			String birth_day) {
-		System.out.println(nom + " " + prenom + " " + login + " " + password + " " + sex + " " + birth_day);
-
+		
 		if (nom == null || prenom == null || login == null || password == null || sex == null || birth_day == null) {
 			return JSONResponse.serviceRefused("Erreur de saisie ", 1);
 		}
@@ -74,9 +73,9 @@ public class User {
 
 			int idUser = USER_DB.getId(login);
 
-			if (SESSION_DB.estDejaConnecte(idUser)) {
-				return JSONResponse.serviceRefused("vous etes deja connecte", 4);
-			}
+//			if (SESSION_DB.estDejaConnecte(idUser)) {
+//				return JSONResponse.serviceRefused("vous etes deja connecte", 4);
+//			}
 
 			String key = SessionTools.generateKey(idUser, login);
 
