@@ -1,7 +1,13 @@
 import React, { Component } from "react"
-import { Button,Input, Checkbox } from 'antd';
+import {
+    Form, Icon, Input, Button, Checkbox,
+} from 'antd';
 
-class Login extends Component {
+
+
+
+
+class Log_in extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -11,9 +17,15 @@ class Login extends Component {
         }
     }
     
-    onSubmit(){
-        console.log(this.state)
-        this.props.getConnected()
+
+    handleSubmit = (e) => {
+        e.preventDefault();
+        this.props.form.validateFields((err,values) => {
+            if(!err){
+                console.log('Received values of form: ', values)
+                this.props.getConnected()
+            }
+        })
     }
 
     onChange(e){
@@ -22,44 +34,51 @@ class Login extends Component {
         })
     }
 
+    onChangeDate(date,dateString){
+        console.log(date,dateString)
+    }
+
     render() {
+        const { getFieldDecorator } = this.props.form;
         return (
             <div className="login">
                 <h1>Sign In</h1>
-                <hr />
-                <label htmlFor="email"><b>Email</b></label>
-                <Input 
-                    placeholder="Enter Email" 
-                    type="email" 
-                    name="email" 
-                    required
-                    onChange={(e)=> this.onChange(e)}
-                    value = {this.state.email}
-                />
-                <label htmlFor="psw"><b>Password</b></label>
-                <Input
-                    placeholder="Enter Password"
-                    type="password"
-                    name="password"
-                    required
-                    onChange={(e) => this.onChange(e)}
-                    value={this.state.password}
-                />
-                <Button 
-                        type="button" 
-                        onClick={(event) => this.onSubmit()} 
-                    >
-                    login
-                </Button>
-                <Checkbox
-                
-                />
-
-                
+                <Form onSubmit = {this.handleSubmit}>
+                    <Form.Item>
+                        {
+                            getFieldDecorator('userName',{
+                                rules: [{ required: true, message: 'Please input your username!' }],
+                            })(<Input prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />} placeholder="Username" />)
+                        }
+                    </Form.Item>
+                    <Form.Item>
+                        {
+                            getFieldDecorator('password',{
+                                rules: [{ required: true, message: 'Please input your Password!' }],
+                            })(<Input prefix={<Icon type="lock" style={{ color: 'rgba(0,0,0,.25)' }} />} type="password" placeholder="Password" />)
+                        }
+                    </Form.Item>
+                    <Form.Item>
+                        {
+                            getFieldDecorator('remember',{
+                                valuePropName: 'checked',
+                                initialValue: true,
+                            })(
+                                <Checkbox>Remember me</Checkbox>
+                            )
+                        }
+                        <a className="login-form-goog" href="google.com">Forgot password</a>
+                        <Button type="primary" htmlType="submit" className="login-form-button">
+                            Log in
+                        </Button>
+                    </Form.Item>
+                </Form>
             </div>
         );
     }
 
 }
+
+const Login = Form.create({ name: 'normal_login' })(Log_in);
 
 export default Login
