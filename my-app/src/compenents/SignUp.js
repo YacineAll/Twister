@@ -3,7 +3,6 @@ import {
     Form, Input, Checkbox, DatePicker, Button, Select} from 'antd';
 
 
-
 const { Option } = Select;
 
 class Sign_Up extends Component {

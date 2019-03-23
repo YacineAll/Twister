@@ -14,8 +14,10 @@
     "bootstrap": "^4.3.1",
     "create-emotion": "*",
     "emotion": "10.0.9",
+    "grommet": "^2.6.5",
     "jquery": "^3.3.1",
     "lodash": "^4.17.11",
+    "mdbreact": "^4.11.1",
     "popper.js": "^1.14.7",
     "prettier": "^1.16.4",
     "react": "^16.8.4",
@@ -28,6 +30,9 @@
     "react-router-dom": "^5.0.0",
     "react-scripts": "2.1.8",
     "redux": "^4.0.1",
+    "redux-form": "^5.4.0",
+    "style-it": "^2.1.2",
+    "styled-components": "^4.2.0",
     "underscore": "*"
   },
   "scripts": {

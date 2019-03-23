@@ -1,6 +1,5 @@
 import React, { Component } from "react"
 import NavigationPannel from './compenents/NavigationPannel';
-import SignUp from './compenents/SignUp';
 
 export default class MainPage extends Component{
     constructor(props){
@@ -31,9 +30,6 @@ export default class MainPage extends Component{
                         isConnected = {this.state.isConnected}
                     ></NavigationPannel> 
                 </div>
-                <div className="SignUp">
-                    {this.state.current_page === "connection" && <SignUp/>}
-                </div>   
             </div>
         ) 
     }
