@@ -1,9 +1,12 @@
 import React, { Component } from "react"
 import {
-    Form, Input, Checkbox, DatePicker, Button, Select} from 'antd';
+    Form, Input, Checkbox, DatePicker, Button} from 'antd';
 
 
-const { Option } = Select;
+import Style from 'style-it'
+import { Radio } from 'antd';
+
+const RadioGroup = Radio.Group;
 
 class Sign_Up extends Component {
     constructor(props) {
@@ -20,6 +23,8 @@ class Sign_Up extends Component {
         this.props.form.validateFieldsAndScroll((err, values) => {
             if (!err) {
                 console.log('Received values of form: ', values);
+                this.props.getConnected()
+                this.props.setRedirectToFalse()
             }
         });
     }
@@ -87,83 +92,97 @@ class Sign_Up extends Component {
             rules: [{ type: 'object', required: true, message: 'Please select time!' }],
         };
         return (
-            <div className="SignUp">
-            <h1> Sign Up </h1>
-            <Form {...formItemLayout} onSubmit={this.handleSubmit}>
-                <Form.Item label="Name">
-                    {
-                        getFieldDecorator('Name', {
-                            rules: [{ required: true, message: 'Please input your Name!' }
-                            ],
-                        })(
-                            <Input />)
-                    }
-                </Form.Item>
-                <Form.Item label="LastName">
-                    {
-                        getFieldDecorator('LastName', {
-                            rules: [{ required: true, message: 'Please input your LastName!' }
-                            ],
-                        })(
-                            <Input />)
-                    }
-                </Form.Item>
-                <Form.Item label="birth date">
-                        
-                        {getFieldDecorator('date-picker', config)(
-                         
-                         <DatePicker />
-                        )}
-                    
-                </Form.Item>
-                <Form.Item label="Gender">
-                
-                        {getFieldDecorator('gender', {
-                            rules: [{ required: true, message: 'Please select your gender!' }],
-                        })(
-                            <Select
-                                placeholder="Select a option and change input text above"
-                            >
-                                <Option value="male">male</Option>
-                                <Option value="female">female</Option>
-                            </Select>
-                        )}
-                </Form.Item>
-                <Form.Item label = "E-mail">
-                    {
-                        getFieldDecorator('email',{
-                            rules: [{ type: 'email', message:'The input is not valid E-mail!'},
-                                    { required: true, message: 'Please input your E-mail!'}
-                                   ],})(
-                            <Input/>)
-                    }
-                </Form.Item>
-                <Form.Item label="Password">
-                     {
-                         getFieldDecorator('password',{
-                             rules: [{required : true , message : "please input your password"},
-                                     {validator : this.validateToNextPassword },] , })(<Input type ="password"/>)
-                     }
-                </Form.Item>
-                <Form.Item label="confirm">
-                    {
-                        getFieldDecorator('confirm', {
-                            rules: [{ required: true, message: "please confirm your password" },
-                            { validator: this.compareToFirstPassword },],
-                        })(<Input type="password" />)
-                    }
-                </Form.Item>
-                <Form.Item {...tailFormItemLayout}>
-                    {getFieldDecorator('agreement', {
-                        valuePropName: 'checked',
-                    })(
-                        <Checkbox>I have read the <a href="google.com">agreement</a></Checkbox>
-                    )}
-                </Form.Item>
-                <Form.Item {...tailFormItemLayout}>
-                    <Button type="primary" htmlType="submit">Register</Button>
-                </Form.Item>
-            </Form>
+            <div className="container">
+            <Style>
+                {
+                    `   
+                        #title {
+                            color : red;
+                            text-align: center;
+                        }
+                        .ant-form-item-label ant-col-xs-24 ant-col-sm-8{
+                            width : 0.2 %;
+                        }
+
+                    `
+                }
+            </Style>
+                <h1 className="container" id="title"> Sign Up </h1>
+                <div className="container">
+                    <Form {...formItemLayout} onSubmit={this.handleSubmit}>
+                        <Form.Item label="Name">
+                            {
+                                getFieldDecorator('Name', {
+                                    rules: [{ required: true, message: 'Please input your Name!' }
+                                    ],
+                                })(
+                                    <Input />)
+                            }
+                        </Form.Item>
+                        <Form.Item label="LastName">
+                            {
+                                getFieldDecorator('LastName', {
+                                    rules: [{ required: true, message: 'Please input your LastName!' }
+                                    ],
+                                })(
+                                    <Input />)
+                            }
+                        </Form.Item>
+                        <Form.Item label="birth date">
+
+                                {getFieldDecorator('date-picker', config)(
+                                
+                                 <DatePicker />
+                                )}
+
+                        </Form.Item>
+                        <Form.Item label="Gender">
+                                
+                                {getFieldDecorator('gender', {
+                                    rules: [{ required: true, message: 'Please select your gender!' }],
+                                })(
+                                    <RadioGroup onChange={this.onChange} value={this.state.value}>
+                                        <Radio value={1}>Female</Radio>
+                                        <Radio value={2}>Male</Radio>
+                                    </RadioGroup>
+                                )}
+                        </Form.Item>
+                        <Form.Item label = "E-mail">
+                            {
+                                getFieldDecorator('email',{
+                                    rules: [{ type: 'email', message:'The input is not valid E-mail!'},
+                                            { required: true, message: 'Please input your E-mail!'}
+                                           ],})(
+                                    <Input/>)
+                            }
+                        </Form.Item>
+                        <Form.Item label="Password">
+                             {
+                                 getFieldDecorator('password',{
+                                     rules: [{required : true , message : "please input your password"},
+                                             {validator : this.validateToNextPassword },] , })(<Input type ="password"/>)
+                             }
+                        </Form.Item>
+                                <Form.Item label="confirm">
+                                {
+                                    getFieldDecorator('confirm', {
+                                        rules: [{ required: true, message: "please confirm your password" },
+                                        { validator: this.compareToFirstPassword },],
+                                    })(<Input type="password" />)
+                                }
+                                </Form.Item>
+                            <Form.Item {...tailFormItemLayout}>
+                                {getFieldDecorator('agreement', {
+                                valuePropName: 'checked',
+                                })(
+                                <Checkbox>I have read the <a href="google.com">agreement</a></Checkbox>
+                                )}
+                            </Form.Item>
+                            <Form.Item {...tailFormItemLayout}>
+                                <Button type="primary" htmlType="submit">Register</Button>
+                            </Form.Item>
+                        </Form>
+                </div>
             </div>
             );
     }

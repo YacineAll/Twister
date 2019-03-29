@@ -25,34 +25,32 @@ class Log_in extends Component {
             if(!err){
                 console.log('Received values of form: ', values)
                 this.props.getConnected()
+                this.setRedirect()
             }
         })
     }
 
+    handleSignUpOnclick(){
+        console.log("yacine")
+    }
 
     render() {
         const { getFieldDecorator } = this.props.form;
 
         return (
-            <div className="login">
+            <div className="container">
                 <Style>
                     {
                         `
                         @import url('https://fonts.googleapis.com/css?family=Open+Sans:400,700');
                         @import url('https://fonts.googleapis.com/css?family=Merriweather:400,700');
                         
-                        .login {
-                            background-color: white;
-                            padding: 75px 255px;
-                            font-size: 18px;
-                            margin: 0;
-                            color: #444;
-                            font-family: "Open Sans", sans-serif;
-                        }
-
+                        @import 'antd/dist/antd.css';
                         
                         Form {
                             border: 3px solid #f1f1f1;
+                            margin : 50px;
+
                         }
 
                         Input[type=text], Input[type=password] {
@@ -90,7 +88,7 @@ class Log_in extends Component {
                         }
                         
                         span.psw {
-                            float: right;
+                            float: left;
                             padding-top: 16px;
                         }
                         @media screen and (max-width: 300px) {
@@ -98,6 +96,8 @@ class Log_in extends Component {
                                 display: block;
                                 float: none;
                         }
+
+
                         `
                     }
                 </Style>
@@ -128,9 +128,13 @@ class Log_in extends Component {
                                 <Checkbox>Remember me</Checkbox>
                             )
                         }
-                        <span className="psw">Forgot <a href="google.com">password?</a></span>
                         <Button type="primary" htmlType="submit">
-                            SignIn
+                            Sign In
+                        </Button>
+                        <span className="psw">Forgot <a href="google.com">password?</a></span>
+                        <br/>
+                        <Button type="second" onClick={(event) => this.props.setRedirect()} >
+                                Sign Up
                         </Button>
                     </Form.Item>
                 </Form>
