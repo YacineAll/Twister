@@ -3,38 +3,23 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "@ant-design/icons-react": "1.1.2",
-    "@babel/cli": "^7.2.3",
-    "@emotion/cache": "*",
-    "@emotion/weak-memoize": "*",
-    "@types/underscore": "^1.8.13",
-    "antd": "^3.15.1",
-    "apollo-utilities": "1.2.1",
-    "babel-plugin-emotion": "*",
-    "bootstrap": "^4.3.1",
-    "create-emotion": "*",
-    "emotion": "10.0.9",
-    "grommet": "^2.6.5",
+    "antd": "^3.15.2",
+    "bootstrap": "4.3.1",
+    "classnames": "^2.2.6",
+    "faker": "^4.1.0",
     "jquery": "^3.3.1",
     "lodash": "^4.17.11",
-    "mdbreact": "^4.11.1",
-    "popper.js": "^1.14.7",
-    "prettier": "^1.16.4",
-    "react": "^16.8.4",
-    "react-apollo": "^2.5.2",
-    "react-bootstrap": "^1.0.0-beta.6",
-    "react-dom": "^16.8.4",
-    "react-login-signup-form": "^1.0.7",
-    "react-redux": "^6.0.1",
-    "react-router": "^4.4.0-beta.8",
+    "prop-types": "^15.7.2",
+    "react": "^16.8.6",
+    "react-autobind": "^1.0.6",
+    "react-dom": "^16.8.6",
+    "react-html-attributes": "^1.4.3",
+    "react-native": "^0.59.2",
+    "react-router": "^5.0.0",
     "react-router-dom": "^5.0.0",
-    "react-router-native": "^5.0.0",
     "react-scripts": "2.1.8",
-    "redux": "^4.0.1",
-    "redux-form": "5.4.0",
-    "style-it": "^2.1.2",
-    "styled-components": "^4.2.0",
-    "underscore": "*"
+    "semantic-ui-react": "^0.86.0",
+    "style-it": "^2.1.2"
   },
   "scripts": {
     "start": "react-scripts start",
@@ -50,13 +35,5 @@
     "not dead",
     "not ie <= 11",
     "not op_mini all"
-  ],
-  "devDependencies": {
-    "@babel/core": "^7.4.0",
-    "@babel/plugin-proposal-class-properties": "^7.4.0",
-    "@types/lodash": "^4.14.123"
-  },
-  "types": [
-    "underscore"
   ]
 }

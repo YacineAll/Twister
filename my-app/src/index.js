@@ -4,13 +4,15 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
 import * as serviceWorker from './serviceWorker';
-import MainPage from './MainPage'
-
+import App from './App'
+import {BrowserRouter} from 'react-router-dom'
 
 
 ReactDOM.render(
-    <MainPage />,
-    document.getElementById('root'));
+    <BrowserRouter>
+        <App />
+    </BrowserRouter>,
+     document.getElementById('root'));
 //ReactDOM.render(<MainPage />, document.getElementById('root'));
 
 

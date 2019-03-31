@@ -1,10 +1,12 @@
 import React, { Component } from "react"
 import Login from './Login'
-import Logout from './Logout'
 
-//import NavBar from './NavBar'
+
 
 import SignUp from './SignUp';
+import Profile from "./Profile"
+
+
 
 class NavigationPannel extends Component {
     constructor(props) {
@@ -18,6 +20,7 @@ class NavigationPannel extends Component {
     }
     
     setRedirect(){
+        console.log(this.state)
         this.setState({
             redirect: true
         })
@@ -27,8 +30,13 @@ class NavigationPannel extends Component {
     
     setRedirectToFalse() {
         this.setState({
+            
             redirect: false
         })
+    }
+
+    routes(){
+
     }
     
     renderRedirect = () => {
@@ -38,6 +46,7 @@ class NavigationPannel extends Component {
             <SignUp getConnected={this.props.getConnected} setRedirectToFalse={this.setRedirectToFalse} />)
         }
     }
+
     
 
     render() {
@@ -54,7 +63,7 @@ class NavigationPannel extends Component {
                     <Login getConnected={this.props.getConnected} 
                            setRedirect={this.setRedirect}></Login>
                     :
-                    <Logout setLogout={this.props.setLogout} ></Logout>
+                    <Profile setLogout={this.props.setLogout} ></Profile>
                 }       
                 </div>
         );

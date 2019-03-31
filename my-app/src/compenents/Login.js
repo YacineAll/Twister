@@ -25,7 +25,6 @@ class Log_in extends Component {
             if(!err){
                 console.log('Received values of form: ', values)
                 this.props.getConnected()
-                this.setRedirect()
             }
         })
     }
@@ -133,7 +132,7 @@ class Log_in extends Component {
                         </Button>
                         <span className="psw">Forgot <a href="google.com">password?</a></span>
                         <br/>
-                        <Button type="second" onClick={(event) => this.props.setRedirect()} >
+                        <Button type="second" onClick={() => this.props.setRedirect()} >
                                 Sign Up
                         </Button>
                     </Form.Item>
