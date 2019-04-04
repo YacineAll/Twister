@@ -3,9 +3,10 @@ import Login from './Login'
 
 
 
+import MyLogo from './Logo'
 import SignUp from './SignUp';
-import Profile from "./Profile"
-
+import Mur from "./Mur"
+import NavBar from './NavBar'
 
 
 class NavigationPannel extends Component {
@@ -20,7 +21,6 @@ class NavigationPannel extends Component {
     }
     
     setRedirect(){
-        console.log(this.state)
         this.setState({
             redirect: true
         })
@@ -30,21 +30,24 @@ class NavigationPannel extends Component {
     
     setRedirectToFalse() {
         this.setState({
-            
             redirect: false
         })
     }
+
 
     routes(){
 
     }
     
     renderRedirect = () => {
-        if (this.state.redirect) {
             return (
-            
-            <SignUp getConnected={this.props.getConnected} setRedirectToFalse={this.setRedirectToFalse} />)
-        }
+            <div className="mainPage">
+                <div className="container col-lg-4 ml-auto mr-auto align-bottom">
+                    <MyLogo ></MyLogo >
+                        <SignUp getConnected={this.props.getConnected} setRedirectToFalse={this.setRedirectToFalse} />)
+                </div>
+            </div>
+        )
     }
 
     
@@ -57,13 +60,22 @@ class NavigationPannel extends Component {
         }
         
         return (
-            <div className= "NavigationPannel" >    
-                {this.props.isConnected === false ? 
-                    
-                    <Login getConnected={this.props.getConnected} 
-                           setRedirect={this.setRedirect}></Login>
+            <div className= "mainPage" >   
+
+                {this.props.isConnected === false ?            
+                    <div className="container-fluid">
+                        <div className="container-fluid">
+                            <NavBar
+                                getConnected={this.props.getConnected}
+                                setRedirect={this.setRedirect}
+                            >
+
+                            </NavBar>
+                        </div>
+                        <Login getConnected={this.props.getConnected} setRedirect={this.setRedirect}></Login>
+                    </div>
                     :
-                    <Profile setLogout={this.props.setLogout} ></Profile>
+                    <Mur setLogout={this.props.setLogout} ></Mur>
                 }       
                 </div>
         );

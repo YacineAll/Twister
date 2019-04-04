@@ -160,7 +160,8 @@ class Sign_Up extends Component {
                              {
                                  getFieldDecorator('password',{
                                      rules: [{required : true , message : "please input your password"},
-                                             {validator : this.validateToNextPassword },] , })(<Input type ="password"/>)
+                                         { validator: this.validateToNextPassword },],
+                                 })(<Input.Password type ="password"/>)
                              }
                         </Form.Item>
                                 <Form.Item label="confirm">
@@ -168,7 +169,7 @@ class Sign_Up extends Component {
                                     getFieldDecorator('confirm', {
                                         rules: [{ required: true, message: "please confirm your password" },
                                         { validator: this.compareToFirstPassword },],
-                                    })(<Input type="password" />)
+                                    })(<Input.Password type="password" />)
                                 }
                                 </Form.Item>
                             <Form.Item {...tailFormItemLayout}>
@@ -180,6 +181,7 @@ class Sign_Up extends Component {
                             </Form.Item>
                             <Form.Item {...tailFormItemLayout}>
                                 <Button type="primary" htmlType="submit">Register</Button>
+                                <Button type="danger"onClick={(event) => this.props.setRedirectToFalse()} >Cancel</Button>
                             </Form.Item>
                         </Form>
                 </div>

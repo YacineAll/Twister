@@ -7,7 +7,7 @@ import MainPage from './MainPage';
 
 import { Route, Switch } from "react-router-dom"
 import NotFound from './compenents/NotFound'
-import Logout from './compenents/Logout'
+import Mur from './compenents/Mur'
 import SignUp from './compenents/SignUp';
 
 // import Login from './Login'
@@ -18,7 +18,7 @@ const App = () =>(
             <Route exact path='/' component={MainPage} ></Route>
             <Route exact path='/signup' component={SignUp}></Route>
             <Route exact path='/signin' component={MainPage}> </Route>
-            <Route exact path='/profile' component={Logout}></Route>
+            <Route exact path='/Mur' component={Mur}></Route>
             <Route path="*" component={NotFound}></Route>
         </Switch>
     </div>

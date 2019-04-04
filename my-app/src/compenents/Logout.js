@@ -13,8 +13,8 @@ class Logout  extends Component {
     
     render() {
         return (
-            <div >
-                <Button type="primary" onClick={(event) => this.props.setLogout()} >
+            <div>
+                <Button style={{ "background": "rgb(0, 21, 41)" }} type="primary" onClick={(event) => this.props.setLogout()} >
                     <IconFont type="icon-tuichu" style={{ fontSize: '26px'}} />
                 </Button>
             </div>

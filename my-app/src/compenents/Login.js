@@ -9,35 +9,23 @@ import Style from 'style-it'
 
 
 class Log_in extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            username : '',
-            email :'',
-            password:''
-        }
-    }
     
-
     handleSubmit = (e) => {
         e.preventDefault();
-        this.props.form.validateFields((err,values) => {
-            if(!err){
-                console.log('Received values of form: ', values)
+        this.props.form.validateFields((err, values) => {
+            if (!err) {
+                console.log('Received values of form: ', values);
                 this.props.getConnected()
             }
-        })
+        });
     }
 
-    handleSignUpOnclick(){
-        console.log("yacine")
-    }
 
     render() {
         const { getFieldDecorator } = this.props.form;
 
         return (
-            <div className="container">
+            <div className="container login col-lg-4 ml-auto mr-auto align-bottom">
                 <Style>
                     {
                         `
@@ -50,6 +38,12 @@ class Log_in extends Component {
                             border: 3px solid #f1f1f1;
                             margin : 50px;
 
+                        }
+                        
+                        
+                        
+                        .loginForm{
+                            background-color : white
                         }
 
                         Input[type=text], Input[type=password] {
@@ -95,7 +89,7 @@ class Log_in extends Component {
                                 display: block;
                                 float: none;
                         }
-
+                        
 
                         `
                     }
@@ -103,7 +97,7 @@ class Log_in extends Component {
                 <div className="title">
                     <h1 >Sign In</h1>
                 </div>
-                <Form onSubmit={this.handleSubmit} className="container" >
+                <Form onSubmit={this.handleSubmit} className="container loginForm" >
                     <Form.Item >
                         {
                             getFieldDecorator('userName',{
