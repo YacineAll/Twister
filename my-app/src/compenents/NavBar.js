@@ -23,7 +23,7 @@ export default class NavBar extends Component{
                                 theme="dark"
                                 defaultSelectedKeys={['1']}
                                 mode="horizontal"
-                                style={{ lineHeight: '64px' }}
+                                style={{ lineHeight: '66px' }}
                             >
                                 <Menu.Item key="1">Home</Menu.Item>
                                 <Menu.Item key="2">About</Menu.Item>
