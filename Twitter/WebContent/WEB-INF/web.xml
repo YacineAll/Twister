@@ -829,4 +829,12 @@ standard deployment descriptor.
     <servlet-name>AddFriend</servlet-name>
     <url-pattern>/addFriend</url-pattern>
   </servlet-mapping>
+  <filter>
+    <filter-name>CorsFilter</filter-name>
+    <filter-class>crosfilter.CORSFilter</filter-class>
+  </filter>
+  <filter-mapping>
+    <filter-name>CorsFilter</filter-name>
+    <url-pattern>/*</url-pattern>
+  </filter-mapping>
 </web-app>

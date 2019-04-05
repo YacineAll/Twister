@@ -7,6 +7,7 @@ import org.json.JSONObject;
 
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoCursor;
+import com.twister.DataBases.COMMMENT_DB;
 import com.twister.DataBases.MongoDB;
 import com.twister.services.Comment;
 import com.twister.services.Friend;
@@ -26,6 +27,10 @@ public class Test {
 	static String key1 = "non_renseigné";
 	static String id1 = "25";
 
+
+	 
+	 
+	
 	// information utilisateur 2
 	static String nom2 = "ALLOUACHE";
 	static String prenom2 = "Yacine";
@@ -50,6 +55,14 @@ public class Test {
 //			COMMMENT_DB.addComment(Integer.parseInt(id1), nom1, prenom1, "yanis ait hammou"+i);
 //			COMMMENT_DB.addComment(17, nom2, prenom2, "yacine allouache"+i);
 //		}
+//		
+		
+		try {
+			Class clazz = Class.forName("com.mysql.jdbc.Driver");
+		} catch (ClassNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		
 		MongoCollection<Document> col =  MongoDB.getConnectionToMongoDataBase();
 		
@@ -129,8 +142,8 @@ public class Test {
 //		id_comment = afficherCommentaireTest(key1);
 //
 //		//supprimer le commentaire 
-		System.out.println("\n------------------*Supprimer le commentaire*----------------------");
-		supprimeruncommentaireTest(key1, ""+id_comment);
+//		System.out.println("\n------------------*Supprimer le commentaire*----------------------");
+//		supprimeruncommentaireTest(key1, ""+id_comment);
 //		
 ////		// afficher les commentaire
 //		System.out.println("\n-------------*Affiche les commentaire d'utilisateur1*--------------");
@@ -158,6 +171,10 @@ public class Test {
 //		// deconnexion de l'utilisateur 1
 		System.out.println("\n----------------*deconnexion utilisateur1*-----------------------");
 		logoutTest(key1);
+		
+		
+		System.out.println(COMMMENT_DB.removeComment(25, 43));
+		COMMMENT_DB.clearAllComment();
 //		
 		
 	}

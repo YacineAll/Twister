@@ -33,13 +33,11 @@ public class USER_DB {
 	 * @throws SQLException peut lever une exception de connexion
 	 */
 	public static boolean exists(String login) throws SQLException {
-		System.out.println(login);
 		Connection connexion = DataBase.getMySQLConnection();
 		PreparedStatement st = connexion.prepareStatement(getUser);
 		st.setString(1, login);
 		ResultSet rs = st.executeQuery();
 		boolean res = rs.first();
-		System.out.println("je suis dans USERDB "+res);
 		rs.close();
 		st.close();
 		connexion.close();

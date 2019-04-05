@@ -99,6 +99,7 @@ public class COMMMENT_DB {
 
 		org.bson.Document d = new Document();
 		d.append("id", idComment);
+		System.out.println(col.find(d));
 		try {
 			if (col.find(d).first().getInteger("author_id") == id_user) {
 				col.deleteMany(d);
@@ -226,9 +227,9 @@ public class COMMMENT_DB {
 		return max_id;
 	}
 
-//	public static void clearAllComment() {
-//		MongoCollection<org.bson.Document> col = MongoDB.getConnectionToMongoDataBase();
-//		col.drop();
-//		MongoDB.closeConnection();
-//	}
+	public static void clearAllComment() {
+		MongoCollection<org.bson.Document> col = MongoDB.getConnectionToMongoDataBase();
+		col.drop();
+		MongoDB.closeConnection();
+	}
 }

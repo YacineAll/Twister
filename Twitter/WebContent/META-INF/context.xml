@@ -4,7 +4,7 @@
     name="jdbc/db" type="javax.sql.DataSource"
     maxActive="100" maxIdle="30" maxWait="10000"
     url="jdbc:mysql://localhost:3306/firstDataBase"
-   	driverClassName="com.mysql.jdbc.Driver"
+   	driverClassName="com.mysql.cj.jdbc.Driver"
     username="ghiles" password="25139145"
     />
 </Context>

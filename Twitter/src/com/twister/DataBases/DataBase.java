@@ -13,7 +13,7 @@ public class DataBase {
 
 	public DataBase(String jndiname) throws SQLException {
 		try {
-			dataSource = (DataSource) new InitialContext().lookup("java:comp/env/" + jndiname);
+			dataSource = (DataSource) new InitialContext().lookup("java:com/env/" + jndiname);
 		} catch (NamingException e) {
 			e.printStackTrace();
 			throw new SQLException(jndiname + " is missing in JNDI! : " + e.getMessage());
