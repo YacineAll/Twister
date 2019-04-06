@@ -13,13 +13,25 @@ class NavigationPannel extends Component {
     constructor(props) {
         super(props)
         this.state = {
-            redirect: false
+            redirect: false,
+            key:null
         }
 
         this.setRedirect = this.setRedirect.bind(this)
         this.setRedirectToFalse = this.setRedirectToFalse.bind(this)
+        this.setValues = this.setValues.bind(this)
+        this.getValues = this.getValues.bind(this)
+    }
+
+    setValues(newValues){
+        this.setState({ key: newValues})
+
     }
     
+
+    getValues() {
+        return this.state.key
+    }
     setRedirect(){
         this.setState({
             redirect: true
@@ -35,16 +47,14 @@ class NavigationPannel extends Component {
     }
 
 
-    routes(){
-
-    }
+  
     
     renderRedirect = () => {
             return (
             <div className="mainPage">
                 <div className="container col-lg-4 ml-auto mr-auto align-bottom">
                     <MyLogo ></MyLogo >
-                        <SignUp getConnected={this.props.getConnected} setRedirectToFalse={this.setRedirectToFalse} />)
+                        <SignUp setValues={this.setValues} getConnected={this.props.getConnected} setRedirectToFalse={this.setRedirectToFalse} />)
                 </div>
             </div>
         )
@@ -68,14 +78,15 @@ class NavigationPannel extends Component {
                             <NavBar
                                 getConnected={this.props.getConnected}
                                 setRedirect={this.setRedirect}
+                                setValues={this.setValues}
                             >
 
                             </NavBar>
                         </div>
-                        <Login getConnected={this.props.getConnected} setRedirect={this.setRedirect}></Login>
+                        <Login getConnected={this.props.getConnected} setValues={this.setValues} setRedirect={this.setRedirect}></Login>
                     </div>
                     :
-                    <Mur setLogout={this.props.setLogout} ></Mur>
+                    <Mur getValues={this.getValues} setLogout={this.props.setLogout} ></Mur>
                 }       
                 </div>
         );

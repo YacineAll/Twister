@@ -5,8 +5,10 @@ import {
 
 import Style from 'style-it'
 import { Radio } from 'antd';
+import axios from 'axios';
 
 const RadioGroup = Radio.Group;
+
 
 class Sign_Up extends Component {
     constructor(props) {
@@ -20,11 +22,38 @@ class Sign_Up extends Component {
 
     handleSubmit = (e) => {
         e.preventDefault();
+
         this.props.form.validateFieldsAndScroll((err, values) => {
             if (!err) {
-                console.log('Received values of form: ', values);
-                this.props.getConnected()
-                this.props.setRedirectToFalse()
+                const fieldsValue = {
+                    ...values,
+                    'date': values['birth_date'].format('DD/MM/YYYY'),
+                }
+
+                console.log(fieldsValue)
+                var params = new URLSearchParams();
+                params.append("nom", fieldsValue.LastName);
+                params.append("prenom", fieldsValue.Name);
+                params.append("login", fieldsValue.email);
+                params.append("password", fieldsValue.password);
+                params.append("sex", fieldsValue.gender ===1 ? 'F':'M');
+                params.append("birth_date", fieldsValue.date);
+
+                var request = {
+                    params: params
+                };
+                axios.get('http://localhost:8080/Twitter/createUser', request)
+                    .then(response => {
+                        if (response.data.code === -1) {
+                            this.props.setValues(response.data)
+                            this.props.getConnected()
+                        } else {
+                            this.setState({ accept: false })
+                        }
+                    })
+                    .catch(error => {
+                        alert(error)
+                    });
             }
         });
     }
@@ -55,12 +84,7 @@ class Sign_Up extends Component {
     }
 
 
-    handleSelectChange = (value) => {
-        console.log(value);
-        this.props.form.setFieldsValue({
-            note: `Hi, ${value === 'male' ? 'man' : 'lady'}!`,
-        });
-    }
+   
 
 
     render() {
@@ -128,11 +152,11 @@ class Sign_Up extends Component {
                                     <Input />)
                             }
                         </Form.Item>
-                        <Form.Item label="birth date">
+                        <Form.Item label="birth_date">
 
-                                {getFieldDecorator('date-picker', config)(
+                            {getFieldDecorator('birth_date', config)(
                                 
-                                 <DatePicker />
+                                    <DatePicker />
                                 )}
 
                         </Form.Item>

@@ -1,7 +1,7 @@
 import React, { Component } from "react"
 
 import { Button,Icon } from 'antd' 
-
+import axios from 'axios';
 
 
 const IconFont = Icon.createFromIconfontCN({
@@ -9,12 +9,31 @@ const IconFont = Icon.createFromIconfontCN({
 });
 
 class Logout  extends Component {
-
+    constructor(props) {
+        super(props)
+        this.logout=this.logout.bind(this)
+    }
     
+    logout(){
+        var params = new URLSearchParams();
+        params.append("key", this.props.getValues().Key);
+        var request = {
+            params: params
+        };
+        axios.get('http://localhost:8080/Twitter/logout', request)
+            .then(response => {
+                if (response.data.code === -1) {
+                    this.props.setLogout()
+                }
+            })
+            .catch(error => {
+                alert('erreur')
+            });
+    }
     render() {
         return (
             <div>
-                <Button style={{ "background": "rgb(0, 21, 41)" }} type="primary" onClick={(event) => this.props.setLogout()} >
+                <Button style={{ "background": "rgb(0, 21, 41)" }} type="primary" onClick={this.logout} >
                     <IconFont type="icon-tuichu" style={{ fontSize: '26px'}} />
                 </Button>
             </div>

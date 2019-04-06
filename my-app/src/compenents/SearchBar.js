@@ -33,7 +33,7 @@ return (
                         style={{ height: 25 , "marginTop": "1%"}}
                     />
                     <div>
-                        <Logout setLogout={this.props.setLogout} ></Logout>
+                        <Logout getValues={this.props.getValues} setLogout={this.props.setLogout} ></Logout>
                     </div>
                 </div>
             </Header>

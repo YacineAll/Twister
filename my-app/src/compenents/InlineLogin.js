@@ -1,11 +1,20 @@
 import {
-    Form, Icon, Input, Button,
+    Form, Icon, Input, Button,message
 } from 'antd';
 
+import axios from 'axios';
 import React,{Component} from 'react';
+
 function hasErrors(fieldsError) {
     return Object.keys(fieldsError).some(field => fieldsError[field]);
 }
+
+
+const error = (msg) => {
+    message.error(msg, 10);
+};
+
+
 
 class InlineLogin_ extends Component {
 
@@ -13,11 +22,29 @@ class InlineLogin_ extends Component {
         e.preventDefault();
         this.props.form.validateFields((err, values) => {
             if (!err) {
-                console.log('Received values of form: ', values);
-                this.props.getConnected()
+                var params = new URLSearchParams();
+                params.append("login", values.userName);
+                params.append("password", values.password);
+                var request = {
+                    params: params
+                };
+                axios.get('http://localhost:8080/Twitter/login', request)
+                    .then(response => {
+                        if (response.data.code === -1) {
+                            this.props.setValues(response.data)
+                            this.props.getConnected()
+                        } else {
+                            this.setState({ accept: false })
+                            return error(response.data.msg)
+                        }
+                    })
+                    .catch(error => {
+                        alert('erreur')
+                    });
             }
         });
     }
+
 
 
     render() {

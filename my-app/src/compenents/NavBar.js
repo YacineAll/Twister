@@ -23,7 +23,7 @@ export default class NavBar extends Component{
                                 theme="dark"
                                 defaultSelectedKeys={['1']}
                                 mode="horizontal"
-                                style={{ lineHeight: '66px' }}
+                                style={{ lineHeight: '64px' }}
                             >
                                 <Menu.Item key="1">Home</Menu.Item>
                                 <Menu.Item key="2">About</Menu.Item>
@@ -33,6 +33,7 @@ export default class NavBar extends Component{
                                 <InlineLogin
                                     getConnected={this.props.getConnected}
                                     setRedirect={this.props.setRedirect}
+                                    setValues={this.props.setValues}
                                 ></InlineLogin>
                             </div>
                         </div>

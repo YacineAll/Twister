@@ -18,9 +18,11 @@ export default class Mur extends Component {
         this.state={
             current:'mur',
             numberOfcomments:0,
-            userName:'Yacine',
-            sex:'M',
-            userLastName:"ALLOUACHE"
+            userName: this.props.getValues().prenom,
+            userLastName: this.props.getValues().nom,
+            sex: this.props.getValues().Sex,
+            DateNaiss: this.props.getValues().DateNaiss,
+            Depuis: this.props.getValues().Depuis
         }
         this.setCurrentPage = this.setCurrentPage.bind(this)
         this.setAddComments = this.setAddComments.bind(this)
@@ -57,7 +59,7 @@ export default class Mur extends Component {
                     <div className="container-fluid" >
                         <div className="container-fluid">
                             <Row align="top" justify="center">
-                                <SearchBar setLogout={this.props.setLogout}></SearchBar>
+                                <SearchBar setLogout={this.props.setLogout} getValues={this.props.getValues} ></SearchBar>
                             </Row>
                             <Row style={{ "padding": "0px" }} type="flex" justify="center" className="container-fluid">
                                 <Col span={12} push={6}>

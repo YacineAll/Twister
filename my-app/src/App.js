@@ -18,7 +18,9 @@ const App = () =>(
             <Route exact path='/' component={MainPage} ></Route>
             <Route exact path='/signup' component={SignUp}></Route>
             <Route exact path='/signin' component={MainPage}> </Route>
-            <Route exact path='/Mur' component={Mur}></Route>
+            <Route exact path='/Mur' component={Mur}
+                render={props => <Mur {...props} values={this.props.values}> </Mur>}
+            ></Route>
             <Route path="*" component={NotFound}></Route>
         </Switch>
     </div>

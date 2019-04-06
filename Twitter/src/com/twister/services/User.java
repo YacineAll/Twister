@@ -38,7 +38,7 @@ public class User {
 		if (AuthentificationTools.userExists(login)) {
 			return JSONResponse.serviceRefused("utilisateur existe deja", 2);
 		}
-
+		
 		try {
 			Date birthDay = java.sql.Date
 					.valueOf(birth_day.split("/")[2] + "-" + birth_day.split("/")[1] + "-" + birth_day.split("/")[0]);
@@ -62,10 +62,12 @@ public class User {
 	 * @return JSONResponse {} si l'ajout est reussi si non {"motif";code} d'erreur
 	 */
 	public static JSONObject login(String login, String password) {
-		if (login == null | password == null)
-			return JSONResponse.serviceRefused("Erreur de saisie", 1);
-		if (!AuthentificationTools.userExists(login))
+		if (login == null | password == null) {
+			return JSONResponse.serviceRefused("Erreur de saisie", 1);			
+		}
+		if (!AuthentificationTools.userExists(login)) {			
 			return JSONResponse.serviceRefused("login non reconnu ", 2);
+		}
 		if (!AuthentificationTools.checkPassword(login, password))
 			return JSONResponse.serviceRefused("mot de passe incorrect", 3);
 
@@ -73,20 +75,32 @@ public class User {
 
 			int idUser = USER_DB.getId(login);
 
-//			if (SESSION_DB.estDejaConnecte(idUser)) {
-//				return JSONResponse.serviceRefused("vous etes deja connecte", 4);
-//			}
+
 
 			String key = SessionTools.generateKey(idUser, login);
 
 			SESSION_DB.insert(key, idUser, DateTools.getFormatedDateAfterNHour(0));
 
 			JSONResponse jse = JSONResponse.serviceAccepted();
-
+			
+			JSONObject user = USER_DB.getNameUser(login);
+			
 			jse.put("ID", idUser);
 			jse.put("Login", login);
 			jse.put("Key", key);
-
+			
+//			name.put("nom", rs.getString("NOM"));
+//			name.put("prenom", rs.getString("PRENOM"));
+//			name.put("Sex", rs.getString("SEX"));
+//			name.put("DateNaiss", rs.getString("DATE_DE_NAISSANCE"));
+//			name.put("Depuis", rs.getString("DATE_INSCRIPTION"));
+//			
+			jse.put("nom", user.getString("nom"));
+			jse.put("prenom", user.getString("prenom"));
+			jse.put("Sex", user.getString("Sex"));
+			jse.put("DateNaiss", user.getString("DateNaiss"));
+			jse.put("Depuis", user.getString("Depuis"));
+			
 			return jse;
 		} catch (SQLException e) {
 			e.printStackTrace();

@@ -1,5 +1,5 @@
 import React, { Component } from "react"
-import { Card, PageHeader, Icon, Avatar } from 'antd';
+import { Card, PageHeader, Avatar } from 'antd';
 
 
 const {Meta} = Card;

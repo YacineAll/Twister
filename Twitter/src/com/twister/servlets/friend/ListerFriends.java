@@ -32,7 +32,7 @@ public class ListerFriends extends HttpServlet {
 
 		response.setContentType("text/JSON");
 		PrintWriter out = response.getWriter();
-		out.println(Friend.listeFriend(key));
+		out.print(Friend.listeFriend(key));
 
 	}
 

@@ -33,4 +33,9 @@ public class Login extends HttpServlet {
 		PrintWriter out = response.getWriter();
 		out.print(result);
 	}
+	
+	@Override
+	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		doGet(req, resp);
+	}
 }

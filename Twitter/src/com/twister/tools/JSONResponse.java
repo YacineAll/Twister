@@ -18,7 +18,8 @@ public class JSONResponse extends JSONObject {
 	public static JSONResponse serviceRefused(String msg, int code) {
 		JSONResponse jsr = new JSONResponse(false, msg, code);
 		try {
-			jsr.put(msg, code);
+			jsr.put("code", code);
+			jsr.put("msg", msg);
 		} catch (JSONException e) {
 			e.printStackTrace();
 		}
@@ -28,7 +29,7 @@ public class JSONResponse extends JSONObject {
 	public static JSONResponse serviceAccepted() {
 		JSONResponse jsr = new JSONResponse(true, "operation reussie", -1);
 		try {
-			jsr.put("operation reussie", -1);
+			jsr.put("code", -1);
 		} catch (JSONException e) {
 			e.printStackTrace();
 		}

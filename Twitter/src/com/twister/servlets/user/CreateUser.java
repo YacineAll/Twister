@@ -39,12 +39,11 @@ public class CreateUser extends HttpServlet {
 		String sex = request.getParameter("sex");
 		String birth_date = request.getParameter("birth_date");
 
-		JSONResponse resp = (JSONResponse) com.twister.services.User.createUser(nom, prenom, login, password, sex,
-				birth_date);
+		JSONResponse resp = (JSONResponse) com.twister.services.User.createUser(nom, prenom, login, password, sex,birth_date);
 
 		response.setContentType("text/JSON");
 		PrintWriter out = response.getWriter();
-		out.println(resp);
+		out.print(resp);
 
 //		if (resp.isAccepted()) {
 //			this.getServletContext().getRequestDispatcher("/connexion.jsp").forward(request, response);

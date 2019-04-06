@@ -153,6 +153,34 @@ public class USER_DB {
 		connexion.close();
 		return name;
 	}
+	
+	
+	public static JSONObject getNameUser(String login) throws SQLException {
+
+		Connection connexion = DataBase.getMySQLConnection();
+		PreparedStatement st = connexion.prepareStatement(getUser);
+		st.setString(1, login);
+		ResultSet rs = st.executeQuery();
+		JSONObject name = new JSONObject();
+		while (rs.next()) {
+			try {
+				name.put("nom", rs.getString("NOM"));
+				name.put("prenom", rs.getString("PRENOM"));
+				name.put("Sex", rs.getString("SEX"));
+				name.put("DateNaiss", rs.getString("DATE_DE_NAISSANCE"));
+				name.put("Depuis", rs.getString("DATE_INSCRIPTION"));
+				
+			} catch (JSONException e) {
+				e.printStackTrace();
+			}
+
+		}
+		rs.close();
+		st.close();
+		connexion.close();
+		return name;
+	}
+
 
 	/**
 	 * Retourne un json object qui contient un jason et une liste de jason qui

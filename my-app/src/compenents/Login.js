@@ -1,24 +1,49 @@
 import React, { Component } from "react"
 import {
-    Form, Icon, Input, Button, Checkbox,
+    Form, Icon, message, Input, Button, Checkbox,
 } from 'antd';
+
+import axios from 'axios';
 
 import Style from 'style-it'
 
+
+const error = (msg) => {
+    message.error(msg, 10);
+};
 
 
 
 class Log_in extends Component {
     
+    
     handleSubmit = (e) => {
         e.preventDefault();
         this.props.form.validateFields((err, values) => {
             if (!err) {
-                console.log('Received values of form: ', values);
-                this.props.getConnected()
+                var params = new URLSearchParams();
+                params.append("login", values.userName);
+                params.append("password", values.password);
+                var request = {
+                    params: params
+                };
+                axios.get('http://localhost:8080/Twitter/login',request)
+                    .then(response => {
+                        if (response.data.code === -1 ){
+                            this.props.setValues(response.data)
+                            this.props.getConnected()
+                        }else{
+                            this.setState({accept:false})  
+                            return error(response.data.msg)      
+                        }
+                    })
+                    .catch(error => {
+                      alert('erreur')
+                });
             }
         });
     }
+
 
 
     render() {
@@ -98,7 +123,7 @@ class Log_in extends Component {
                     <h1 >Sign In</h1>
                 </div>
                 <Form onSubmit={this.handleSubmit} className="container loginForm" >
-                    <Form.Item >
+                    <Form.Item>
                         {
                             getFieldDecorator('userName',{
                                 rules: [{ required: true, message: 'Please input your username!' }],
