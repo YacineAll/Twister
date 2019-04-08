@@ -2,6 +2,7 @@ import React, { Component } from "react"
 import { Input, Comment, Avatar, Form,Button, List} from 'antd'
 import moment from 'moment';
 import Post from './Post'
+import axios from 'axios';
 
 
 
@@ -47,6 +48,40 @@ export default class CenterContainer extends Component {
     }
     
 
+    componentDidMount(){
+        var params = new URLSearchParams();
+        params.append("key", this.props.getValues().Key);
+        var request = {
+            params: params
+        };
+        axios.get('http://localhost:8080/Twitter/userComments', request)
+            .then(response => {
+                if (response.data.code === -1) {
+                    const comentaires = response.data.Comments
+                    var cms = comentaires.map((comment) => {return {author: comment.nom + " " + comment.prenom,content: comment.comment,datetime: moment(comment.date, "YYYY/MM/DD HH:mm:ss").fromNow()}})
+                    
+                    axios.get('http://localhost:8080/Twitter/friendsComments', request)
+                        .then(response => {
+                            if (response.data.code === -1) {
+                                const friendsComments = response.data.FriendsComments
+                                const fc = friendsComments.map((comment) => {return {author: comment.nom + " " + comment.prenom,content: comment.comment,datetime: moment(comment.date, "YYYY/MM/DD HH:mm:ss").fromNow()}})
+                                cms.concat(fc)
+                            }
+                        })
+                        .catch(error => {
+                            alert('erreur')
+                        });   
+                    
+                    const sorted = cms.sort((a, b) => {return (b.datetime > a.datetime)? -1:1 })
+                    this.setState({ comments: sorted })
+                }
+            })
+            .catch(error => {
+                alert('erreur')
+        });   
+    }
+
+
     
 
     handleSubmit = () => {
@@ -59,22 +94,35 @@ export default class CenterContainer extends Component {
         });
 
         setTimeout(() => {
-            this.setState({
-                submitting: false,
-                value: '',
-                comments: [
-                    {
-                        author: 'Han Solo',
-                        avatar: 'https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png',
-                        content: <p>{this.state.value}</p>,
-                        datetime: moment().fromNow(),
-                    },
-                    ...this.state.comments,
-                ],
-            });
+            var params = new URLSearchParams();
+            params.append("key", this.props.getValues().Key);
+            params.append("text", this.state.value);
+            var request = {
+                params: params
+            };
+            axios.get('http://localhost:8080/Twitter/addComment', request)
+                .then(response => {
+                    if (response.data.code === -1) {
+                        this.setState({
+                            submitting: false,
+                            value: '',
+                            comments: [
+                                {
+                                    author: this.props.getValues().prenom + " " + this.props.getValues().nom,
+                                    avatar: 'https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png',
+                                    content: <p>{this.state.value}</p>,
+                                    datetime: moment(response.data.date, "YYYY/MM/DD HH:mm:ss").fromNow(),
+                                },
+                                ...this.state.comments,
+                            ],
+                        });
+                    }
+                })
+                .catch(error => {
+                    alert('erreur')
+                });   
         }, 500);
         this.props.setAddComments()
-        
     }
 
     handleChange = (e) => {

@@ -10,7 +10,7 @@ const Replies = ({ comments }) => (
         dataSource={comments}
         header={`${comments.length} ${comments.length > 1 ? 'Reply' : 'Replies'}`}
         itemLayout="horizontal"
-        renderItem={props => <Post {...props} />}
+        renderItem={props => <Reply {...props} />}
     />
 );
 
@@ -41,10 +41,10 @@ export default class Post extends Component {
                 value: '',
                 comments: [
                     {
-                        author: 'Han Solo',
+                        author: this.props.author,
                         avatar: 'https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png',
                         content: <p>{this.state.value}</p>,
-                        datetime: Date.now(),
+                        datetime: moment(new Date(), "YYYY/MM/DD HH:mm:ss").fromNow(),
                     },
                     ...this.state.comments,
                 ],
@@ -109,17 +109,17 @@ export default class Post extends Component {
         return (
             <Comment
                 actions={actions}
-                author={<a href="/">Han Solo</a>}
+                author={<a href="/">{this.props.author}</a>}
                 avatar={(
                     <Avatar
-                        src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png"
-                        alt="Han Solo"
+                        src='https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png'
+                        alt={this.props.author}
                     />
                 )}
                 content={this.props.content}
                 datetime={(
-                    <Tooltip title={moment().format('YYYY-MM-DD HH:mm:ss')}>
-                        <span>{moment().fromNow()}</span>
+                    <Tooltip title={this.props.datetime}>
+                        <span>{this.props.datetime}</span>
                     </Tooltip>
                 )}
             >
@@ -177,5 +177,82 @@ class TextAreaReply extends Component{
 
         );
     }
+    
+}
+
+class Reply extends Component{
+    state = {
+        likes: 0,
+        dislikes: 0,
+        action: null,
+        value: '',
+    }
+
+    like = () => {
+        this.setState({
+            likes: 1,
+            dislikes: 0,
+            action: 'liked',
+        });
+    }
+
+    dislike = () => {
+        this.setState({
+            likes: 0,
+            dislikes: 1,
+            action: 'disliked',
+        });
+    }
+
+    render(){
+        const { likes, dislikes, action } = this.state;
+      
+        const actions = [
+            <span>
+                <Tooltip title="Like">
+                    <Icon
+                        type="like"
+                        theme={action === 'liked' ? 'filled' : 'outlined'}
+                        onClick={this.like}
+                    />
+                </Tooltip>
+                <span style={{ paddingLeft: 8, cursor: 'auto' }}>
+                    {likes}
+                </span>
+            </span>,
+            <span>
+                <Tooltip title="Dislike">
+                    <Icon
+                        type="dislike"
+                        theme={action === 'disliked' ? 'filled' : 'outlined'}
+                        onClick={this.dislike}
+                    />
+                </Tooltip>
+                <span style={{ paddingLeft: 8, cursor: 'auto' }}>
+                    {dislikes}
+                </span>
+            </span>,
+          ];
+        return(
+            <Comment
+                actions={actions}
+                author={<a href="/">{this.props.author}</a>}
+                avatar={(
+                    <Avatar
+                        src={this.props.avatar}
+                        alt={this.props.author}
+                    />
+                )}
+                content={this.props.content}
+                datetime={(
+                    <Tooltip title={this.props.datetime}>
+                        <span>{this.props.datetime}</span>
+                    </Tooltip>
+                )}
+            >
+            </Comment>
+        )
+    }
+    
     
 }

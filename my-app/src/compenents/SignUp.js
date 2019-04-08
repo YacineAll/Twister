@@ -1,6 +1,6 @@
 import React, { Component } from "react"
 import {
-    Form, Input, Checkbox, DatePicker, Button} from 'antd';
+    message,Form, Input, Checkbox, DatePicker, Button} from 'antd';
 
 
 import Style from 'style-it'
@@ -9,6 +9,9 @@ import axios from 'axios';
 
 const RadioGroup = Radio.Group;
 
+const error = (msg) => {
+    message.error(msg, 10);
+};
 
 class Sign_Up extends Component {
     constructor(props) {
@@ -19,6 +22,28 @@ class Sign_Up extends Component {
         };
     }
 
+    login(parametres){
+        var params = new URLSearchParams();
+        params.append("login", parametres.email);
+        params.append("password", parametres.password);
+        var request = {
+            params: params
+        };
+        axios.get('http://localhost:8080/Twitter/login', request)
+            .then(response => {
+                if (response.data.code === -1) {
+                    this.props.setValues(response.data)
+                    this.props.getConnected()
+                    this.props.setRedirectToFalse()
+                } else {
+                    this.setState({ accept: false })
+                    return error(response.data.msg)
+                }
+            })
+            .catch(error => {
+                alert('erreur')
+            });
+    }
 
     handleSubmit = (e) => {
         e.preventDefault();
@@ -30,7 +55,6 @@ class Sign_Up extends Component {
                     'date': values['birth_date'].format('DD/MM/YYYY'),
                 }
 
-                console.log(fieldsValue)
                 var params = new URLSearchParams();
                 params.append("nom", fieldsValue.LastName);
                 params.append("prenom", fieldsValue.Name);
@@ -45,10 +69,10 @@ class Sign_Up extends Component {
                 axios.get('http://localhost:8080/Twitter/createUser', request)
                     .then(response => {
                         if (response.data.code === -1) {
-                            this.props.setValues(response.data)
-                            this.props.getConnected()
+                            this.login(fieldsValue)
                         } else {
                             this.setState({ accept: false })
+                            return error(response.data.msg)
                         }
                     })
                     .catch(error => {

@@ -12,7 +12,7 @@ import PageProfile from './ProfilePage'
 
 
 export default class Mur extends Component {
-
+    
     constructor(props) {
         super(props);
         this.state={
@@ -66,6 +66,7 @@ export default class Mur extends Component {
                                     <CenterContainer 
                                         setAddComments={this.setAddComments}
                                         userName={this.state.userName}
+                                        getValues={this.props.getValues}
                                     >
                                     </CenterContainer>
                                 </Col>
@@ -82,7 +83,6 @@ export default class Mur extends Component {
                                         sex={this.state.sex}
                                     
                                     >
-
                                     </LeftContainer>
                                 </Col>
                             </Row>

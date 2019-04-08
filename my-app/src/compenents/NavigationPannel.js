@@ -1,12 +1,11 @@
 import React, { Component } from "react"
+
 import Login from './Login'
-
-
-
 import MyLogo from './Logo'
 import SignUp from './SignUp';
 import Mur from "./Mur"
 import NavBar from './NavBar'
+
 
 
 class NavigationPannel extends Component {
@@ -47,7 +46,7 @@ class NavigationPannel extends Component {
     }
 
 
-  
+  //2019-04-08T15:28:22.156Z
     
     renderRedirect = () => {
             return (
@@ -64,7 +63,6 @@ class NavigationPannel extends Component {
 
     render() {
 
-    
         if( (this.state.redirect) && (!this.props.isConnected)){
             return this.renderRedirect()
         }
