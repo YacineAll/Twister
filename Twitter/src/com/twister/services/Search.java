@@ -74,31 +74,7 @@ public class Search {
 		}
 	}
 
-	/**
-	 *  lister les messages de l'utilisateur
-	 * @param key
-	 * @return JSONObject {resultat:JSONArray}
-	 */
-	public static JSONObject searchMyComment(String key) {
-		try {
-			if (!SESSION_DB.estDejaConnecte(key)) {
-				return JSONResponse.serviceRefused("connexion denied", 1);
-			}
-			int id_user = SESSION_DB.getIdUserOfKey(key);
-			List<JSONObject> list = COMMMENT_DB.getUserCommentsId_Author(id_user);
-
-			JSONObject js = JSONResponse.serviceAccepted();
-			js.put("resultat", list);
-			return js;
-
-		} catch (SQLException e) {
-			e.printStackTrace();
-			return JSONResponse.serviceRefused("SQL PROBLEM {searchMyComments}", 1000);
-		} catch (JSONException e) {
-			e.printStackTrace();
-			return JSONResponse.serviceRefused("JSON PROBLEM {searchMyComments}", 10000);
-		}
-	}
+	
 
 	/**
 	 * @param key  String

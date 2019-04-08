@@ -45,6 +45,8 @@ public class User {
 
 			USER_DB.addUSer(nom, prenom, login, password, sex, birthDay, DateTools.getFormatedDateAfterNHour(0));
 
+			
+			
 			return JSONResponse.serviceAccepted();
 
 		} catch (SQLException e) {

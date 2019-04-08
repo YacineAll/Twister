@@ -801,6 +801,22 @@ standard deployment descriptor.
     <servlet-name>AddFriend</servlet-name>
     <servlet-class>com.twister.servlets.friend.AddFriend</servlet-class>
   </servlet>
+  <servlet>
+    <servlet-name>ListerFriends</servlet-name>
+    <servlet-class>com.twister.servlets.friend.ListerFriends</servlet-class>
+  </servlet>
+  <servlet>
+    <servlet-name>RemoveComment</servlet-name>
+    <servlet-class>com.twister.servlets.comment.RemoveComment</servlet-class>
+  </servlet>
+  <servlet>
+    <servlet-name>FriendsComments</servlet-name>
+    <servlet-class>com.twister.servlets.comment.FriendsComments</servlet-class>
+  </servlet>
+  <servlet>
+  	<servlet-name>UserComments</servlet-name>
+  	<servlet-class>com.twister.servlets.comment.UserComments</servlet-class>
+  </servlet>
   <servlet-mapping>
     <servlet-name>Login</servlet-name>
     <url-pattern>/login</url-pattern>
@@ -828,6 +844,22 @@ standard deployment descriptor.
   <servlet-mapping>
     <servlet-name>AddFriend</servlet-name>
     <url-pattern>/addFriend</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>ListerFriends</servlet-name>
+    <url-pattern>/listerFriends</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>RemoveComment</servlet-name>
+    <url-pattern>/removeComment</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>FriendsComments</servlet-name>
+    <url-pattern>/friendsComments</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+  	<servlet-name>UserComments</servlet-name>
+  	<url-pattern>/userComments</url-pattern>
   </servlet-mapping>
   <filter>
     <filter-name>CorsFilter</filter-name>

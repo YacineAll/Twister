@@ -12,7 +12,7 @@ import org.json.JSONObject;
 /**
  * Servlet implementation class Removecomment
  */
-@WebServlet(name = "RemoveComment", urlPatterns = { "/RemoveComment" })
+@WebServlet("/RemoveComment")
 public class RemoveComment extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        

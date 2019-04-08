@@ -5,10 +5,6 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import com.mongodb.client.MongoCollection;
-import com.mongodb.client.MongoCursor;
-import com.twister.DataBases.COMMMENT_DB;
-import com.twister.DataBases.MongoDB;
 import com.twister.services.Comment;
 import com.twister.services.Friend;
 import com.twister.services.Search;
@@ -56,29 +52,7 @@ public class Test {
 //			COMMMENT_DB.addComment(17, nom2, prenom2, "yacine allouache"+i);
 //		}
 //		
-		
-		try {
-			Class clazz = Class.forName("com.mysql.jdbc.Driver");
-		} catch (ClassNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
-		MongoCollection<Document> col =  MongoDB.getConnectionToMongoDataBase();
-		
-		Document d1 = new Document();
-		d1.put("$lt", 50);
-		d1.put("$gt", 25);
-		
-		Document doc = new Document();
-		doc.put("id", d1);
-		
-		MongoCursor<Document> cursor = col.find(doc).iterator();
-		
-		while (cursor.hasNext()) {
-			Document ne = cursor.next();
-			System.out.println(ne);
-		}
+	
 		
 //		// créer un utilisateur1
 		System.out.println("\n------------------*inscription utilisateur1*---------------------");
@@ -115,6 +89,11 @@ public class Test {
 //		// lister les amis de l'utilisateur 2
 		System.out.println("\n----------------*lister d'amis d'utilisateur2*-------------------");
 		listerLesAmisTest(key2);
+		
+		
+		System.out.println("\n----------------*friends comments*-----------------------");
+		System.out.println(Comment.friendsComments(key2));
+
 //
 //		// retirer l'utilisateur 1 de la liste d'amis de l'utilisateur 2
 		System.out.println("\n---------*retirer l'utilisateur1 de la liste d'amis de l'utilisateur2*---------");
@@ -137,9 +116,9 @@ public class Test {
 		System.out.println("\n---------------------*ajouter un commentaire*---------------------");
 		ajouterCommentaireTest(key1, comment);
 //
-//		// afficher les commentaire
-//		System.out.println("\n-------------*Affiche les commentaire d'utilisateur1*--------------");
-//		id_comment = afficherCommentaireTest(key1);
+//		afficher les commentaire
+		System.out.println("\n-------------*Affiche les commentaire d'utilisateur1*--------------");
+		id_comment = afficherCommentaireTest(key1);
 //
 //		//supprimer le commentaire 
 //		System.out.println("\n------------------*Supprimer le commentaire*----------------------");
@@ -149,11 +128,17 @@ public class Test {
 //		System.out.println("\n-------------*Affiche les commentaire d'utilisateur1*--------------");
 //		afficherCommentaireTest(key1);
 //		
-//		// deconnexion de l'utilisateur 1
+//		
+		
+		
+		
+		// deconnexion de l'utilisateur 1
 		System.out.println("\n----------------*deconnexion utilisateur1*-----------------------");
 		logoutTest(key1);
-//		
-//		
+
+		
+		
+		
 //		// connexion de l'utilisateur1
 		System.out.println("\n\n\n\n---------------------*connexion utilisateur1*--------------------");
 		key1 = loginTest(login1, password1);
@@ -173,8 +158,7 @@ public class Test {
 		logoutTest(key1);
 		
 		
-		System.out.println(COMMMENT_DB.removeComment(25, 43));
-		COMMMENT_DB.clearAllComment();
+
 //		
 		
 	}
@@ -292,25 +276,25 @@ public class Test {
 		}
 	}
 
-//	// afficher les commentaires
-//	public static int afficherCommentaireTest(String key) throws JSONException {
-//		JSONResponse resultat = (JSONResponse) Search.searchMyComment(key);
-//		int id = -1;
-//		if (resultat.isAccepted()) {
-//			JSONArray listeComments = (JSONArray) resultat.get("resultat");
-//			for (int i = 0; i < listeComments.length(); i++) {
-//				JSONObject comment = new JSONObject(listeComments.getString(i));
-//				System.out.println("--Commentaire-- :" + comment.getString("comment"));
-//				System.out.print("posté par :" + comment.getString("nom") + " " + comment.getString("prenom"));
-//				System.out.println(" le : " + comment.getString("date"));
-//				
-//				return  comment.getInt("id");
-//				
-//			}
-//		} else
-//			System.out.println(resultat.getMotif());
-//		return id;
-//	}
+	// afficher les commentaires
+	public static int afficherCommentaireTest(String key) throws JSONException {
+		JSONResponse resultat = (JSONResponse) Comment.UserComment(key);
+		int id = -1;
+		if (resultat.isAccepted()) {
+			JSONArray listeComments = (JSONArray) resultat.get("resultat");
+			for (int i = 0; i < listeComments.length(); i++) {
+				JSONObject comment = new JSONObject(listeComments.getString(i));
+				System.out.println("--Commentaire-- :" + comment.getString("comment"));
+				System.out.print("posté par :" + comment.getString("nom") + " " + comment.getString("prenom"));
+				System.out.println(" le : " + comment.getString("date"));
+				
+				return  comment.getInt("id");
+				
+			}
+		} else
+			System.out.println(resultat.getMotif());
+		return id;
+	}
 	
 	
 	

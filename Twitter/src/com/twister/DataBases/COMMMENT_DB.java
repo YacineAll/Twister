@@ -208,6 +208,18 @@ public class COMMMENT_DB {
 
 		return listJson;
 	}
+	
+	public static List<JSONObject> listeCommentsOfUsers(List<Integer> ids) {
+		List<JSONObject> array = new ArrayList<>();
+		for (Integer id  : ids) {
+			try {
+				array.addAll(getUserCommentsId_Author(id));
+			} catch (JSONException e) {
+				e.printStackTrace();
+			}
+		}
+		return array;
+	}
 
 	/**
 	 * retourne le dernier id de la base pour differencier les commentaires
