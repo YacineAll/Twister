@@ -32,7 +32,7 @@ const MyCommentsList = ({comments,onDelete}) => (
     />
 );
 
-export default class CommentsList extends Component {
+export default class CommentsListUser extends Component {
     constructor(props) {
         super(props)
         this.state = {

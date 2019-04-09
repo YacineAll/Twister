@@ -27,7 +27,18 @@ export default class SearchBar extends Component{
         axios.get('http://localhost:8080/Twitter/getuserslist')
             .then(response => {
                 if (response.data.code === -1) {
-                    users = response.data.Users.map((user) => { return { name: user.nom + " " + user.prenom, type: 'Persone', icon: 'https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png',}})
+                    users = response.data.Users.map((user) => { return { 
+                        nom: user.nom , 
+                        prenom: user.prenom,
+                        type: user.Sex === 'M' ? 'Man' : 'Woman', 
+                        icon: 'https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png',
+                        idUser:user.id,
+                        login:user.login,
+                        DateNaiss: user.DateNaiss,
+                        Sex:user.Sex,
+                        Depuis: user.Depuis
+
+                    }})
                 } 
             })
             .catch(error => {
@@ -37,10 +48,10 @@ export default class SearchBar extends Component{
 
     onSearchChange = (value) => {
         const searchValue = value.toLowerCase();
-        const filtered = users.filter(item => item.name.toLowerCase().indexOf(searchValue) !== -1);
+        const filtered = users.filter(item => (item.nom + " " + item.prenom).toLowerCase().indexOf(searchValue) !== -1);
         const suggestions = filtered.map(suggestion => (
             <Nav
-                value={suggestion.name}
+                value={suggestion.nom + " " + suggestion.prenom}
                 data={suggestion}
                 disabled={suggestion.disabled}
             >
@@ -51,7 +62,7 @@ export default class SearchBar extends Component{
                         width: 14, height: 14, marginRight: 8, top: -1, position: 'relative',
                     }}
                 />
-                {suggestion.name} - {suggestion.type}
+                {suggestion.nom + " " + suggestion.prenom} - {suggestion.type}
             </Nav>
         ));
         this.setState({ suggestions });
@@ -59,7 +70,7 @@ export default class SearchBar extends Component{
 
     goTo(name){
         const user = users.find((user) => {
-            return user.name === name;
+            return (user.nom + " " + user.prenom) === name;
         })
         this.props.goToProfile(user)
     }

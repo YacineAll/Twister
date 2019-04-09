@@ -42,6 +42,8 @@ public class Search {
 		}
 	}
 
+
+	
 	/**
 	 * Cherche un amis dans la liste d'amis de l'utilisateur
 	 * 

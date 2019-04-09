@@ -193,11 +193,12 @@ public class USER_DB {
 		while (rs.next()) {
 			try {
 				JSONObject name = new JSONObject();
+				name.put("id", rs.getString("ID_USER"));
 				name.put("nom", rs.getString("NOM"));
-				name.put("id", rs.getInt("ID_USER"));
 				name.put("prenom", rs.getString("PRENOM"));
-				name.put("Sex", rs.getString("SEX"));
+				name.put("login", rs.getString("LOGIN"));
 				name.put("DateNaiss", rs.getString("DATE_DE_NAISSANCE"));
+				name.put("Sex", rs.getString("SEX"));
 				name.put("Depuis", rs.getString("DATE_INSCRIPTION"));
 				users.add(name);
 			} catch (JSONException e) {

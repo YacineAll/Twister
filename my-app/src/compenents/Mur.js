@@ -10,7 +10,6 @@ import CenterContainer from "./CenterContainer"
 import PageProfile from './ProfilePage'
 import UserPage from './UserPage';
 
-var User =null
 export default class Mur extends Component {
     
     constructor(props) {
@@ -22,7 +21,8 @@ export default class Mur extends Component {
             userLastName: this.props.getValues().nom,
             sex: this.props.getValues().Sex,
             DateNaiss: this.props.getValues().DateNaiss,
-            Depuis: this.props.getValues().Depuis
+            Depuis: this.props.getValues().Depuis,
+            User:null
         }
         this.setCurrentPage = this.setCurrentPage.bind(this)
         this.setAddComments = this.setAddComments.bind(this)
@@ -42,14 +42,13 @@ export default class Mur extends Component {
     }
 
     goToProfile(user){
-        User = user
+        this.setState({ User: user})
         this.setCurrentPage("UserPage")
     }
     
     getNumberOfComments() {
         return this.state.numberOfcomments
     }
-
     renderAffiche(){
         switch (this.state.current) {
             case "ProfilePage":
@@ -65,6 +64,7 @@ export default class Mur extends Component {
                         <UserPage 
                             setCurrentPage={this.setCurrentPage}
                             getValues={this.props.getValues} 
+                            user={this.state.User}
                         />
                     )
             default:
@@ -93,8 +93,7 @@ export default class Mur extends Component {
                                         setCurrentPage={this.setCurrentPage}
                                         getNumberOfComments={this.getNumberOfComments}
                                         userName={this.state.userName}
-                                        sex={this.state.sex}
-                                    
+                                        sex={this.state.sex}                  
                                     >
                                     </LeftContainer>
                                 </Col>

@@ -26,7 +26,7 @@ const MyFriendsList = ({ friends, onDelete }) => (
     />
 );
 
-export default class FriendsLists extends Component {
+export default class FriendsListsUser extends Component {
     state = {
         friends: [],
     }

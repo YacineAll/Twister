@@ -27,7 +27,7 @@ public class RemoveComment extends HttpServlet {
 		String key = request.getParameter("key");
 		String id = request.getParameter("id");
 
-		JSONObject res = com.twister.services.Comment.addComment(key, id);
+		JSONObject res = com.twister.services.Comment.removeComment(key, id);
 		response.setContentType("text/JSON");
 		response.getWriter().println(res);
 	}
