@@ -814,8 +814,12 @@ standard deployment descriptor.
     <servlet-class>com.twister.servlets.comment.FriendsComments</servlet-class>
   </servlet>
   <servlet>
-  	<servlet-name>UserComments</servlet-name>
-  	<servlet-class>com.twister.servlets.comment.UserComments</servlet-class>
+    <servlet-name>UserComments</servlet-name>
+    <servlet-class>com.twister.servlets.comment.UserComments</servlet-class>
+  </servlet>
+  <servlet>
+  	<servlet-name>GetUsersList</servlet-name>
+  	<servlet-class>com.twister.servlets.user.GetUsersList</servlet-class>
   </servlet>
   <servlet-mapping>
     <servlet-name>Login</servlet-name>
@@ -858,8 +862,12 @@ standard deployment descriptor.
     <url-pattern>/friendsComments</url-pattern>
   </servlet-mapping>
   <servlet-mapping>
-  	<servlet-name>UserComments</servlet-name>
-  	<url-pattern>/userComments</url-pattern>
+    <servlet-name>UserComments</servlet-name>
+    <url-pattern>/userComments</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+  	<servlet-name>GetUsersList</servlet-name>
+  	<url-pattern>/getuserslist</url-pattern>
   </servlet-mapping>
   <filter>
     <filter-name>CorsFilter</filter-name>

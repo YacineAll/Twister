@@ -21,7 +21,7 @@ const CommentList = ({ comments }) => (
 const Editor = ({onChange, onSubmit, submitting, value,}) => (
         <div>
             <Form.Item>
-                <TextArea rows={3} onChange={onChange} value={value} />
+            <TextArea  autosize={{ minRows: 2, maxRows: 6 }} onChange={onChange} value={value} />
             </Form.Item>
             <Form.Item>
                 <Button
@@ -138,12 +138,7 @@ export default class CenterContainer extends Component {
                 <div className="row align-middle">
                     <div className="col-lg-8 ml-auto mr-auto align-bottom">
                         <Comment
-                            avatar={(
-                                <Avatar
-                                    src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png"
-                                    alt="Han Solo"
-                                />
-                            )}
+                            avatar={(<Avatar style={{ backgroundColor: '#87d068' }} icon="user" />)}
                             content={(
                                 <Editor
                                     onChange={this.handleChange}

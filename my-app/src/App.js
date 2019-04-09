@@ -15,13 +15,11 @@ import SignUp from './compenents/SignUp';
 const App = () =>(
     <div>
         <Switch>
-            <Route exact path='/' component={MainPage} ></Route>
-            <Route exact path='/signup' component={SignUp}></Route>
-            <Route exact path='/signin' component={MainPage}> </Route>
-            <Route exact path='/Mur' component={Mur}
-                render={props => <Mur {...props} values={this.props.values}> </Mur>}
-            ></Route>
-            <Route path="*" component={NotFound}></Route>
+            <Route exact path='/' component={MainPage}/>
+            <Route exact path='/signup' component={SignUp}/>
+            <Route exact path='/signin' component={MainPage}/> 
+            <Route exact path='/Mur' component={Mur}/> 
+            <Route path="*" component={NotFound}/>
         </Switch>
     </div>
     

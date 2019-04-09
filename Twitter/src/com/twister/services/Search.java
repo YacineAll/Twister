@@ -142,5 +142,20 @@ public class Search {
 			return JSONResponse.serviceRefused("JSONObject erreur {searchCommentsFriend}", 100000);
 		}
 	}
+	
+	
+	public static JSONObject getUsers() {
+		try {
+			JSONResponse jr = JSONResponse.serviceAccepted();
+			jr.put("Users",USER_DB.getUsers());
+			return jr;
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return JSONResponse.serviceRefused("Erreur SQL {searchUser}", 10000);
+		} catch (JSONException e) {
+			e.printStackTrace();
+			return JSONResponse.serviceRefused("Erreur JSON {searchUser}", 1000);
+		}
+	}
 
 }

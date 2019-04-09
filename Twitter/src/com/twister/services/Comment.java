@@ -1,8 +1,12 @@
 package com.twister.services;
 
 import java.sql.SQLException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -16,7 +20,7 @@ import com.twister.tools.JSONResponse;
 public class Comment {
 
 	public static JSONObject addComment(String key, String text) {
-
+		
 		if (text == null | key == null) {
 			return JSONResponse.serviceRefused("Erreur de saisie", 1);
 		}
@@ -28,9 +32,20 @@ public class Comment {
 
 			int idUser = SESSION_DB.getIdUserOfKey(key);
 			JSONObject nameUser = USER_DB.getNameUser(idUser);
+			
+			Date date = new Date();
+			String str = new SimpleDateFormat("YYYY-MM/dd HH:mm:ss").format(date);
+			try {
+				str = new SimpleDateFormat("YYYY-MM-dd HH:mm:ss").format(new SimpleDateFormat("EEE MMM dd HH:mm:ss ZZZ yyyy", Locale.ENGLISH).parse(date.toString()));
+			} catch (ParseException e) {
+				e.printStackTrace();
+			}
+			
+			JSONResponse jr = JSONResponse.serviceAccepted();
+			jr.put("date",str);
 
-			return COMMMENT_DB.addComment(idUser, nameUser.getString("nom"), nameUser.getString("prenom"), text)
-					? JSONResponse.serviceAccepted()
+			return COMMMENT_DB.addComment(idUser, nameUser.getString("nom"), nameUser.getString("prenom"), text,date)
+					? jr
 					: JSONResponse.serviceRefused("erreur inatendue", 3);
 
 		} catch (SQLException e) {

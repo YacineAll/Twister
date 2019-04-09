@@ -23,7 +23,9 @@ public class USER_DB {
 	private static String getPassword = "SELECT password FROM `USER` WHERE login = ?";
 	private static String addUser = "INSERT INTO USER (LOGIN, PASSWORD, NOM,PRENOM,SEX,DATE_DE_NAISSANCE,DATE_INSCRIPTION) VALUES (?,?,?,?,?,?,?)";
 	private static String getIdUser = "SELECT ID_USER FROM `USER` WHERE LOGIN = ?";
-
+	private static String getUsers = "SELECT * FROM `USER`";
+	
+	
 	/**
 	 * Verfie l'existance d'un utilisateur dans la base de donnee USER à partir de
 	 * son login
@@ -181,6 +183,33 @@ public class USER_DB {
 		return name;
 	}
 
+	
+	public static List<JSONObject> getUsers() throws SQLException {
+
+		Connection connexion = DataBase.getMySQLConnection();
+		PreparedStatement st = connexion.prepareStatement(getUsers);
+		ResultSet rs = st.executeQuery();
+		List<JSONObject> users = new ArrayList<>();
+		while (rs.next()) {
+			try {
+				JSONObject name = new JSONObject();
+				name.put("nom", rs.getString("NOM"));
+				name.put("id", rs.getInt("ID_USER"));
+				name.put("prenom", rs.getString("PRENOM"));
+				name.put("Sex", rs.getString("SEX"));
+				name.put("DateNaiss", rs.getString("DATE_DE_NAISSANCE"));
+				name.put("Depuis", rs.getString("DATE_INSCRIPTION"));
+				users.add(name);
+			} catch (JSONException e) {
+				e.printStackTrace();
+			}
+
+		}
+		rs.close();
+		st.close();
+		connexion.close();
+		return users;
+	}
 
 	/**
 	 * Retourne un json object qui contient un jason et une liste de jason qui

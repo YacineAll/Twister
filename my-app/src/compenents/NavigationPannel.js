@@ -46,7 +46,6 @@ class NavigationPannel extends Component {
     }
 
 
-  //2019-04-08T15:28:22.156Z
     
     renderRedirect = () => {
             return (

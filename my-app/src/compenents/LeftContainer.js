@@ -24,9 +24,9 @@ export default class LeftContainer extends Component {
                         actions={[<Icon type="home" onClick={(event) => this.props.setCurrentPage("ProfilePage")}/>,]}
                     >
                     <Meta
-                        avatar={<Avatar src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png" />}
-                        title={this.props.userName}
-                        description="This is the description"
+                            avatar={<Avatar style={{ backgroundColor: '#87d068' }} src="user" />}
+                            title={this.props.userName}
+                            description="This is the description"
                     />
                     <p>sex : {this.props.sex}</p>
                     <Row gutter={16}>

@@ -8,9 +8,9 @@ import RightContainer from "./RightContainer"
 import LeftContainer from "./LeftContainer"
 import CenterContainer from "./CenterContainer"
 import PageProfile from './ProfilePage'
+import UserPage from './UserPage';
 
-
-
+var User =null
 export default class Mur extends Component {
     
     constructor(props) {
@@ -27,16 +27,23 @@ export default class Mur extends Component {
         this.setCurrentPage = this.setCurrentPage.bind(this)
         this.setAddComments = this.setAddComments.bind(this)
         this.getNumberOfComments = this.getNumberOfComments.bind(this)
+        this.goToProfile = this.goToProfile.bind(this)
     }
     
 
     setCurrentPage(page){
         this.setState({current: page})
     }
+    
 
     setAddComments(){
         var number = this.state.numberOfcomments + 1
         this.setState({ numberOfcomments: number})
+    }
+
+    goToProfile(user){
+        User = user
+        this.setCurrentPage("UserPage")
     }
     
     getNumberOfComments() {
@@ -49,17 +56,23 @@ export default class Mur extends Component {
                 return (
                     <PageProfile
                         setCurrentPage={this.setCurrentPage}
-                        userName={this.state.userName}
-                        userLastName={this.state.userLastName}
+                        getValues={this.props.getValues}                        
                     >
                     </PageProfile>
                 );
+            case "UserPage":
+                    return(
+                        <UserPage 
+                            setCurrentPage={this.setCurrentPage}
+                            getValues={this.props.getValues} 
+                        />
+                    )
             default:
                 return (
                     <div className="container-fluid" >
                         <div className="container-fluid">
                             <Row align="top" justify="center">
-                                <SearchBar setLogout={this.props.setLogout} getValues={this.props.getValues} ></SearchBar>
+                                <SearchBar goToProfile={this.goToProfile} setLogout={this.props.setLogout} getValues={this.props.getValues} ></SearchBar>
                             </Row>
                             <Row style={{ "padding": "0px" }} type="flex" justify="center" className="container-fluid">
                                 <Col span={12} push={6}>

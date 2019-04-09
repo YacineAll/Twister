@@ -81,7 +81,7 @@ public class Friend {
 				return JSONResponse.serviceRefused("liste d'amis vides", 3);
 
 			JSONResponse jsr = JSONResponse.serviceAccepted();
-			jsr.put("Liste amis ", li);
+			jsr.put("amis", li);
 
 			return jsr;
 

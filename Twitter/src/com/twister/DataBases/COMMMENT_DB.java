@@ -1,7 +1,11 @@
 package com.twister.DataBases;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 import org.bson.Document;
 import org.json.JSONException;
@@ -66,16 +70,18 @@ public class COMMMENT_DB {
 	 * @param comment String le contenu de message
 	 * @return boolean true si l'operation est bien passe false si non
 	 */
-	public static boolean addComment(int idUser, String nom, String prenom, String comment) {
+	public static boolean addComment(int idUser, String nom, String prenom, String comment,Date date) {
 		MongoCollection<org.bson.Document> col = MongoDB.getConnectionToMongoDataBase();
 
 		org.bson.Document doc = new org.bson.Document();
 
+		
+		
 		doc.append("id", id++);
 		doc.append("author_id", idUser);
 		doc.append("nom", nom);
 		doc.append("prenom", prenom);
-		doc.append("date", DateTools.getDateAfterNHour(0));
+		doc.append("date", date);
 		doc.append("comment", comment);
 
 		col.insertOne(doc);
@@ -122,14 +128,22 @@ public class COMMMENT_DB {
 		List<JSONObject> listJson = new ArrayList<JSONObject>();
 		MongoCursor<Document> mngc = col.find(doc).iterator();
 
+		
 		while (mngc.hasNext()) {
 			Document document = (Document) mngc.next();
 			JSONObject jse = new JSONObject();
+			String date2 = document.getDate("date").toString();
+			try {
+				date2 = new SimpleDateFormat("YYYY-MM-dd HH:mm:ss").format(new SimpleDateFormat("EEE MMM dd HH:mm:ss ZZZ yyyy", Locale.ENGLISH).parse(date2));
+			} catch (ParseException e) {
+				e.printStackTrace();
+			}
+			
 			jse.put("id", document.getInteger("id"));
 			jse.put("author_id", document.getInteger("author_id"));
 			jse.put("nom", document.getString("nom"));
 			jse.put("prenom", document.getString("prenom"));
-			jse.put("date", document.getDate("date"));
+			jse.put("date", date2);
 			jse.put("comment", document.getString("comment"));
 
 			listJson.add(jse);
@@ -164,11 +178,17 @@ public class COMMMENT_DB {
 		while (mng.hasNext()) {
 			Document document = (Document) mng.next();
 			JSONObject jse = new JSONObject();
+			String date2 = document.getDate("date").toString();
+			try {
+				date2 = new SimpleDateFormat("YYYY-MM-dd HH:mm:ss").format(new SimpleDateFormat("EEE MMM dd HH:mm:ss ZZZ yyyy", Locale.ENGLISH).parse(date2));
+			} catch (ParseException e) {
+				e.printStackTrace();
+			}
 			jse.put("id", document.getInteger("id"));
 			jse.put("author_id", document.getInteger("author_id"));
 			jse.put("nom", document.getString("nom"));
 			jse.put("prenom", document.getString("prenom"));
-			jse.put("date", document.getDate("date"));
+			jse.put("date", date2);
 			jse.put("comment", document.getString("comment"));
 
 			listJson.add(jse);
@@ -192,11 +212,17 @@ public class COMMMENT_DB {
 			while (cursor.hasNext()) {
 				Document document = cursor.next();
 				JSONObject jse = new JSONObject();
+				String date2 = document.getDate("date").toString();
+				try {
+					date2 = new SimpleDateFormat("YYYY-MM-dd HH:mm:ss").format(new SimpleDateFormat("EEE MMM dd HH:mm:ss ZZZ yyyy", Locale.ENGLISH).parse(date2));
+				} catch (ParseException e) {
+					e.printStackTrace();
+				}
 				jse.put("id", document.getInteger("id"));
 				jse.put("author_id", document.getInteger("author_id"));
 				jse.put("nom", document.getString("nom"));
 				jse.put("prenom", document.getString("prenom"));
-				jse.put("date", document.getDate("date"));
+				jse.put("date", date2);
 				jse.put("comment", document.getString("comment"));
 				listJson.add(jse);
 			}

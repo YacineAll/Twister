@@ -110,12 +110,7 @@ export default class Post extends Component {
             <Comment
                 actions={actions}
                 author={<a href="/">{this.props.author}</a>}
-                avatar={(
-                    <Avatar
-                        src='https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png'
-                        alt={this.props.author}
-                    />
-                )}
+                avatar={(<Avatar style={{ backgroundColor: '#87d068' }} icon="user" />)}
                 content={this.props.content}
                 datetime={(
                     <Tooltip title={this.props.datetime}>
