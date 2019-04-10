@@ -65,15 +65,18 @@ export default class CenterContainer extends Component {
                             if (response.data.code === -1) {
                                 const friendsComments = response.data.FriendsComments
                                 const fc = friendsComments.map((comment) => {return {author: comment.nom + " " + comment.prenom,content: comment.comment,datetime: moment(comment.date, "YYYY/MM/DD HH:mm:ss").fromNow()}})
-                                cms.concat(fc)
+                                cms = cms.concat(fc)
+                                const sorted = cms.sort((a, b) => { return (b.datetime > a.datetime) ? -1 : 1 })
+                                this.setState({ comments: sorted })
+                            }else{
+                                const sorted = cms.sort((a, b) => { return (b.datetime > a.datetime) ? -1 : 1 })
+                                this.setState({ comments: sorted })
                             }
                         })
                         .catch(error => {
                             alert('erreur')
                         });   
                     
-                    const sorted = cms.sort((a, b) => {return (b.datetime > a.datetime)? -1:1 })
-                    this.setState({ comments: sorted })
                 }
             })
             .catch(error => {

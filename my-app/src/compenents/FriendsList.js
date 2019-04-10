@@ -10,14 +10,14 @@ const MyFriendsList = ({ friends, onDelete }) => (
         header={`${friends.length} ${friends.length > 1 ? 'Friend' : 'Friends'}`}
         itemLayout="horizontal"
         renderItem={item => (
-            <List.Item key={item.id}>
+            <List.Item key={item.id}
+                actions={[
+                    <Popconfirm onConfirm={(event) => onDelete(item.idFriend)} title="Are you sure？" icon={<Icon type="question-circle-o" style={{ color: 'red' }} />}>
+                        <Button type="danger" size="small" icon="user-delete">Delete</Button>
+                    </Popconfirm>,
+                ]}
+            >
                 <List.Item.Meta
-                    actions={[
-                        <Popconfirm onConfirm={(event) => onDelete(item.idComment)} title="Are you sure？" icon={<Icon type="question-circle-o" style={{ color: 'red' }} />}>
-                            <Button type="danger" size="small" icon="user-delete">Delete</Button>
-                        </Popconfirm>,
-                        <span></span>
-                    ]}
                     avatar={<Avatar src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png" />}
                     title={item.name}
                 />
@@ -27,9 +27,14 @@ const MyFriendsList = ({ friends, onDelete }) => (
 );
 
 export default class FriendsLists extends Component {
-    state = {
-        friends: [],
+    constructor(props) {
+        super(props)
+        this.state = {
+            friends: [],
+        }
+        this.onDelete=this.onDelete.bind(this)
     }
+    
 
     componentDidMount() {
         var params = new URLSearchParams();
@@ -45,7 +50,7 @@ export default class FriendsLists extends Component {
                     var cms = Myfriends.map((friend) => {
                          return { 
                              name: friend.nom + " " + friend.prenom, 
-                             id: friend.id,  
+                             idFriend: friend.id,  
                             } 
                         })
                     this.setState({ friends: cms })
@@ -56,6 +61,24 @@ export default class FriendsLists extends Component {
             });   
     }
 
+    onDelete(id) {
+        var params = new URLSearchParams();
+        params.append("key", this.props.getValues().Key);
+        params.append("id_friend", id);
+        var request = {
+            params: params
+        };
+        axios.get('http://localhost:8080/Twitter/removeFriend', request)
+            .then(response => {
+                if (response.data.code === -1) {
+                    this.setState({ friends: this.state.friends.filter((item) => { return item.idFriend !== id }) })
+                }
+            })
+            .catch(error => {
+                alert('erreur')
+            });
+    }
+
     render() {
         const { friends} = this.state
         return (
@@ -63,7 +86,7 @@ export default class FriendsLists extends Component {
                 <div className="row align-middle">
                     <div className="col-lg-8 ml-auto mr-auto align-bottom">
                         {friends.length > 0 
-                        ? <MyFriendsList friends={friends} />
+                        ? <MyFriendsList friends={friends} onDelete={this.onDelete} />
                             
                         : (<Alert
                                 message="List Empty"

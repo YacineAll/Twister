@@ -9,7 +9,7 @@ import Style from 'style-it'
 
 
 const error = (msg) => {
-    message.error(msg, 10);
+    message.error(msg, 0.1);
 };
 
 

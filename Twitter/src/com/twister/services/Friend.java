@@ -93,5 +93,27 @@ public class Friend {
 			return JSONResponse.serviceRefused("JSON PROBLEM IN {listeFriend}", 100000);
 		}
 	}
+	
+	public static JSONObject listeFriendId(String idUser) {
+		int id_user = Integer.parseInt(idUser);
+		
+		try {
+			List<JSONObject> li = FRIEND_DB.listeOfFriend(id_user);
+			if (li.isEmpty())
+				return JSONResponse.serviceRefused("liste d'amis vides", 3);
+			
+			JSONResponse jsr = JSONResponse.serviceAccepted();
+			jsr.put("amis", li);
+			
+			return jsr;
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return JSONResponse.serviceRefused("SQL PROBLEME {listeFriendID}", 1000);
+		} catch (JSONException e) {
+			e.printStackTrace();
+			return JSONResponse.serviceRefused("JSON PROBLEM IN {listeFriendID}", 100000);
+		}
+		
+	}
 
 }

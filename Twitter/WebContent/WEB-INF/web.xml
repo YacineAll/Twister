@@ -818,8 +818,16 @@ standard deployment descriptor.
     <servlet-class>com.twister.servlets.comment.UserComments</servlet-class>
   </servlet>
   <servlet>
-  	<servlet-name>GetUsersList</servlet-name>
-  	<servlet-class>com.twister.servlets.user.GetUsersList</servlet-class>
+    <servlet-name>GetUsersList</servlet-name>
+    <servlet-class>com.twister.servlets.user.GetUsersList</servlet-class>
+  </servlet>
+  <servlet>
+  	<servlet-name>CommentsAuthor</servlet-name>
+  	<servlet-class>com.twister.servlets.comment.CommentsAuthor</servlet-class>  
+  </servlet>
+  <servlet>
+  	<servlet-name>ListFriendsID</servlet-name>
+  	<servlet-class>com.twister.servlets.friend.ListFriendsID</servlet-class>
   </servlet>
   <servlet-mapping>
     <servlet-name>Login</servlet-name>
@@ -866,8 +874,16 @@ standard deployment descriptor.
     <url-pattern>/userComments</url-pattern>
   </servlet-mapping>
   <servlet-mapping>
-  	<servlet-name>GetUsersList</servlet-name>
-  	<url-pattern>/getuserslist</url-pattern>
+    <servlet-name>GetUsersList</servlet-name>
+    <url-pattern>/getuserslist</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+  	<servlet-name>CommentsAuthor</servlet-name>
+ 	<url-pattern>/commentsAuthor</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+  	<servlet-name>ListFriendsID</servlet-name>
+  	<url-pattern>/listFriendsID</url-pattern>
   </servlet-mapping>
   <filter>
     <filter-name>CorsFilter</filter-name>

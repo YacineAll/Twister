@@ -1,12 +1,14 @@
 import React, { Component } from 'react'
+import axios from 'axios'
+
 
 import Woman from '../assets/images/woman.png'
 import Men from '../assets/images/man.png'
 
 import { Card, Avatar, PageHeader, Row, Button , Col, Divider } from 'antd';
 
-import FriendsLists from './FriendsList';
-import CommentsList from './CommentsList';
+import FriendsListsUser from './FriendsListsUser';
+import CommentsListUser from './CommentsListUser';
 
 
 const DescriptionItem = ({ title, content }) => (
@@ -70,8 +72,8 @@ export default class UserPage extends Component {
                 </Row>
             </div>
         ,
-        Friends: <p>Friends content</p>,
-        Comments:<p>Comments content</p>,
+        Friends:  <FriendsListsUser user={this.props.user}></FriendsListsUser>,
+        Comments: <CommentsListUser user={this.props.user}></CommentsListUser>,
     };
     constructor(props) {
         super(props)
@@ -79,18 +81,38 @@ export default class UserPage extends Component {
             u:null,
             noTitleKey: 'Profile',
         }
-        
+        this.addFriend = this.addFriend.bind(this)
     }
     
+
+    addFriend(){
+        var params = new URLSearchParams();
+        params.append("key", this.props.getValues().Key);
+        params.append("id_friend", user.idUser);
+
+        var request = {
+            params: params
+        };
+        axios.get('http://localhost:8080/Twitter/AddFriend', request)
+        .then(response => {
+            console.log(response.data)
+            if (response.data.code === -1) {
+                }
+            })
+            .catch(error => {
+                alert('erreur')
+            });
+    }
 
     componentDidMount(){
         user = this.props.user
         this.setState({u:user})
-        console.log(user)
     }
     onTabChange = (key, type) => {
         this.setState({ [type]: key });
     }
+
+
 
     render() {
         return (
@@ -99,7 +121,7 @@ export default class UserPage extends Component {
                     onBack={() => this.props.setCurrentPage('mur')}
                     title={this.props.user.nom + " " + this.props.user.prenom}
                     subTitle="Page Profile"
-                    extra={[<Button key="1" type="primary" icon="user-add" >Add</Button>]}
+                    extra={[<Button key="1" type="primary" icon="user-add" onClick={(event)=> this.addFriend()}>Add</Button>]}
                 />
                 <Card
                     style={{ width: '100%' }}

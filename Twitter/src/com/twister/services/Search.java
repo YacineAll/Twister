@@ -146,6 +146,26 @@ public class Search {
 	}
 	
 	
+	
+	public static JSONObject userComments(String idAuthor) {
+		try {
+			int id_author = Integer.parseInt(idAuthor);
+			List<JSONObject> comments = COMMMENT_DB.getUserCommentsId_Author(id_author);
+			System.out.println(id_author);
+			if(comments.isEmpty()) {
+				return JSONResponse.serviceRefused("liste de commentaires vides", 4);
+			}
+			
+			JSONResponse jr = JSONResponse.serviceAccepted();
+			jr.put("comments", comments);
+			return jr;
+		} catch (JSONException e) {
+			e.printStackTrace();
+			return JSONResponse.serviceRefused("Probleme JSON", 5);
+		}
+		
+	}
+	
 	public static JSONObject getUsers() {
 		try {
 			JSONResponse jr = JSONResponse.serviceAccepted();

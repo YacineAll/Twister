@@ -1,24 +1,18 @@
 import React, { Component } from 'react'
 import {
-    List, Avatar,  Tooltip,Alert, Popconfirm, Icon, Button
+    List, Avatar,  Tooltip,Alert
 } from 'antd';
 
 import axios from 'axios'
 import moment from 'moment';
 
-const MyCommentsList = ({comments,onDelete}) => (
+const MyCommentsList = ({comments}) => (
     <List
         dataSource={comments}
         header={`${comments.length} ${comments.length > 1 ? 'Post' : 'Posts'}`}
         itemLayout="horizontal"
         renderItem={item => (
-            <List.Item key={item.id} 
-                actions={[
-                    <Popconfirm onConfirm={(event) => onDelete(item.idComment)} title="Are you sure？" icon={<Icon type="question-circle-o" style={{ color: 'red' }} />}>
-                                <Button type="danger" size="small" icon="delete">Delete</Button>
-                            </Popconfirm>
-                        ]} 
-            >
+            <List.Item key={item.id}>
                 <List.Item.Meta
                     avatar={<Avatar src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png" />}
                     title={item.author}
@@ -38,21 +32,20 @@ export default class CommentsListUser extends Component {
         this.state = {
             comments: [],
         }
-        this.onDelete = this.onDelete.bind(this)
     }
     
 
     componentDidMount() {
         var params = new URLSearchParams();
-        params.append("key", this.props.getValues().Key);
+        params.append("idAuthor", this.props.user.idUser);
         var request = {
             params: params
         };
-        axios.get('http://localhost:8080/Twitter/userComments', request)
+        axios.get('http://localhost:8080/Twitter/CommentsAuthor', request)
             .then(response => {
+                console.log(response.data)
                 if (response.data.code === -1) {
-                    console.log(response.data)
-                    const comentaires = response.data.Comments
+                    const comentaires = response.data.comments
                     var cms = comentaires.map((comment) => { 
                         return { author: comment.nom + " " + comment.prenom, 
                             content: comment.comment, 
@@ -66,24 +59,6 @@ export default class CommentsListUser extends Component {
             .catch(error => {
                 alert('erreur')
             });   
-    }
-
-    onDelete(id){
-        var params = new URLSearchParams();
-        params.append("key", this.props.getValues().Key);
-        params.append("id", id);
-        var request = {
-            params: params
-        };
-        axios.get('http://localhost:8080/Twitter/removeComment', request)
-            .then(response => {
-                if (response.data.code === -1) {
-                    this.setState({ comments: this.state.comments.filter((item) => { return item.idComment !== id })})
-                }
-            })
-            .catch(error => {
-                alert('erreur')
-            });  
     }
 
     render() {

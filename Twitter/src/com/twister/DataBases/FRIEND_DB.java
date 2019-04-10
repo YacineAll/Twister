@@ -14,7 +14,8 @@ import org.json.JSONObject;
 public class FRIEND_DB {
 
 	private static final String QUERY_IS_FRIEND = "SELECT * FROM `FRIEND` WHERE id_user = ? and id_Friend = ? ;";
-	private static final String LISTE_FRIEND = "SELECT * FROM `FRIEND` WHERE id_user=? ;";
+	private static final String LISTE_FRIEND = "SELECT * FROM `FRIEND` WHERE id_user=?;";
+	private static final String REMOVE_FRIEND = "DELETE FROM `FRIEND` WHERE (id_user=? and id_Friend=?) or (id_user=? and id_Friend=?) ";
 
 	/**
 	 * Ajout une ligne dans la base de donne Friend qui a comme attribut
@@ -29,11 +30,13 @@ public class FRIEND_DB {
 	 */
 	public static boolean addFriend(int idUser, int idFriend, String date) throws SQLException {
 		Connection connexion = DataBase.getMySQLConnection();
-		String query = "INSERT INTO `FRIEND` VALUES ('" + idUser + "','" + idFriend + "','" + date + "')";
+		String query1 = "INSERT INTO `FRIEND` VALUES ('" + idUser + "','" + idFriend + "','" + date + "')";
+		String query2 = "INSERT INTO `FRIEND` VALUES ('" + idFriend + "','" + idUser + "','" + date + "')";
 
 		Statement st = connexion.createStatement();
 
-		st.executeUpdate(query);
+		st.executeUpdate(query1);
+		st.executeUpdate(query2);
 
 		st.close();
 		connexion.close();
@@ -52,13 +55,18 @@ public class FRIEND_DB {
 	 */
 	public static boolean removeFriend(int idUser, int idFriend) throws SQLException {
 		Connection connexion = DataBase.getMySQLConnection();
-		String query = "DELETE FROM `FRIEND` WHERE `id_Friend`= \"" + idFriend + "\"";
 
-		Statement st = connexion.createStatement();
+		PreparedStatement ps = connexion.prepareStatement(REMOVE_FRIEND);
+		ps.setInt(1, idUser);
+		ps.setInt(2, idFriend);
+		
+		ps.setInt(3, idFriend);
+		ps.setInt(4, idUser);
+		
+		
+		ps.executeUpdate();
 
-		st.executeUpdate(query);
-
-		st.close();
+		ps.close();
 		connexion.close();
 		return true;
 	}
@@ -76,7 +84,7 @@ public class FRIEND_DB {
 	public static boolean isFriend(int id_user, int id_friend) throws SQLException {
 		Connection connexion = DataBase.getMySQLConnection();
 		PreparedStatement ps = connexion.prepareStatement(QUERY_IS_FRIEND);
-
+		
 		ps.setInt(1, id_user);
 		ps.setInt(2, id_friend);
 

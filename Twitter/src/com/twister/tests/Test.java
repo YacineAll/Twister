@@ -44,7 +44,9 @@ public class Test {
 	public static void main(String args[]) throws JSONException {
 		
 
-////		
+
+		
+		System.out.println(Friend.listeFriendId("37"));
 //	
 //		
 ////		// créer un utilisateur1

@@ -1,6 +1,6 @@
 import React, {Component} from 'react'
 import {
-    List, Avatar, Popconfirm, Button, Icon, Alert} from 'antd';
+    List, Avatar, Alert} from 'antd';
 
 import axios from 'axios'
 
@@ -12,12 +12,6 @@ const MyFriendsList = ({ friends, onDelete }) => (
         renderItem={item => (
             <List.Item key={item.id}>
                 <List.Item.Meta
-                    actions={[
-                        <Popconfirm onConfirm={(event) => onDelete(item.idComment)} title="Are you sure？" icon={<Icon type="question-circle-o" style={{ color: 'red' }} />}>
-                            <Button type="danger" size="small" icon="user-delete">Delete</Button>
-                        </Popconfirm>,
-                        <span></span>
-                    ]}
                     avatar={<Avatar src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png" />}
                     title={item.name}
                 />
@@ -33,11 +27,11 @@ export default class FriendsListsUser extends Component {
 
     componentDidMount() {
         var params = new URLSearchParams();
-        params.append("key", this.props.getValues().Key);
+        params.append("idUser", this.props.user.idUser);
         var request = {
             params: params
         };
-        axios.get('http://localhost:8080/Twitter/listerFriends', request)
+        axios.get('http://localhost:8080/Twitter/ListFriendsID', request)
             .then(response => {
                 console.log(response.data)
                 if (response.data.code === -1) {
