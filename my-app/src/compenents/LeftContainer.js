@@ -14,7 +14,8 @@ export default class LeftContainer extends Component {
     
     
     render() {
-        var nb = this.props.getNumberOfComments()
+        var nbComments = this.props.getNumberOfComments()
+        var nbFollowers = this.props.getNumberOfFollowrs()
         return (
             <div className="container-fluid">
                 <div style={{ background: '#ECECEC', padding: '30px' }}>
@@ -31,9 +32,9 @@ export default class LeftContainer extends Component {
                     <p>sex : {this.props.sex}</p>
                     <Row gutter={16}>
                         <Col span={12}>
-                                <Statistic title="Tweets" value={nb} />
+                                <Statistic title="Tweets" value={nbComments} />
                         </Col> <Col span={12}>
-                            <Statistic title="Followers" value={0}/>
+                                <Statistic title="Followers" value={nbFollowers}/>
                         </Col>
                     </Row>
                     </Card>

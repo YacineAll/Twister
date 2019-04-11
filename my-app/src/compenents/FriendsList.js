@@ -44,7 +44,6 @@ export default class FriendsLists extends Component {
         };
         axios.get('http://localhost:8080/Twitter/listerFriends', request)
             .then(response => {
-                console.log(response.data)
                 if (response.data.code === -1) {
                     const Myfriends = response.data.amis
                     var cms = Myfriends.map((friend) => {
@@ -53,7 +52,8 @@ export default class FriendsLists extends Component {
                              idFriend: friend.id,  
                             } 
                         })
-                    this.setState({ friends: cms })
+                    this.setState({ friends: cms })                    
+                    this.props.setAddFollowrs(this.state.friends.length)                     
                 }
             })
             .catch(error => {
@@ -72,6 +72,7 @@ export default class FriendsLists extends Component {
             .then(response => {
                 if (response.data.code === -1) {
                     this.setState({ friends: this.state.friends.filter((item) => { return item.idFriend !== id }) })
+                    this.props.setAddFollowrs(this.state.friends.length)                    
                 }
             })
             .catch(error => {

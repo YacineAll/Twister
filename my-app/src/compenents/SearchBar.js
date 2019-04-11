@@ -37,7 +37,6 @@ export default class SearchBar extends Component{
                         DateNaiss: user.DateNaiss,
                         Sex:user.Sex,
                         Depuis: user.Depuis
-
                     }})
                 } 
             })

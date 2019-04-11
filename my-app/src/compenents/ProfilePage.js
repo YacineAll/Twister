@@ -65,7 +65,7 @@ export default class UserPage extends Component {
                     <Col span={12}><DescriptionItem title="Sex" content={this.props.getValues().Sex} /></Col>
                 </Row>
             </div>,  
-        Friends: <FriendsLists getValues={this.props.getValues} ></FriendsLists>,
+        Friends: <FriendsLists setAddFollowrs={this.props.setAddFollowrs} getValues={this.props.getValues} ></FriendsLists>,
         Comments:<CommentsList getValues={this.props.getValues}></CommentsList>,
     };
     state = {

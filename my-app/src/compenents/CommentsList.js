@@ -51,7 +51,6 @@ export default class CommentsList extends Component {
         axios.get('http://localhost:8080/Twitter/userComments', request)
             .then(response => {
                 if (response.data.code === -1) {
-                    console.log(response.data)
                     const comentaires = response.data.Comments
                     var cms = comentaires.map((comment) => { 
                         return { author: comment.nom + " " + comment.prenom, 
@@ -79,6 +78,7 @@ export default class CommentsList extends Component {
             .then(response => {
                 if (response.data.code === -1) {
                     this.setState({ comments: this.state.comments.filter((item) => { return item.idComment !== id })})
+                    this.props.setAddFollowrs(this.comments.length)
                 }
             })
             .catch(error => {

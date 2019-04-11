@@ -17,16 +17,14 @@ export default class Mur extends Component {
         this.state={
             current:'mur',
             numberOfcomments:0,
-            userName: this.props.getValues().prenom,
-            userLastName: this.props.getValues().nom,
-            sex: this.props.getValues().Sex,
-            DateNaiss: this.props.getValues().DateNaiss,
-            Depuis: this.props.getValues().Depuis,
+            numberOfFollowers: 0,
             User:null
         }
         this.setCurrentPage = this.setCurrentPage.bind(this)
         this.setAddComments = this.setAddComments.bind(this)
         this.getNumberOfComments = this.getNumberOfComments.bind(this)
+        this.setAddFollowrs = this.setAddFollowrs.bind(this)
+        this.getNumberOfFollowrs = this.getNumberOfFollowrs.bind(this)
         this.goToProfile = this.goToProfile.bind(this)
     }
     
@@ -36,18 +34,31 @@ export default class Mur extends Component {
     }
     
 
-    setAddComments(){
-        var number = this.state.numberOfcomments + 1
-        this.setState({ numberOfcomments: number})
+    setAddComments(nbComments){
+        this.setState({ numberOfcomments: nbComments})
+    }
+
+    setAddFollowrs(nbFollowers) {
+        this.setState({ numberOfFollowers: nbFollowers })
+    }
+
+    
+    getNumberOfFollowrs() {
+        return this.state.numberOfFollowers
+    }
+
+
+    getNumberOfComments() {
+        return this.state.numberOfcomments
     }
 
     goToProfile(user){
+        if (parseInt(user.idUser) === this.props.getValues().ID){
+            this.setCurrentPage("ProfilePage")
+            return 
+        }
         this.setState({ User: user})
         this.setCurrentPage("UserPage")
-    }
-    
-    getNumberOfComments() {
-        return this.state.numberOfcomments
     }
     renderAffiche(){
         switch (this.state.current) {
@@ -55,7 +66,8 @@ export default class Mur extends Component {
                 return (
                     <PageProfile
                         setCurrentPage={this.setCurrentPage}
-                        getValues={this.props.getValues}                        
+                        getValues={this.props.getValues}
+                        setAddFollowrs={this.setAddFollowrs}                   
                     >
                     </PageProfile>
                 );
@@ -85,14 +97,15 @@ export default class Mur extends Component {
                                 </Col>
                                 <Col span={6} push={6}>
                                     <RightContainer
-                                        userName={this.state.userName}
+                                        userName={this.props.getValues().prenom +" "+ this.props.getValues().nom}
                                     ></RightContainer>
                                 </Col>
                                 <Col span={6} pull={18}>
                                     <LeftContainer 
                                         setCurrentPage={this.setCurrentPage}
                                         getNumberOfComments={this.getNumberOfComments}
-                                        userName={this.state.userName}
+                                        getNumberOfFollowrs={this.getNumberOfFollowrs}
+                                        userName={this.props.getValues().prenom + " " + this.props.getValues().nom}                                        
                                         sex={this.state.sex}                  
                                     >
                                     </LeftContainer>

@@ -68,6 +68,7 @@ export default class CenterContainer extends Component {
                                 cms = cms.concat(fc)
                                 const sorted = cms.sort((a, b) => { return (b.datetime > a.datetime) ? -1 : 1 })
                                 this.setState({ comments: sorted })
+                                this.props.setAddComments(this.state.comments.length)
                             }else{
                                 const sorted = cms.sort((a, b) => { return (b.datetime > a.datetime) ? -1 : 1 })
                                 this.setState({ comments: sorted })
@@ -119,13 +120,14 @@ export default class CenterContainer extends Component {
                                 ...this.state.comments,
                             ],
                         });
+                        this.props.setAddComments(this.state.comments.length)
                     }
                 })
                 .catch(error => {
                     alert('erreur')
                 });   
         }, 500);
-        this.props.setAddComments()
+        
     }
 
     handleChange = (e) => {
