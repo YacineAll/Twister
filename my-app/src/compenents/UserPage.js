@@ -5,7 +5,7 @@ import axios from 'axios'
 import Woman from '../assets/images/woman.png'
 import Men from '../assets/images/man.png'
 
-import { Card, Avatar, PageHeader, Row, Button , Col, Divider } from 'antd';
+import { Card, Avatar, message, PageHeader, Row, Button , Col, Divider } from 'antd';
 
 import FriendsListsUser from './FriendsListsUser';
 import CommentsListUser from './CommentsListUser';
@@ -32,6 +32,11 @@ const DescriptionItem = ({ title, content }) => (
         {content}
     </div>
 );
+
+
+const success = () => {
+    message.success('friend added');
+};
 
 const tabListNoTitle = [{
     key: 'Profile',
@@ -86,6 +91,7 @@ export default class UserPage extends Component {
     
 
     addFriend(){
+        this.props.addFriend(user.idUser,user.nom+" "+user.prenom)
         var params = new URLSearchParams();
         params.append("key", this.props.getValues().Key);
         params.append("id_friend", user.idUser);
@@ -95,9 +101,9 @@ export default class UserPage extends Component {
         };
         axios.get('http://localhost:8080/Twitter/AddFriend', request)
         .then(response => {
-            console.log(response.data)
             if (response.data.code === -1) {
-                }
+                return success
+            }
             })
             .catch(error => {
                 alert('erreur')
@@ -115,13 +121,14 @@ export default class UserPage extends Component {
 
 
     render() {
+        const extras = this.props.afficheButton ? [] : [<Button key="1" type="primary" icon="user-add" onClick={(event) => this.addFriend()}>Add</Button>]  
         return (
             <div>
                 <PageHeader
                     onBack={() => this.props.setCurrentPage('mur')}
                     title={this.props.user.nom + " " + this.props.user.prenom}
                     subTitle="Page Profile"
-                    extra={[<Button key="1" type="primary" icon="user-add" onClick={(event)=> this.addFriend()}>Add</Button>]}
+                    extra={extras}
                 />
                 <Card
                     style={{ width: '100%' }}

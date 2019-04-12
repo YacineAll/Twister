@@ -60,6 +60,7 @@ export default class CommentsList extends Component {
 
                     const sorted = cms.sort((a, b) => { return (b.datetime > a.datetime) ? -1 : 1 })
                     this.setState({ comments: sorted })
+                    this.props.updateNbComments(sorted.length)
                 }
             })
             .catch(error => {
@@ -78,11 +79,11 @@ export default class CommentsList extends Component {
             .then(response => {
                 if (response.data.code === -1) {
                     this.setState({ comments: this.state.comments.filter((item) => { return item.idComment !== id })})
-                    this.props.setAddFollowrs(this.comments.length)
+                    this.props.updateNbComments(this.state.comments.length)
                 }
             })
             .catch(error => {
-                alert('erreur')
+                alert(error)
             });  
     }
 

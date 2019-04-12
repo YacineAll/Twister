@@ -40,7 +40,8 @@ const DescriptionItem = ({ title, content }) => (
     </div>
 );
 
-export default class UserPage extends Component {
+export default class PageProfile extends Component {
+    
     contentListNoTitle = {
         Profile:   
             <div className="container-fluid">
@@ -65,8 +66,16 @@ export default class UserPage extends Component {
                     <Col span={12}><DescriptionItem title="Sex" content={this.props.getValues().Sex} /></Col>
                 </Row>
             </div>,  
-        Friends: <FriendsLists setAddFollowrs={this.props.setAddFollowrs} getValues={this.props.getValues} ></FriendsLists>,
-        Comments:<CommentsList getValues={this.props.getValues}></CommentsList>,
+        Friends:    <FriendsLists 
+                        deleteFriend={this.props.deleteFriend} 
+                        getValues={this.props.getValues} 
+                        getFriends={this.props.getFriends}
+                    >
+                    </FriendsLists>,
+        Comments:   <CommentsList 
+                        updateNbComments={this.props.updateNbComments} 
+                        getValues={this.props.getValues}
+                    ></CommentsList>,
     };
     state = {
         noTitleKey: 'Profile',

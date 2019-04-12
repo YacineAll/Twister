@@ -4,6 +4,9 @@ import {
     Comment, Icon, Tooltip, Avatar, List,Form,Button,Input
 } from 'antd';
 import moment from 'moment';
+import axios from 'axios';
+
+
 
 const Replies = ({ comments }) => (
     <List
@@ -16,13 +19,31 @@ const Replies = ({ comments }) => (
 
 
 export default class Post extends Component {
-    state = {
-        likes: 0,
-        dislikes: 0,
-        action: null,
-        comments: [],
-        submitting: false,
-        value: '',
+    constructor(props) {
+        super(props)
+        this.state = {
+            likes: 0,
+            dislikes: 0,
+            action: null,
+            comments: [],
+            submitting: false,
+            value: '',
+        }
+        this.handleSubmit = this.handleSubmit.bind(this)
+    }
+    
+    componentDidMount(){
+        const replies = this.props.replies;
+        var cms = replies.map((comment) => {
+            return {
+                author: comment.nom + " " + comment.prenom,
+                content: comment.comment, 
+                datetime: moment(comment.date, "YYYY/MM/DD HH:mm:ss").fromNow(),    
+                avatar: 'https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png',
+            }
+        })
+        const sorted = cms.sort((a, b) => { return (b.datetime > a.datetime) ? 1 : -1 })
+        this.setState({ comments: sorted })
     }
 
 
@@ -36,19 +57,34 @@ export default class Post extends Component {
         });
 
         setTimeout(() => {
-            this.setState({
-                submitting: false,
-                value: '',
-                comments: [
-                    {
-                        author: this.props.author,
-                        avatar: 'https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png',
-                        content: <p>{this.state.value}</p>,
-                        datetime: moment(new Date(), "YYYY/MM/DD HH:mm:ss").fromNow(),
-                    },
-                    ...this.state.comments,
-                ],
-            });
+            var params = new URLSearchParams();
+            params.append("key", this.props.cle);
+            params.append("text", this.state.value);
+            params.append("idComment", this.props.idComment);
+            var request = {
+                params: params
+            };
+            axios.get('http://localhost:8080/Twitter//addReply', request)
+                .then(response => {
+                    if (response.data.code === -1) {
+                        this.setState({
+                            submitting: false,
+                            value: '',
+                            comments: [
+                                {
+                                    author: this.props.author,
+                                    avatar: 'https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png',
+                                    content: <p>{this.state.value}</p>,
+                                    datetime: moment(response.data.date, "YYYY/MM/DD HH:mm:ss").fromNow(),
+                                },
+                                ...this.state.comments,
+                            ],
+                        });
+                    }
+                })
+                .catch(error => {
+                    alert('erreur')
+                });
         }, 100);
     }
 

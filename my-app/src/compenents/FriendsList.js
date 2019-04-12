@@ -37,28 +37,7 @@ export default class FriendsLists extends Component {
     
 
     componentDidMount() {
-        var params = new URLSearchParams();
-        params.append("key", this.props.getValues().Key);
-        var request = {
-            params: params
-        };
-        axios.get('http://localhost:8080/Twitter/listerFriends', request)
-            .then(response => {
-                if (response.data.code === -1) {
-                    const Myfriends = response.data.amis
-                    var cms = Myfriends.map((friend) => {
-                         return { 
-                             name: friend.nom + " " + friend.prenom, 
-                             idFriend: friend.id,  
-                            } 
-                        })
-                    this.setState({ friends: cms })                    
-                    this.props.setAddFollowrs(this.state.friends.length)                     
-                }
-            })
-            .catch(error => {
-                alert('erreur')
-            });   
+        this.setState({ friends: this.props.getFriends() })                    
     }
 
     onDelete(id) {
@@ -69,10 +48,10 @@ export default class FriendsLists extends Component {
             params: params
         };
         axios.get('http://localhost:8080/Twitter/removeFriend', request)
-            .then(response => {
-                if (response.data.code === -1) {
+        .then(response => {
+            if (response.data.code === -1) {
+                    this.props.deleteFriend(id)
                     this.setState({ friends: this.state.friends.filter((item) => { return item.idFriend !== id }) })
-                    this.props.setAddFollowrs(this.state.friends.length)                    
                 }
             })
             .catch(error => {

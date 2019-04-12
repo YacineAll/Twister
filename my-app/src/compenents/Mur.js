@@ -3,6 +3,8 @@ import React, { Component } from "react"
 
 import SearchBar from './SearchBar';
 import { Row, Col} from 'antd';
+import axios from 'axios'
+
 
 import RightContainer from "./RightContainer"
 import LeftContainer from "./LeftContainer"
@@ -18,27 +20,58 @@ export default class Mur extends Component {
             current:'mur',
             numberOfcomments:0,
             numberOfFollowers: 0,
+            friends:[],
             User:null
         }
         this.setCurrentPage = this.setCurrentPage.bind(this)
-        this.setAddComments = this.setAddComments.bind(this)
+        this.updateNbComments = this.updateNbComments.bind(this)
+        this.updateNbFollowrs = this.updateNbFollowrs.bind(this)
         this.getNumberOfComments = this.getNumberOfComments.bind(this)
-        this.setAddFollowrs = this.setAddFollowrs.bind(this)
         this.getNumberOfFollowrs = this.getNumberOfFollowrs.bind(this)
         this.goToProfile = this.goToProfile.bind(this)
+        this.addFriend = this.addFriend.bind(this)
+        this.deleteFriend = this.deleteFriend.bind(this)
+        this.getFriends = this.getFriends.bind(this)
     }
     
+
+
+    
+    componentDidMount() {
+        var params = new URLSearchParams();
+        params.append("key", this.props.getValues().Key);
+        var request = {
+            params: params
+        };
+        axios.get('http://localhost:8080/Twitter/listerFriends', request)
+            .then(response => {
+                if (response.data.code === -1) {
+                    const Myfriends = response.data.amis
+                    var cms = Myfriends.map((friend) => {
+                        return {
+                            name: friend.nom + " " + friend.prenom,
+                            idFriend: friend.id,
+                        }
+                    })
+                    this.setState({ friends: cms })
+                    this.updateNbFollowrs(this.state.friends.length)
+                }
+            })
+            .catch(error => {
+                alert(error)
+            });
+    }
 
     setCurrentPage(page){
         this.setState({current: page})
     }
     
 
-    setAddComments(nbComments){
+    updateNbComments(nbComments){
         this.setState({ numberOfcomments: nbComments})
     }
 
-    setAddFollowrs(nbFollowers) {
+    updateNbFollowrs(nbFollowers) {
         this.setState({ numberOfFollowers: nbFollowers })
     }
 
@@ -47,6 +80,9 @@ export default class Mur extends Component {
         return this.state.numberOfFollowers
     }
 
+    getFriends(){
+        return this.state.friends
+    }
 
     getNumberOfComments() {
         return this.state.numberOfcomments
@@ -60,23 +96,42 @@ export default class Mur extends Component {
         this.setState({ User: user})
         this.setCurrentPage("UserPage")
     }
+
+
+    addFriend(idFriend,name){
+        this.setState({ friends: [...this.state.friends, { idFriend: parseInt(idFriend), name: name }] });
+        this.updateNbFollowrs(this.state.friends.length+1)
+    }
+    
+    deleteFriend(idFriend) {
+        const f = this.state.friends.filter((elem)=> {return elem.idFriend !== idFriend } )  
+        this.setState({ friends: f })
+        this.updateNbFollowrs(this.state.friends.length)
+    }
+
+
     renderAffiche(){
+        const idFriends = this.state.friends.map((friend) =>  friend.idFriend )
         switch (this.state.current) {
             case "ProfilePage":
                 return (
                     <PageProfile
                         setCurrentPage={this.setCurrentPage}
                         getValues={this.props.getValues}
-                        setAddFollowrs={this.setAddFollowrs}                   
+                        updateNbComments={this.updateNbComments}
+                        deleteFriend={this.deleteFriend}  
+                        getFriends={this.getFriends}            
                     >
                     </PageProfile>
                 );
             case "UserPage":
-                    return(
+            return (
                         <UserPage 
                             setCurrentPage={this.setCurrentPage}
                             getValues={this.props.getValues} 
                             user={this.state.User}
+                            addFriend={this.addFriend}
+                            afficheButton={idFriends.includes(parseInt(this.state.User.idUser))}
                         />
                     )
             default:
@@ -84,12 +139,12 @@ export default class Mur extends Component {
                     <div className="container-fluid" >
                         <div className="container-fluid">
                             <Row align="top" justify="center">
-                                <SearchBar goToProfile={this.goToProfile} setLogout={this.props.setLogout} getValues={this.props.getValues} ></SearchBar>
+                                <SearchBar goToProfile={this.goToProfile}  setLogout={this.props.setLogout} getValues={this.props.getValues} ></SearchBar>
                             </Row>
                             <Row style={{ "padding": "0px" }} type="flex" justify="center" className="container-fluid">
                                 <Col span={12} push={6}>
                                     <CenterContainer 
-                                        setAddComments={this.setAddComments}
+                                        updateNbComments={this.updateNbComments}
                                         userName={this.state.userName}
                                         getValues={this.props.getValues}
                                     >

@@ -9,7 +9,7 @@ import axios from 'axios';
 
 const TextArea = Input.TextArea;
 
-const CommentList = ({ comments }) => (
+const CommentList = ({ comments}) => (
     <List
         dataSource={comments}
         header={`${comments.length} ${comments.length > 1 ? 'Post' : 'Posts'}`}
@@ -58,24 +58,39 @@ export default class CenterContainer extends Component {
             .then(response => {
                 if (response.data.code === -1) {
                     const comentaires = response.data.Comments
-                    var cms = comentaires.map((comment) => {return {author: comment.nom + " " + comment.prenom,content: comment.comment,datetime: moment(comment.date, "YYYY/MM/DD HH:mm:ss").fromNow()}})
+                    var cms = comentaires.map((comment) => { 
+                        return { 
+                            author: comment.nom + " " + comment.prenom, 
+                            content: comment.comment, datetime: moment(comment.date, "YYYY/MM/DD HH:mm:ss").fromNow(), 
+                            replies: comment.replies, 
+                            idComment: comment.id,
+                            cle: this.props.getValues().Key,
+                        }})
+                    this.props.updateNbComments(cms.length)
                     
                     axios.get('http://localhost:8080/Twitter/friendsComments', request)
                         .then(response => {
                             if (response.data.code === -1) {
                                 const friendsComments = response.data.FriendsComments
-                                const fc = friendsComments.map((comment) => {return {author: comment.nom + " " + comment.prenom,content: comment.comment,datetime: moment(comment.date, "YYYY/MM/DD HH:mm:ss").fromNow()}})
+                                const fc = friendsComments.map((comment) => {
+                                    return {
+                                        author: comment.nom + " " + comment.prenom,
+                                        content: comment.comment,
+                                        datetime: moment(comment.date, "YYYY/MM/DD HH:mm:ss").fromNow(),
+                                        replies: comment.replies,
+                                        idComment:comment.id,
+                                        cle: this.props.getValues().Key,
+                                        }})
                                 cms = cms.concat(fc)
                                 const sorted = cms.sort((a, b) => { return (b.datetime > a.datetime) ? -1 : 1 })
                                 this.setState({ comments: sorted })
-                                this.props.setAddComments(this.state.comments.length)
                             }else{
                                 const sorted = cms.sort((a, b) => { return (b.datetime > a.datetime) ? -1 : 1 })
                                 this.setState({ comments: sorted })
                             }
                         })
                         .catch(error => {
-                            alert('erreur')
+                            alert(error)
                         });   
                     
                 }
@@ -116,11 +131,14 @@ export default class CenterContainer extends Component {
                                     avatar: 'https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png',
                                     content: <p>{this.state.value}</p>,
                                     datetime: moment(response.data.date, "YYYY/MM/DD HH:mm:ss").fromNow(),
+                                    idComment: response.data.idComment,
+                                    replies: [],
+                                    cle: this.props.getValues().Key,
                                 },
                                 ...this.state.comments,
                             ],
                         });
-                        this.props.setAddComments(this.state.comments.length)
+                        this.props.updateNbComments(this.state.comments.length)
                     }
                 })
                 .catch(error => {
