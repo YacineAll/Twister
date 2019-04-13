@@ -13,6 +13,7 @@ import org.json.JSONObject;
 
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoCursor;
+import com.mongodb.client.model.Updates;
 import com.twister.tools.DateTools;
 
 /**
@@ -36,7 +37,7 @@ public class COMMMENT_DB {
 		MongoCollection<org.bson.Document> col = MongoDB.getConnectionToMongoDataBase();
 
 		MongoCursor<Document> mCursur = col.find().iterator();
-
+		System.out.println(col.count());
 		try {
 			while (mCursur.hasNext()) {
 				Document document = (Document) mCursur.next();
@@ -47,6 +48,8 @@ public class COMMMENT_DB {
 				jse.put("prenom", document.getString("prenom"));
 				jse.put("date", document.getDate("date"));
 				jse.put("comment", document.getString("comment"));
+				jse.put("replies", document.getList("replies", ArrayList.class));
+		
 				System.out.println(jse);
 
 			}
@@ -72,7 +75,8 @@ public class COMMMENT_DB {
 	 */
 	public static boolean addComment(int idUser, String nom, String prenom, String comment,Date date) {
 		MongoCollection<org.bson.Document> col = MongoDB.getConnectionToMongoDataBase();
-
+		
+		
 		org.bson.Document doc = new org.bson.Document();
 
 		
@@ -83,9 +87,37 @@ public class COMMMENT_DB {
 		doc.append("prenom", prenom);
 		doc.append("date", date);
 		doc.append("comment", comment);
+		doc.append("replies", new ArrayList<>());
 
 		col.insertOne(doc);
 
+		MongoDB.closeConnection();
+
+		return true;
+	}
+
+	
+	public static boolean addReplys(int idUser, String nom, String prenom, String comment,Date date,int idComment) {
+		MongoCollection<org.bson.Document> col = MongoDB.getConnectionToMongoDataBase();
+		
+		
+		org.bson.Document reply = new org.bson.Document();
+		reply.append("id", id++);
+		reply.append("author_id", idUser);
+		reply.append("nom", nom);
+		reply.append("prenom", prenom);
+		reply.append("date", date);
+		reply.append("comment", comment);
+		
+		
+
+
+		org.bson.Document docS = new org.bson.Document();
+		docS.append("id", idComment);
+		col.updateOne(docS, Updates.addToSet("replies", reply));
+		
+		
+		
 		MongoDB.closeConnection();
 
 		return true;
@@ -145,7 +177,31 @@ public class COMMMENT_DB {
 			jse.put("prenom", document.getString("prenom"));
 			jse.put("date", date2);
 			jse.put("comment", document.getString("comment"));
-
+			
+			@SuppressWarnings("unchecked")
+			ArrayList<Document> replies = (ArrayList<Document>)document.get("replies");
+			ArrayList<JSONObject> repliesJS = new ArrayList<>();
+			
+			for (Document reply : replies) {
+				String dateR = reply.getDate("date").toString();
+				try {
+					dateR = new SimpleDateFormat("YYYY-MM-dd HH:mm:ss").format(new SimpleDateFormat("EEE MMM dd HH:mm:ss ZZZ yyyy", Locale.ENGLISH).parse(dateR));
+				} catch (ParseException e) {
+					e.printStackTrace();
+				}
+				JSONObject replyJS = new JSONObject();
+				replyJS.put("id", reply.getInteger("id"));
+				replyJS.put("author_id", reply.getInteger("author_id"));
+				replyJS.put("nom", reply.getString("nom"));
+				replyJS.put("prenom", reply.getString("prenom"));
+				replyJS.put("date", dateR);
+				replyJS.put("comment", reply.getString("comment"));
+				
+				repliesJS.add(replyJS);
+				
+			}
+			jse.put("replies",repliesJS);
+			
 			listJson.add(jse);
 		}
 
@@ -190,7 +246,8 @@ public class COMMMENT_DB {
 			jse.put("prenom", document.getString("prenom"));
 			jse.put("date", date2);
 			jse.put("comment", document.getString("comment"));
-
+			jse.put("replies", document.getList("replies", ArrayList.class));
+			
 			listJson.add(jse);
 		}
 
@@ -224,6 +281,7 @@ public class COMMMENT_DB {
 				jse.put("prenom", document.getString("prenom"));
 				jse.put("date", date2);
 				jse.put("comment", document.getString("comment"));
+				jse.put("replies", document.getList("replies", ArrayList.class));
 				listJson.add(jse);
 			}
 		} catch (JSONException e) {
@@ -263,6 +321,10 @@ public class COMMMENT_DB {
 
 		MongoDB.closeConnection();
 		return max_id;
+	}
+	
+	public static int getId() {
+		return id;
 	}
 
 	public static void clearAllComment() {

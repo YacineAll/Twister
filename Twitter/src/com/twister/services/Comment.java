@@ -43,8 +43,48 @@ public class Comment {
 			
 			JSONResponse jr = JSONResponse.serviceAccepted();
 			jr.put("date",str);
+			jr.put("idComment", COMMMENT_DB.getId());
 
 			return COMMMENT_DB.addComment(idUser, nameUser.getString("nom"), nameUser.getString("prenom"), text,date)
+					? jr
+					: JSONResponse.serviceRefused("erreur inatendue", 3);
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return JSONResponse.serviceRefused("Erreur sql {addComment}", 2000);
+		} catch (JSONException e) {
+			e.printStackTrace();
+			return JSONResponse.serviceRefused("JSON PROBLEM IN {ADD COMMENT}", 100000);
+		}
+	}
+	
+	
+	public static JSONObject addReply(String key, String text,String idComment) {
+		
+		if (text == null | key == null) {
+			return JSONResponse.serviceRefused("Erreur de saisie", 1);
+		}
+
+		try {
+			if (!SESSION_DB.estDejaConnecte(key)) {
+				return JSONResponse.serviceRefused("Vous n'etes pas connectee", 2);
+			}
+
+			int idUser = SESSION_DB.getIdUserOfKey(key);
+			JSONObject nameUser = USER_DB.getNameUser(idUser);
+			
+			Date date = new Date();
+			String str = new SimpleDateFormat("YYYY-MM/dd HH:mm:ss").format(date);
+			try {
+				str = new SimpleDateFormat("YYYY-MM-dd HH:mm:ss").format(new SimpleDateFormat("EEE MMM dd HH:mm:ss ZZZ yyyy", Locale.ENGLISH).parse(date.toString()));
+			} catch (ParseException e) {
+				e.printStackTrace();
+			}
+			
+			JSONResponse jr = JSONResponse.serviceAccepted();
+			jr.put("date",str);
+
+			return COMMMENT_DB.addReplys(idUser, nameUser.getString("nom"), nameUser.getString("prenom"), text,date,Integer.parseInt(idComment))
 					? jr
 					: JSONResponse.serviceRefused("erreur inatendue", 3);
 

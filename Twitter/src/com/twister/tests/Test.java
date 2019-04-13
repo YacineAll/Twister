@@ -1,11 +1,14 @@
 package com.twister.tests;
 
+import java.util.Date;
+
 import org.bson.Document;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import com.twister.DataBases.COMMMENT_DB;
+import com.twister.DataBases.MongoDB;
 import com.twister.services.Comment;
 import com.twister.services.Friend;
 import com.twister.services.Search;
@@ -43,11 +46,15 @@ public class Test {
 
 	public static void main(String args[]) throws JSONException {
 		
-
-
 		
-		System.out.println(Friend.listeFriendId("37"));
-//	
+		MongoDB.mapReduce();
+		COMMMENT_DB.printMongoDB();
+		//COMMMENT_DB.clearAllComment();
+		//System.out.println(COMMMENT_DB.addComment(100, "Yacine", "Ghiles", "je suis la ", new Date()));
+		//System.out.println(COMMMENT_DB.getUserCommentsId_Author(100).get(0).getJSONArray("replies"));
+		//System.out.println(COMMMENT_DB.addReplys(99, "Allouache", "Ghiles", "je suis la", new Date(), 4));
+		//System.out.println(COMMMENT_DB.getUserCommentsId_Author(100).get(0));
+		//System.out.println(COMMMENT_DB.removeComment(100, 1));
 //		
 ////		// créer un utilisateur1
 //		System.out.println("\n------------------*inscription utilisateur1*---------------------");
