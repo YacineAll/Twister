@@ -1,6 +1,6 @@
 import React, {Component} from 'react'
 import {
-    List, Avatar, Popconfirm, Button, Icon, Alert} from 'antd';
+    List, Avatar, Popconfirm, message , Button, Icon, Alert} from 'antd';
 
 import axios from 'axios'
 
@@ -25,7 +25,9 @@ const MyFriendsList = ({ friends, onDelete }) => (
         )}
     />
 );
-
+const success = (m) => {
+    message.success(m, 0.5);
+};
 export default class FriendsLists extends Component {
     constructor(props) {
         super(props)
@@ -52,10 +54,12 @@ export default class FriendsLists extends Component {
             if (response.data.code === -1) {
                     this.props.deleteFriend(id)
                     this.setState({ friends: this.state.friends.filter((item) => { return item.idFriend !== id }) })
+                    console.log(response.data)
+                    return success("friend deleted")
                 }
             })
             .catch(error => {
-                alert('erreur')
+                alert(error)
             });
     }
 

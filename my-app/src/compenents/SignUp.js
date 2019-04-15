@@ -10,7 +10,11 @@ import axios from 'axios';
 const RadioGroup = Radio.Group;
 
 const error = (msg) => {
-    message.error(msg, 10);
+    message.error(msg, 1);
+};
+
+const success = (msg) => {
+    message.success(msg, 0.5);    
 };
 
 class Sign_Up extends Component {
@@ -35,13 +39,14 @@ class Sign_Up extends Component {
                     this.props.setValues(response.data)
                     this.props.getConnected()
                     this.props.setRedirectToFalse()
+                    return success("user added")
                 } else {
                     this.setState({ accept: false })
                     return error(response.data.msg)
                 }
             })
             .catch(error => {
-                alert('erreur')
+                alert(error)
             });
     }
 

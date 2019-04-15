@@ -11,7 +11,9 @@ import LeftContainer from "./LeftContainer"
 import CenterContainer from "./CenterContainer"
 import PageProfile from './ProfilePage'
 import UserPage from './UserPage';
+import CommentSearch from './Comment'
 
+var commentS =  null
 export default class Mur extends Component {
     
     constructor(props) {
@@ -21,7 +23,8 @@ export default class Mur extends Component {
             numberOfcomments:0,
             numberOfFollowers: 0,
             friends:[],
-            User:null
+            User:null,
+            
         }
         this.setCurrentPage = this.setCurrentPage.bind(this)
         this.updateNbComments = this.updateNbComments.bind(this)
@@ -32,6 +35,7 @@ export default class Mur extends Component {
         this.addFriend = this.addFriend.bind(this)
         this.deleteFriend = this.deleteFriend.bind(this)
         this.getFriends = this.getFriends.bind(this)
+        this.goToCommment = this.goToCommment.bind(this)
     }
     
 
@@ -97,6 +101,10 @@ export default class Mur extends Component {
         this.setCurrentPage("UserPage")
     }
 
+    goToCommment(comment){
+        commentS = comment
+        this.setCurrentPage("Comment")
+    }
 
     addFriend(idFriend,name){
         this.setState({ friends: [...this.state.friends, { idFriend: parseInt(idFriend), name: name }] });
@@ -113,6 +121,14 @@ export default class Mur extends Component {
     renderAffiche(){
         const idFriends = this.state.friends.map((friend) =>  friend.idFriend )
         switch (this.state.current) {
+            case "Comment":
+                return (
+                    <CommentSearch
+                        setCurrentPage={this.setCurrentPage}
+                        comment={commentS}
+                    >
+                    </CommentSearch>
+                );
             case "ProfilePage":
                 return (
                     <PageProfile
@@ -139,7 +155,13 @@ export default class Mur extends Component {
                     <div className="container-fluid" >
                         <div className="container-fluid">
                             <Row align="top" justify="center">
-                                <SearchBar goToProfile={this.goToProfile}  setLogout={this.props.setLogout} getValues={this.props.getValues} ></SearchBar>
+                                <SearchBar 
+                                    goToProfile={this.goToProfile}  
+                                    goToCommment={this.goToCommment}
+                                    setLogout={this.props.setLogout} 
+                                    getValues={this.props.getValues} 
+                                    >
+                                </SearchBar>
                             </Row>
                             <Row style={{ "padding": "0px" }} type="flex" justify="center" className="container-fluid">
                                 <Col span={12} push={6}>

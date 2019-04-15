@@ -43,6 +43,25 @@ public class Search {
 	}
 
 
+	public static JSONObject searchCommentsWord(String key,String word) {
+		try {
+			if (!SESSION_DB.estDejaConnecte(key)) {
+				return JSONResponse.serviceRefused("connexion denied", 1);
+			}
+			List<JSONObject> response = COMMMENT_DB.search(word);
+			if(response != null) {
+				JSONResponse jsr = JSONResponse.serviceAccepted();
+				jsr.put("comments",response);
+				return jsr;
+			}
+			return JSONResponse.serviceRefused("word not found", 1);
+		} catch (SQLException e) {
+			return JSONResponse.serviceRefused("Erreur SQL {searchByWord}", 10000);
+		}catch (JSONException e) {
+			e.printStackTrace();
+			return JSONResponse.serviceRefused("Erreur JSON {searchByWord}", 1000);
+		}
+	}
 	
 	/**
 	 * Cherche un amis dans la liste d'amis de l'utilisateur
@@ -179,5 +198,7 @@ public class Search {
 			return JSONResponse.serviceRefused("Erreur JSON {searchUser}", 1000);
 		}
 	}
+	
+	
 
 }

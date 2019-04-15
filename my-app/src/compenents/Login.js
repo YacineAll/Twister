@@ -38,7 +38,7 @@ class Log_in extends Component {
                         }
                     })
                     .catch(error => {
-                      alert('erreur')
+                        alert(error)
                 });
             }
         });

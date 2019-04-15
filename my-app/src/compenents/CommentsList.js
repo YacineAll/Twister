@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import {
-    List, Avatar,  Tooltip,Alert, Popconfirm, Icon, Button
+    List, Avatar, Tooltip, Alert, message, Popconfirm, Icon, Button
 } from 'antd';
 
 import axios from 'axios'
@@ -32,6 +32,9 @@ const MyCommentsList = ({comments,onDelete}) => (
     />
 );
 
+const success = (m) => {
+    message.success(m, 0.5);
+};
 export default class CommentsList extends Component {
     constructor(props) {
         super(props)
@@ -80,6 +83,7 @@ export default class CommentsList extends Component {
                 if (response.data.code === -1) {
                     this.setState({ comments: this.state.comments.filter((item) => { return item.idComment !== id })})
                     this.props.updateNbComments(this.state.comments.length)
+                    return success("comment deleted")
                 }
             })
             .catch(error => {

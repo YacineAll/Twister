@@ -39,7 +39,7 @@ class InlineLogin_ extends Component {
                         }
                     })
                     .catch(error => {
-                        alert('erreur')
+                        alert(error)
                     });
             }
         });

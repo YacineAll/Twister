@@ -33,8 +33,7 @@ export default class FriendsListsUser extends Component {
         };
         axios.get('http://localhost:8080/Twitter/ListFriendsID', request)
             .then(response => {
-                console.log(response.data)
-                if (response.data.code === -1) {
+                 if (response.data.code === -1) {
                     const Myfriends = response.data.amis
                     var cms = Myfriends.map((friend) => {
                          return { 

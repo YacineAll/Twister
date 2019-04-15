@@ -1,11 +1,14 @@
 import React, { Component } from "react"
 
 import {
-    Comment, Icon, Tooltip, Avatar, List,Form,Button,Input
+    Comment, Icon, message, Tooltip, Avatar, List,Form,Button,Input
 } from 'antd';
 import moment from 'moment';
 import axios from 'axios';
 
+const success = (msg) => {
+    message.success(msg, 0.5);
+};
 
 
 const Replies = ({ comments }) => (
@@ -58,7 +61,7 @@ export default class Post extends Component {
 
         setTimeout(() => {
             var params = new URLSearchParams();
-            params.append("key", this.props.cle);
+            params.append("key", this.props.currentUser.Key);
             params.append("text", this.state.value);
             params.append("idComment", this.props.idComment);
             var request = {
@@ -71,19 +74,20 @@ export default class Post extends Component {
                             submitting: false,
                             value: '',
                             comments: [
+                                ...this.state.comments,
                                 {
-                                    author: this.props.author,
+                                    author: this.props.currentUser.nom + " " + this.props.currentUser.prenom,
                                     avatar: 'https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png',
                                     content: <p>{this.state.value}</p>,
                                     datetime: moment(response.data.date, "YYYY/MM/DD HH:mm:ss").fromNow(),
                                 },
-                                ...this.state.comments,
                             ],
                         });
+                        return success("Success for your reply")
                     }
                 })
                 .catch(error => {
-                    alert('erreur')
+                    alert(error)
                 });
         }, 100);
     }

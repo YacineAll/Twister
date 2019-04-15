@@ -4,9 +4,7 @@ import { Button,Icon } from 'antd'
 import axios from 'axios';
 
 
-const IconFont = Icon.createFromIconfontCN({
-    scriptUrl: '//at.alicdn.com/t/font_8d5l8fzk5b87iudi.js',
-});
+//const IconFont = Icon.createFromIconfontCN({scriptUrl: '//at.alicdn.com/t/font_8d5l8fzk5b87iudi.js',});
 
 class Logout  extends Component {
     constructor(props) {
@@ -34,7 +32,7 @@ class Logout  extends Component {
         return (
             <div>
                 <Button style={{ "background": "rgb(0, 21, 41)" }} type="primary" onClick={this.logout} >
-                    <IconFont type="icon-tuichu" style={{ fontSize: '26px'}} />
+                    <Icon type="logout" />
                 </Button>
             </div>
         );

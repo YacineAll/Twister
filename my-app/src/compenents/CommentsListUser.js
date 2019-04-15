@@ -43,7 +43,6 @@ export default class CommentsListUser extends Component {
         };
         axios.get('http://localhost:8080/Twitter/CommentsAuthor', request)
             .then(response => {
-                console.log(response.data)
                 if (response.data.code === -1) {
                     const comentaires = response.data.comments
                     var cms = comentaires.map((comment) => { 

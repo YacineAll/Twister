@@ -1,9 +1,9 @@
 import React, { Component } from "react"
-import { Input, Comment, Avatar, Form,Button, List} from 'antd'
+import { Input, Comment, message , Avatar, Form,Button, List} from 'antd'
 import moment from 'moment';
-import Post from './Post'
 import axios from 'axios';
 
+import Post from './Post'
 
 
 
@@ -37,6 +37,11 @@ const Editor = ({onChange, onSubmit, submitting, value,}) => (
 );
 
 
+const success = () => {
+    message.success('success for your comment',0.5);
+};
+
+
 export default class CenterContainer extends Component {
     constructor(props) {
         super(props)
@@ -64,7 +69,7 @@ export default class CenterContainer extends Component {
                             content: comment.comment, datetime: moment(comment.date, "YYYY/MM/DD HH:mm:ss").fromNow(), 
                             replies: comment.replies, 
                             idComment: comment.id,
-                            cle: this.props.getValues().Key,
+                            currentUser: this.props.getValues(),
                         }})
                     this.props.updateNbComments(cms.length)
                     
@@ -79,7 +84,7 @@ export default class CenterContainer extends Component {
                                         datetime: moment(comment.date, "YYYY/MM/DD HH:mm:ss").fromNow(),
                                         replies: comment.replies,
                                         idComment:comment.id,
-                                        cle: this.props.getValues().Key,
+                                        currentUser: this.props.getValues(),
                                         }})
                                 cms = cms.concat(fc)
                                 const sorted = cms.sort((a, b) => { return (b.datetime > a.datetime) ? -1 : 1 })
@@ -133,16 +138,17 @@ export default class CenterContainer extends Component {
                                     datetime: moment(response.data.date, "YYYY/MM/DD HH:mm:ss").fromNow(),
                                     idComment: response.data.idComment,
                                     replies: [],
-                                    cle: this.props.getValues().Key,
+                                    currentUser: this.props.getValues(),
                                 },
                                 ...this.state.comments,
                             ],
                         });
                         this.props.updateNbComments(this.state.comments.length)
-                    }
+                        return success();
+                    }   
                 })
                 .catch(error => {
-                    alert('erreur')
+                    alert(error)
                 });   
         }, 500);
         

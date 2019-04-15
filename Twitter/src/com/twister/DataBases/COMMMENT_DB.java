@@ -6,11 +6,17 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map.Entry;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 import org.bson.Document;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import com.mongodb.BasicDBObject;
+import com.mongodb.DBCollection;
+import com.mongodb.DBObject;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoCursor;
 import com.mongodb.client.model.Updates;
@@ -37,7 +43,6 @@ public class COMMMENT_DB {
 		MongoCollection<org.bson.Document> col = MongoDB.getConnectionToMongoDataBase();
 
 		MongoCursor<Document> mCursur = col.find().iterator();
-		System.out.println(col.count());
 		try {
 			while (mCursur.hasNext()) {
 				Document document = (Document) mCursur.next();
@@ -90,9 +95,10 @@ public class COMMMENT_DB {
 		doc.append("replies", new ArrayList<>());
 
 		col.insertOne(doc);
-
+		
 		MongoDB.closeConnection();
-
+		
+		MongoDB.mapReduce();
 		return true;
 	}
 
@@ -146,9 +152,48 @@ public class COMMMENT_DB {
 
 		} finally {
 			MongoDB.closeConnection();
+			MongoDB.mapReduce();
 		}
 
 		return false;
+	}
+	
+	public static JSONObject commentId(int idComment) {
+		try {
+			JSONObject comment = new JSONObject();
+			MongoCollection<org.bson.Document> col = MongoDB.getConnectionToMongoDataBase();
+			org.bson.Document d = new Document();
+			d.append("id", idComment);
+			Document document = col.find(d).first();
+			
+			String dateR = document.getDate("date").toString();
+			dateR = new SimpleDateFormat("YYYY-MM-dd HH:mm:ss").format(new SimpleDateFormat("EEE MMM dd HH:mm:ss ZZZ yyyy", Locale.ENGLISH).parse(dateR));
+			comment.put("id", document.getInteger("id"));
+			comment.put("author_id", document.getInteger("author_id"));
+			comment.put("nom", document.getString("nom"));
+			comment.put("prenom", document.getString("prenom"));
+			comment.put("date", dateR);
+			comment.put("comment", document.getString("comment"));
+			comment.put("replies", document.getList("replies", ArrayList.class));
+			
+			return comment;
+			
+		} catch (ParseException e) {
+			e.printStackTrace();
+		} catch (JSONException e) {
+			e.printStackTrace();
+		} finally {
+			MongoDB.closeConnection();
+		}
+		return null;
+	}
+	
+	public static List<JSONObject> commentsWithIds(List<Integer> ids){
+		List<JSONObject> comments = new ArrayList<>();
+		for (int id : ids) {
+			comments.add(commentId(id));
+		}
+		return comments;
 	}
 
 	public static List<JSONObject> getUserCommentsId_Author(int id_author) throws JSONException {
@@ -325,6 +370,32 @@ public class COMMMENT_DB {
 	
 	public static int getId() {
 		return id;
+	}
+	
+	
+	
+	
+	public static List<JSONObject> search(String word) throws JSONException {
+		
+		DBCollection collection = MongoDB.getConnectionToMongoMapReduceDataBase("out");
+		BasicDBObject query = new BasicDBObject();
+		
+		query.put("_id", word);
+		DBObject dbo  = collection.findOne(query);
+		
+		if(dbo == null) {
+			return null;
+		}
+		BasicDBObject value = (BasicDBObject) dbo.get("value");
+		Set<Entry<String, Object>> set = value.entrySet();
+		List<Integer> list = set.stream()
+							.sorted((s1,s2) -> Double.compare(Double.parseDouble(s1.getValue().toString()), Double.parseDouble(s1.getValue().toString())) )
+							.map((e)->Integer.parseInt(e.getKey())).collect(Collectors.toList());
+		
+		List<JSONObject> comments = new ArrayList<>();
+		comments = commentsWithIds(list);
+		MongoDB.closeConnectionMapReduce();
+		return comments;
 	}
 
 	public static void clearAllComment() {

@@ -11,6 +11,7 @@ import FriendsListsUser from './FriendsListsUser';
 import CommentsListUser from './CommentsListUser';
 
 
+
 const DescriptionItem = ({ title, content }) => (
     <div
         style={{
@@ -35,7 +36,7 @@ const DescriptionItem = ({ title, content }) => (
 
 
 const success = () => {
-    message.success('friend added');
+    message.success('friend added',0.5);
 };
 
 const tabListNoTitle = [{
