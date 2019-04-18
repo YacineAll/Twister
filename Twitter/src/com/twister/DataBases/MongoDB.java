@@ -52,19 +52,17 @@ public class MongoDB {
 	
 	public static void mapReduce() {
 		
-		
-		
-		
 		String m = "function (){" + 
 				"		    var text = this.comment;" + 
 				"		    var words = this.comment.match(/\\w+/g);" + 
 				"		    var tf = {};" + 
 				" " + 
-				"		    for (var i=0 ; i<words.length;i++){ " + 
-				"		        if(tf[words[i]] == null){ " + 
-				"		            tf[words[i]] = 1;" + 
+				"		    for (var i=0 ; i<words.length;i++){ " +
+				"               mot = words[i].toLowerCase();          "+
+				"		        if(tf[mot] == null){ " + 
+				"		            tf[mot] = 1;" + 
 				"		        }else{ " + 
-				"		            tf[words[i]] += 1;" + 
+				"		            tf[mot] += 1;" + 
 				"		        } " + 
 				"		    } " +
 				"		    for (w in tf){ " + 

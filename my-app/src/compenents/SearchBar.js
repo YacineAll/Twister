@@ -48,18 +48,18 @@ export default class SearchBar extends Component{
             });
     }
 
-    onSearchChange = (value) => {
+    onSearchChange = async (value) => {
         const searchValue = value.toLowerCase();
         const filtered = users.filter(item => (item.nom + " " + item.prenom).toLowerCase().indexOf(searchValue) !== -1);
         if(filtered.length === 0){
-            this.searchComments(value)
+            await this.searchComments(value)
             const suggestions = comments.map((comment) => (
                 <Nav
                     value={comment.idComment}
                     data={comment}
                     disabled={comment.disabled}
                 >
-                    {comment.author} - {comment.type}
+                    {comment.author} - {comment.type}-{comment.datetime}
                 </Nav>
 
             ));
@@ -91,34 +91,37 @@ export default class SearchBar extends Component{
             this.props.goToProfile(user)
         }else{
             const comment = comments.find((c) => { return c.idComment === id; })
-            this.props.goToCommment(comment)
+            if (comment !== undefined) {
+                this.props.goToCommment(comment)
+            }
         }
     }
 
-    searchComments(value){
+    async searchComments(value){
         var params = new URLSearchParams();
         params.append("key", this.props.getValues().Key);
         params.append("word", value);
         var request = {
             params: params
         };
-        axios.get('http://localhost:8080/Twitter/search',request)
+        await axios.get('http://localhost:8080/Twitter/search', request)
             .then(response => {
-                if (response.data.code === -1) {
+                if (response.data.code === -1) {                        
                     comments = response.data.comments.map((comment) => {
-                        return {
+                    return {
                             author: comment.nom + " " + comment.prenom,
                             content: comment.comment,
                             datetime: moment(comment.date, "YYYY/MM/DD HH:mm:ss").fromNow(),
                             idComment: comment.id,
-                            type:"Post",
+                            type: "Post",
                         }
                     })
                 }
             })
             .catch(error => {
                 alert(error)
-            });
+        });
+        
     }
 
 render(){
@@ -138,6 +141,7 @@ return (
                         suggestions={this.state.suggestions}
                         onSearchChange={this.onSearchChange}
                         onSelect={this.goTo}
+                        loading={true}  
                     />
                     <div>
                         <Logout getValues={this.props.getValues} setLogout={this.props.setLogout} ></Logout>

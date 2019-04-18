@@ -45,6 +45,7 @@ public class Search {
 
 	public static JSONObject searchCommentsWord(String key,String word) {
 		try {
+			System.out.println(word);
 			if (!SESSION_DB.estDejaConnecte(key)) {
 				return JSONResponse.serviceRefused("connexion denied", 1);
 			}

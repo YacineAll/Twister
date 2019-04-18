@@ -47,8 +47,10 @@ public class Test {
 	public static void main(String args[]) throws JSONException {
 		
 		
-		System.out.println(COMMMENT_DB.search("MapReduce"));
-		//COMMMENT_DB.printMongoDB();
+		//System.out.println(COMMMENT_DB.search("negative"));
+		COMMMENT_DB.printMongoDB();
+		COMMMENT_DB.removeLike(38, 1);
+		COMMMENT_DB.printMongoDB();
 		//COMMMENT_DB.clearAllComment();
 		//System.out.println(COMMMENT_DB.addComment(100, "Yacine", "Ghiles", "je suis la ", new Date()));
 		//System.out.println(COMMMENT_DB.getUserCommentsId_Author(100).get(0).getJSONArray("replies"));

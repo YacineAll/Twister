@@ -55,6 +55,7 @@ export default class CommentsList extends Component {
             .then(response => {
                 if (response.data.code === -1) {
                     const comentaires = response.data.Comments
+                    console.log(response.data)
                     var cms = comentaires.map((comment) => { 
                         return { author: comment.nom + " " + comment.prenom, 
                             content: comment.comment, 

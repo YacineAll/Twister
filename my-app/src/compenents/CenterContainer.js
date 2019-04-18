@@ -69,6 +69,7 @@ export default class CenterContainer extends Component {
                             content: comment.comment, datetime: moment(comment.date, "YYYY/MM/DD HH:mm:ss").fromNow(), 
                             replies: comment.replies, 
                             idComment: comment.id,
+                            likes: comment.likes,
                             currentUser: this.props.getValues(),
                         }})
                     this.props.updateNbComments(cms.length)
@@ -83,6 +84,7 @@ export default class CenterContainer extends Component {
                                         content: comment.comment,
                                         datetime: moment(comment.date, "YYYY/MM/DD HH:mm:ss").fromNow(),
                                         replies: comment.replies,
+                                        likes: comment.likes,
                                         idComment:comment.id,
                                         currentUser: this.props.getValues(),
                                         }})
@@ -138,6 +140,7 @@ export default class CenterContainer extends Component {
                                     datetime: moment(response.data.date, "YYYY/MM/DD HH:mm:ss").fromNow(),
                                     idComment: response.data.idComment,
                                     replies: [],
+                                    likes: [],
                                     currentUser: this.props.getValues(),
                                 },
                                 ...this.state.comments,

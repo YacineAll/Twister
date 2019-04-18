@@ -46,6 +46,12 @@ public class COMMMENT_DB {
 		try {
 			while (mCursur.hasNext()) {
 				Document document = (Document) mCursur.next();
+				
+				@SuppressWarnings("unchecked")
+				ArrayList<Document> replies = (ArrayList<Document>) document.get("replies");
+				@SuppressWarnings("unchecked")
+				ArrayList<Document> likes= (ArrayList<Document>) document.get("Likes");
+				
 				JSONObject jse = new JSONObject();
 				jse.put("id", document.getInteger("id"));
 				jse.put("author_id", document.getInteger("author_id"));
@@ -53,8 +59,7 @@ public class COMMMENT_DB {
 				jse.put("prenom", document.getString("prenom"));
 				jse.put("date", document.getDate("date"));
 				jse.put("comment", document.getString("comment"));
-				jse.put("replies", document.getList("replies", ArrayList.class));
-		
+				jse.put("likes", likes);
 				System.out.println(jse);
 
 			}
@@ -93,6 +98,7 @@ public class COMMMENT_DB {
 		doc.append("date", date);
 		doc.append("comment", comment);
 		doc.append("replies", new ArrayList<>());
+		doc.append("Likes", new ArrayList<>());
 
 		col.insertOne(doc);
 		
@@ -101,8 +107,32 @@ public class COMMMENT_DB {
 		MongoDB.mapReduce();
 		return true;
 	}
+	
+	
+	public static boolean addLike(int idUser,int idComment) {
+		MongoCollection<org.bson.Document> col = MongoDB.getConnectionToMongoDataBase();
+		
+		org.bson.Document docS = new org.bson.Document();
+		docS.append("id", idComment);
+		col.updateOne(docS, Updates.addToSet("Likes", idUser));
+		MongoDB.closeConnection();
+
+		return true;
+	}
+
 
 	
+	public static boolean removeLike(int idUser,int idComment) {
+		MongoCollection<org.bson.Document> col = MongoDB.getConnectionToMongoDataBase();
+		
+		org.bson.Document docS = new org.bson.Document();
+		docS.append("id", idComment);
+		
+		col.updateOne(docS, Updates.pull("Likes", idUser));
+		MongoDB.closeConnection();
+
+		return true;
+	}
 	public static boolean addReplys(int idUser, String nom, String prenom, String comment,Date date,int idComment) {
 		MongoCollection<org.bson.Document> col = MongoDB.getConnectionToMongoDataBase();
 		
@@ -114,15 +144,12 @@ public class COMMMENT_DB {
 		reply.append("prenom", prenom);
 		reply.append("date", date);
 		reply.append("comment", comment);
-		
-		
+		reply.append("Likes", new ArrayList<>());
 
-
+		
 		org.bson.Document docS = new org.bson.Document();
 		docS.append("id", idComment);
 		col.updateOne(docS, Updates.addToSet("replies", reply));
-		
-		
 		
 		MongoDB.closeConnection();
 
@@ -165,16 +192,23 @@ public class COMMMENT_DB {
 			org.bson.Document d = new Document();
 			d.append("id", idComment);
 			Document document = col.find(d).first();
+
+			@SuppressWarnings("unchecked")
+			ArrayList<Document> replies = (ArrayList<Document>) document.get("replies");
+			@SuppressWarnings("unchecked")
+			ArrayList<Document> likes= (ArrayList<Document>) document.get("Likes");
 			
 			String dateR = document.getDate("date").toString();
 			dateR = new SimpleDateFormat("YYYY-MM-dd HH:mm:ss").format(new SimpleDateFormat("EEE MMM dd HH:mm:ss ZZZ yyyy", Locale.ENGLISH).parse(dateR));
+			
 			comment.put("id", document.getInteger("id"));
 			comment.put("author_id", document.getInteger("author_id"));
 			comment.put("nom", document.getString("nom"));
 			comment.put("prenom", document.getString("prenom"));
 			comment.put("date", dateR);
 			comment.put("comment", document.getString("comment"));
-			comment.put("replies", document.getList("replies", ArrayList.class));
+			comment.put("replies", replies);
+			comment.put("likes", likes);
 			
 			return comment;
 			
@@ -197,62 +231,67 @@ public class COMMMENT_DB {
 	}
 
 	public static List<JSONObject> getUserCommentsId_Author(int id_author) throws JSONException {
-		MongoCollection<org.bson.Document> col = MongoDB.getConnectionToMongoDataBase();
-
-		org.bson.Document doc = new org.bson.Document();
-
-		doc.append("author_id", id_author);
-		List<JSONObject> listJson = new ArrayList<JSONObject>();
-		MongoCursor<Document> mngc = col.find(doc).iterator();
-
 		
-		while (mngc.hasNext()) {
-			Document document = (Document) mngc.next();
-			JSONObject jse = new JSONObject();
-			String date2 = document.getDate("date").toString();
-			try {
-				date2 = new SimpleDateFormat("YYYY-MM-dd HH:mm:ss").format(new SimpleDateFormat("EEE MMM dd HH:mm:ss ZZZ yyyy", Locale.ENGLISH).parse(date2));
-			} catch (ParseException e) {
-				e.printStackTrace();
-			}
+		try {
 			
-			jse.put("id", document.getInteger("id"));
-			jse.put("author_id", document.getInteger("author_id"));
-			jse.put("nom", document.getString("nom"));
-			jse.put("prenom", document.getString("prenom"));
-			jse.put("date", date2);
-			jse.put("comment", document.getString("comment"));
-			
-			@SuppressWarnings("unchecked")
-			ArrayList<Document> replies = (ArrayList<Document>)document.get("replies");
-			ArrayList<JSONObject> repliesJS = new ArrayList<>();
-			
-			for (Document reply : replies) {
-				String dateR = reply.getDate("date").toString();
-				try {
-					dateR = new SimpleDateFormat("YYYY-MM-dd HH:mm:ss").format(new SimpleDateFormat("EEE MMM dd HH:mm:ss ZZZ yyyy", Locale.ENGLISH).parse(dateR));
-				} catch (ParseException e) {
-					e.printStackTrace();
-				}
-				JSONObject replyJS = new JSONObject();
-				replyJS.put("id", reply.getInteger("id"));
-				replyJS.put("author_id", reply.getInteger("author_id"));
-				replyJS.put("nom", reply.getString("nom"));
-				replyJS.put("prenom", reply.getString("prenom"));
-				replyJS.put("date", dateR);
-				replyJS.put("comment", reply.getString("comment"));
-				
-				repliesJS.add(replyJS);
-				
-			}
-			jse.put("replies",repliesJS);
-			
-			listJson.add(jse);
-		}
+			MongoCollection<org.bson.Document> col = MongoDB.getConnectionToMongoDataBase();
 
-		MongoDB.closeConnection();
-		return listJson;
-	}
+			org.bson.Document doc = new org.bson.Document();
+
+			doc.append("author_id", id_author);
+			List<JSONObject> listJson = new ArrayList<JSONObject>();
+			MongoCursor<Document> mngc = col.find(doc).iterator();
+
+			
+			while (mngc.hasNext()) {
+				Document document = (Document) mngc.next();
+				JSONObject jse = new JSONObject();
+				@SuppressWarnings("unchecked")
+				ArrayList<Document> replies = (ArrayList<Document>) document.get("replies");
+				@SuppressWarnings("unchecked")
+				ArrayList<Document> likes= (ArrayList<Document>) document.get("Likes");
+				
+				String dateR = document.getDate("date").toString();
+				dateR = new SimpleDateFormat("YYYY-MM-dd HH:mm:ss").format(new SimpleDateFormat("EEE MMM dd HH:mm:ss ZZZ yyyy", Locale.ENGLISH).parse(dateR));
+				
+				jse.put("id", document.getInteger("id"));
+				jse.put("author_id", document.getInteger("author_id"));
+				jse.put("nom", document.getString("nom"));
+				jse.put("prenom", document.getString("prenom"));
+				jse.put("date", dateR);
+				jse.put("comment", document.getString("comment"));
+				jse.put("likes", likes);
+				
+				
+				ArrayList<JSONObject> repliesJS = new ArrayList<>();
+				for (Document reply : replies) {
+					dateR = reply.getDate("date").toString();
+					dateR = new SimpleDateFormat("YYYY-MM-dd HH:mm:ss").format(new SimpleDateFormat("EEE MMM dd HH:mm:ss ZZZ yyyy", Locale.ENGLISH).parse(dateR));
+					
+					
+					JSONObject replyJS = new JSONObject();
+					replyJS.put("id", reply.getInteger("id"));
+					replyJS.put("author_id", reply.getInteger("author_id"));
+					replyJS.put("nom", reply.getString("nom"));
+					replyJS.put("prenom", reply.getString("prenom"));
+					replyJS.put("date", dateR);
+					replyJS.put("comment", reply.getString("comment"));
+					replyJS.put("likes", likes);
+					
+					repliesJS.add(replyJS);
+					
+				}
+				
+				jse.put("replies",repliesJS);
+				listJson.add(jse);
+			}
+			return listJson;
+		} catch (ParseException e) {
+			MongoDB.closeConnection();
+			e.printStackTrace();
+			return null;
+		}
+}
 
 	/**
 	 * Lister les message de l'utilisateur par son nom ou prenom

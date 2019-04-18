@@ -25,9 +25,10 @@ export default class Post extends Component {
     constructor(props) {
         super(props)
         this.state = {
-            likes: 0,
-            dislikes: 0,
-            action: null,
+            likes: this.props.likes.length,
+            listUserLikes:this.props.likes,
+            action: this.props.likes > 0 
+                && this.props.likes.find(id => id === parseInt(this.props.currentUser.ID)) ? "liked" : null,
             comments: [],
             submitting: false,
             value: '',
@@ -99,23 +100,57 @@ export default class Post extends Component {
     }
 
     like = () => {
-        this.setState({
-            likes: 1,
-            dislikes: 0,
-            action: 'liked',
-        });
+        if (this.state.listUserLikes.length > 0 && this.state.listUserLikes.find(id => id === parseInt(this.props.currentUser.ID))) {
+
+            var params = new URLSearchParams();
+            params.append("idUser", this.props.currentUser.ID);
+            params.append("idComment", this.props.idComment);
+            var request = {
+                params: params
+            };
+            axios.get('http://localhost:8080/Twitter/removeLike', request)
+                .then(response => {
+                    if (response.data.code === -1) {
+                        const filtered = this.state.listUserLikes.filter(id => id !== parseInt(this.props.currentUser.ID));
+                        this.setState({
+                            listUserLikes: filtered,
+                            likes: filtered.length,
+                            dislikes: 1,
+                            action: 'disliked',
+                        });
+                    }
+                })
+                .catch(error => {
+                    alert(error)
+                });
+        } else {
+            params = new URLSearchParams();
+            params.append("idUser", this.props.currentUser.ID);
+            params.append("idComment", this.props.idComment);
+            request = {
+                params: params
+            };
+            axios.get('http://localhost:8080/Twitter/AddLike', request)
+                .then(response => {
+                    if (response.data.code === -1) {
+                        this.setState({
+                            listUserLikes: [...this.state.listUserLikes, parseInt(this.props.currentUser.ID)],
+                            likes: this.state.listUserLikes.length + 1,
+                            dislikes: 0,
+                            action: 'liked',
+                        })
+                    }
+                })
+                .catch(error => {
+                    alert(error)
+                });
+        }
+
     }
 
-    dislike = () => {
-        this.setState({
-            likes: 0,
-            dislikes: 1,
-            action: 'disliked',
-        });
-    }
 
     render() {
-        const { likes, dislikes, action } = this.state;
+        const { likes,  action } = this.state;
         const { comments, submitting, value } = this.state;
 
         const actions = [
@@ -129,18 +164,6 @@ export default class Post extends Component {
                 </Tooltip>
                 <span style={{ paddingLeft: 8, cursor: 'auto' }}>
                     {likes}
-                </span>
-            </span>,
-            <span>
-                <Tooltip title="Dislike">
-                    <Icon
-                        type="dislike"
-                        theme={action === 'disliked' ? 'filled' : 'outlined'}
-                        onClick={this.dislike}
-                    />
-                </Tooltip>
-                <span style={{ paddingLeft: 8, cursor: 'auto' }}>
-                    {dislikes}
                 </span>
             </span>,
             <TextAreaReply onChange={this.handleChange} onSubmit={this.handleSubmit} submitting={submitting} value={value}></TextAreaReply>,

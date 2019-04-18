@@ -829,14 +829,18 @@ standard deployment descriptor.
     <servlet-name>ListFriendsID</servlet-name>
     <servlet-class>com.twister.servlets.friend.ListFriendsID</servlet-class>
   </servlet>
-  
   <servlet>
-  	<servlet-name>AddReply</servlet-name>
-  	<servlet-class>com.twister.servlets.comment.AddReply</servlet-class>
+    <servlet-name>AddReply</servlet-name>
+    <servlet-class>com.twister.servlets.comment.AddReply</servlet-class>
   </servlet>
-  
-  
-  
+  <servlet>
+    <servlet-name>AddLike</servlet-name>
+    <servlet-class>com.twister.servlets.comment.AddLike</servlet-class>
+  </servlet>
+  <servlet>
+    <servlet-name>RemoveLike</servlet-name>
+    <servlet-class>com.twister.servlets.comment.RemoveLike</servlet-class>
+  </servlet>  
   <servlet-mapping>
     <servlet-name>Login</servlet-name>
     <url-pattern>/login</url-pattern>
@@ -893,14 +897,18 @@ standard deployment descriptor.
     <servlet-name>ListFriendsID</servlet-name>
     <url-pattern>/listFriendsID</url-pattern>
   </servlet-mapping>
-  
   <servlet-mapping>
-  	<servlet-name>AddReply</servlet-name>
-  	<url-pattern>/addReply</url-pattern>
+    <servlet-name>AddReply</servlet-name>
+    <url-pattern>/addReply</url-pattern>
   </servlet-mapping>
-  
-  
-  
+  <servlet-mapping>
+    <servlet-name>AddLike</servlet-name>
+    <url-pattern>/addLike</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>RemoveLike</servlet-name>
+    <url-pattern>/removeLike</url-pattern>
+  </servlet-mapping>
   <filter>
     <filter-name>CorsFilter</filter-name>
     <filter-class>crosfilter.CORSFilter</filter-class>
