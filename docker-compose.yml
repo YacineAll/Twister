@@ -42,11 +42,11 @@ services:
     ports:
       - "3306:3306"
     restart: always
-    environment:
-      ENV MYSQL_DATABASE: firstDataBase
-      # ENV MYSQL_USER: ghiles
-      # MYSQL_PASSWORD: 25139
+    environment: 
       ENV MYSQL_ROOT_PASSWORD: 25139+Yacine
+      ENV MYSQL_DATABASE: firstDataBase
+      ENV MYSQL_USER: ghiles
+      ENV MYSQL_PASSWORD: ghiles+123
     command: --disable-partition-engine-check
     volumes:
       - db-data:/var/lib/mysql
