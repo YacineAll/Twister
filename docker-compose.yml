@@ -4,7 +4,7 @@ version: "3.7"
 services:
   # App backend service
   app-server:
-  #  Configuration for building the docker image for the backend service
+    #  Configuration for building the docker image for the backend service
     build:
       context: twister-server # Use an image built from the specified dockerfile in the `polling-app-server` directory.
       dockerfile: Dockerfile
@@ -13,6 +13,7 @@ services:
     restart: always
     depends_on:
       - db # This service depends on mysql. Start that first.
+      - nosql-db
     environment: # Pass environment variables to the service
       SPRING_DATASOURCE_URL: jdbc:mysql://db:3306/firstDataBase?useSSL=false&serverTimezone=UTC&useLegacyDatetimeCode=false
       SPRING_DATASOURCE_USERNAME: root
@@ -20,7 +21,7 @@ services:
     networks: # Networks to join (Services on the same network can communicate with each other using their name)
       - backend
       - frontend
-  # Frontend Service 
+  # Frontend Service
   app-client:
     build:
       context: react-app
@@ -42,7 +43,7 @@ services:
     ports:
       - "3306:3306"
     restart: always
-    environment: 
+    environment:
       ENV MYSQL_ROOT_PASSWORD: 25139+Yacine
       ENV MYSQL_DATABASE: firstDataBase
       ENV MYSQL_USER: ghiles
@@ -52,10 +53,18 @@ services:
       - db-data:/var/lib/mysql
     networks:
       - backend
-
+  nosql-db:
+    image: mongo:4
+    ports:
+      - 27017-27019:27017-27019
+    volumes:
+      - mongodb-data:/data/db
+    networks:
+      - backend
 # Volumes
 volumes:
   db-data:
+  mongodb-data:
 
 # Networks to be created to facilitate communication between containers
 networks:
