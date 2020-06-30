@@ -1,0 +1,110 @@
+.signupform.main-content{
+	width: 50%;
+	border-radius: 20px;
+	box-shadow: 0 5px 5px rgba(0,0,0,.4);
+	margin: 5em auto;
+    display: flex;
+    color: black;
+}
+.signupform.company__info{
+	background-color: #088a9e;
+	border-top-left-radius: 20px;
+	border-bottom-left-radius: 20px;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	color: #fff;
+}
+
+.signupform.company_title{
+	text-align: center;
+}
+
+.signupform.birthdate{
+    color: #7f7f7f;
+}
+.signupform.logo{
+	border-radius: 5%;
+	max-width: 100%;
+  	height: auto;
+}	
+@media screen and (max-width: 640px) {
+	.signupform.main-content{width: 90%;}
+	.signupform.company__info{
+		display: none;
+	}
+	.signupform.login_form{
+		border-top-left-radius:20px;
+		border-bottom-left-radius:20px;
+	}
+}
+@media screen and (min-width: 642px) and (max-width:800px){
+	.signupform.main-content{width: 70%;}
+}
+.signupform.row > h2{
+	color:#008080;
+}
+.signupform.login_form{
+	background-color: #fff;
+	border-top-right-radius:20px;
+	border-bottom-right-radius:20px;
+	border-top:1px solid #ccc;
+	border-right:1px solid #ccc;
+}
+form.signupform{
+	padding: 0 2em;
+}
+.signupform.form__input{
+	width: 100%;
+	border:0px solid transparent;
+	border-radius: 0;
+	border-bottom: 1px solid #aaa;
+	padding: 1em .5em .5em;
+	padding-left: 2em;
+	outline:none;
+	margin:1.5em auto;
+	transition: all .5s ease;
+	color: black;
+}
+.signupform.form__input:focus{
+	border-bottom-color: #008080;
+	box-shadow: 0 0 5px rgba(0,80,80,.4); 
+	border-radius: 4px;
+	color: black;
+}
+
+.signupform.remember_me{
+	color: black;
+}
+.signupform.btn{
+	transition: all .5s ease;
+	width: 70%;
+	border-radius: 30px;
+	color:#008080;
+	font-weight: 600;
+	background-color: #fff;
+	border: 1px solid #008080;
+	margin-top: 1.5em;
+	margin-bottom: 1em;
+}
+.signupform.btn:hover, .btn:focus{
+	background-color: #008080;
+	color:#fff;
+}
+
+.signupform.have_account{
+	color: black;
+}
+
+label.signupform.row.birthdate {
+    display: block;
+    font: 1rem 'Fira Sans', sans-serif;
+}
+
+input.signupform.row.birthdate,
+label.signupform.row.birthdate {
+    margin: .4rem 0;
+}
+.signupform.sex{
+	color: #777777;
+}
