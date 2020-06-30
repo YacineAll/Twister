@@ -24,7 +24,7 @@ services:
   # Frontend Service
   app-client:
     build:
-      context: react-app
+      context: react-client
       dockerfile: Dockerfile
       args:
         REACT_APP_API_BASE_URL: http://127.0.0.1:8080/api
