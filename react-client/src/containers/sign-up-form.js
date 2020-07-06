@@ -3,11 +3,7 @@ import { connect } from "react-redux";
 import "../style/signup-form.css";
 import { signup } from "../actions/index";
 
-const mapStateToProps = (store) => {
-  return {
-    user: store.userSignup.user,
-  };
-};
+
 
 const mapDispatchToProps = {
   signup,
@@ -222,4 +218,4 @@ class SignUpForm extends Component {
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(SignUpForm);
+export default connect(undefined, mapDispatchToProps)(SignUpForm);

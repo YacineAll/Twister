@@ -2,12 +2,8 @@ import React, { Component } from "react";
 import "../style/login-form.css";
 import { connect } from "react-redux";
 import { login } from "../actions/index";
+import { withRouter } from "react-router";
 
-const mapStateToProps = (store) => {
-  return {
-    user: store.userReducer.user,
-  };
-};
 
 const mapDispatchToProps = {
   login,
@@ -23,6 +19,8 @@ class LoginForm extends Component {
     this.props.login(this.state.username, this.state.password);
     event.preventDefault();
   }
+
+
 
   handleChangeUsername(e) {
     this.setState({ username: e.target.value });
@@ -115,4 +113,4 @@ class LoginForm extends Component {
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(LoginForm);
+export default withRouter(connect(undefined, mapDispatchToProps)(LoginForm));

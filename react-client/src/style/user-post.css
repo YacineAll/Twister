@@ -1,0 +1,32 @@
+.usepost.date {
+    font-size: 0.7vw;
+}
+
+.usepost.comment-text {
+    font-size: 0.8vw;
+}
+
+.usepost.fs-12 {
+    font-size: 12px
+}
+
+.usepost.shadow-none {
+    box-shadow: none
+}
+
+.usepost.name {
+    font-size: 1vw;
+    color: #007bff
+}
+
+.usepost.cursor:hover {
+    color: blue
+}
+
+.usepost.cursor {
+    cursor: pointer
+}
+
+.usepost.textarea {
+    resize: none
+}
