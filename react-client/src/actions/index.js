@@ -1,12 +1,12 @@
 import axios from "axios";
 import { push } from "react-router-redux";
 
-const URL = "http://localhost:8000/twister-server";
+const URL = "http://localhost:8080/twister-server";
 
-export const LOGIN = "LOGIN";
-export const LOGOUT = "LOGOUT";
-export const SIGNUP = "SIGNUP";
-export const ADD_POST = "ADD_POST";
+export const LOGIN   ="LOGIN";
+export const LOGOUT  ="LOGOUT";
+export const SIGNUP  ="SIGNUP";
+export const ADD_POST="ADD_POST";
 
 export function login(username, password) {
   return function (dispatch) {

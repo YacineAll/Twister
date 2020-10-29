@@ -18,9 +18,6 @@ const persistedState = loadState()
 
 
 
-
-
-
 const middleware = routerMiddleware(browserHistory)
 const createStoreWithMiddleware = applyMiddleware(thunk,middleware)(createStore);
 
